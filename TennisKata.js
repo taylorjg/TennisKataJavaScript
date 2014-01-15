@@ -11,23 +11,23 @@
 
     window.tennisKata.Game = function() {
 
-        this.player1Score = 0;
-        this.player2Score = 0;
+        var player1Score = 0;
+        var player2Score = 0;
 
         this.getPlayer1Score = function() {
-            return this.player1Score;
+            return player1Score;
         };
 
         this.getPlayer2Score = function() {
-            return this.player2Score;
+            return player2Score;
         };
 
         this.pointScoredByPlayer1 = function() {
-            this.player1Score = this.player1Score + 1;
+            player1Score++;
         };
 
         this.pointScoredByPlayer2 = function() {
-            this.player2Score = this.player2Score + 1;
+            player2Score++;
         };
     };
 
@@ -46,11 +46,8 @@
             if (score2 >= 4 && score2 - score1 >= 2) {
                 return "L";
             }
-            if (score1 >= 3 && score2 >= 3 && score1 === score2 + 1) {
-                return "A";
-            }
-            if (score1 >= 3 && score2 >= 3) {
-                return "40";
+            if (score1 + score2 >= 6) {
+                return score1 === score2 + 1 ? "A" : "40";
             }
             return scoreToText[score1];
         };
@@ -64,11 +61,8 @@
             if (score1 >= 4 && score1 - score2 >= 2) {
                 return "L";
             }
-            if (score2 >= 3 && score1 >= 3 && score2 === score1 + 1) {
-                return "A";
-            }
-            if (score1 >= 3 && score2 >= 3) {
-                return "40";
+            if (score1 + score2 >= 6) {
+                return score2 === score1 + 1 ? "A" : "40";
             }
             return scoreToText[score2];
         };

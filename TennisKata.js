@@ -6,28 +6,48 @@
 
     window.tennisKata = window.tennisKata || {};
 
-    window.tennisKata.Player = function() {
+    window.tennisKata.Player = function(name) {
+
+        this.name = name;
+
+        this.getName = function() {
+            return this.name;
+        }
     };
 
-    window.tennisKata.Game = function() {
+    window.tennisKata.Game = function(player1, player2) {
 
-        var player1Score = 0;
-        var player2Score = 0;
+        var privateStuff = [];
+
+        privateStuff[this] = {
+            player1Score: 0,
+            player2Score: 0,
+            player1: player1,
+            player2: player2
+        };
+
+        this.getPlayer1Name = function() {
+            return privateStuff[this].player1.getName();
+        };
+
+        this.getPlayer2Name = function() {
+            return privateStuff[this].player2.getName();
+        };
 
         this.getPlayer1Score = function() {
-            return player1Score;
+            return privateStuff[this].player1Score;
         };
 
         this.getPlayer2Score = function() {
-            return player2Score;
+            return privateStuff[this].player2Score;
         };
 
         this.pointScoredByPlayer1 = function() {
-            player1Score++;
+            return privateStuff[this].player1Score++;
         };
 
         this.pointScoredByPlayer2 = function() {
-            player2Score++;
+            return privateStuff[this].player2Score++;
         };
     };
 

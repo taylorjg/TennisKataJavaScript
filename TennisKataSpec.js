@@ -8,12 +8,29 @@
 
     describe("Tests for TennisKata", function () {
 
+        var player1;
+        var player2;
+        var game;
+
+        beforeEach(function() {
+            player1 = new window.tennisKata.Player("Becker");
+            player2 = new window.tennisKata.Player("McEnroe");
+            game = new window.tennisKata.Game(player1, player2);
+        });
+
         describe("Game tests", function () {
+
+            it("has the correct player1 name", function() {
+                expect(game.getPlayer1Name()).toBe("Becker");
+            });
+
+            it("has the correct player2 name", function() {
+                expect(game.getPlayer2Name()).toBe("McEnroe");
+            });
 
             it_multiple(
                 "has the correct score when points have been scored",
                 function(numPoints1, numPoints2) {
-                    var game = new window.tennisKata.Game();
                     var i;
                     for (i = 0; i < numPoints1; i++) { game.pointScoredByPlayer1(); }
                     for (i = 0; i < numPoints2; i++) { game.pointScoredByPlayer2(); }
@@ -38,6 +55,26 @@
                     [4, 4],
                     [5, 5]
                 ]);
+
+            it("games are independent of each other", function() {
+
+                var player1 = new window.tennisKata.Player("Player1");
+                var player2 = new window.tennisKata.Player("Player2");
+                var game1 = new window.tennisKata.Game(player1, player2);
+
+                var player3 = new window.tennisKata.Player("Player3");
+                var player4 = new window.tennisKata.Player("Player4");
+                var game2 = new window.tennisKata.Game(player3, player4);
+
+                game1.pointScoredByPlayer1();
+                game2.pointScoredByPlayer2();
+
+                expect(game1.getPlayer1Score()).toBe(1);
+                expect(game1.getPlayer2Score()).toBe(0);
+
+                expect(game2.getPlayer1Score()).toBe(0);
+                expect(game2.getPlayer2Score()).toBe(1);
+            });
         });
 
         describe("Scoreboard tests", function() {
@@ -45,7 +82,6 @@
             it_multiple(
                 "has the correct score text when points have been scored",
                 function(numPoints1, numPoints2, expectedScoreText1, expectedScoreText2) {
-                    var game = new window.tennisKata.Game();
                     var i;
                     for (i = 0; i < numPoints1; i++) { game.pointScoredByPlayer1(); }
                     for (i = 0; i < numPoints2; i++) { game.pointScoredByPlayer2(); }

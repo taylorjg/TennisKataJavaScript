@@ -11,11 +11,13 @@
         var player1;
         var player2;
         var game;
+        var scoreboard;
 
         beforeEach(function() {
-            player1 = new window.tennisKata.Player("Becker");
-            player2 = new window.tennisKata.Player("McEnroe");
-            game = new window.tennisKata.Game(player1, player2);
+            player1 = window.tennisKata.factory.createPlayer("Becker");
+            player2 = window.tennisKata.factory.createPlayer("McEnroe");
+            game = window.tennisKata.factory.createGame(player1, player2);
+            scoreboard = window.tennisKata.factory.createScoreboard(game);
         });
 
         describe("Game tests", function () {
@@ -58,13 +60,13 @@
 
             it("games are independent of each other", function() {
 
-                var player1 = new window.tennisKata.Player("Player1");
-                var player2 = new window.tennisKata.Player("Player2");
-                var game1 = new window.tennisKata.Game(player1, player2);
+                var player1 = window.tennisKata.factory.createPlayer("Player1");
+                var player2 = window.tennisKata.factory.createPlayer("Player2");
+                var game1 = window.tennisKata.factory.createGame(player1, player2);
 
-                var player3 = new window.tennisKata.Player("Player3");
-                var player4 = new window.tennisKata.Player("Player4");
-                var game2 = new window.tennisKata.Game(player3, player4);
+                var player3 = window.tennisKata.factory.createPlayer("Player3");
+                var player4 = window.tennisKata.factory.createPlayer("Player4");
+                var game2 = window.tennisKata.factory.createGame(player3, player4);
 
                 game1.pointScoredByPlayer1();
                 game2.pointScoredByPlayer2();
@@ -85,7 +87,6 @@
                     var i;
                     for (i = 0; i < numPoints1; i++) { game.pointScoredByPlayer1(); }
                     for (i = 0; i < numPoints2; i++) { game.pointScoredByPlayer2(); }
-                    var scoreboard = new window.tennisKata.Scoreboard(game);
                     expect(scoreboard.getPlayer1Score()).toBe(expectedScoreText1);
                     expect(scoreboard.getPlayer2Score()).toBe(expectedScoreText2);
                 },

@@ -34,10 +34,14 @@
 
     window.tennisKata.Player = function(name) {
 
-        this.name = name;
+        var privateStuff = [];
+
+        privateStuff[this] = {
+            name: name
+        };
 
         this.getName = function() {
-            return this.name;
+            return privateStuff[this].name;
         }
     };
 
@@ -52,12 +56,12 @@
             player2: player2
         };
 
-        this.getPlayer1Name = function() {
-            return privateStuff[this].player1.getName();
+        this.getPlayer1 = function() {
+            return privateStuff[this].player1;
         };
 
-        this.getPlayer2Name = function() {
-            return privateStuff[this].player2.getName();
+        this.getPlayer2 = function() {
+            return privateStuff[this].player2;
         };
 
         this.getPlayer1Score = function() {

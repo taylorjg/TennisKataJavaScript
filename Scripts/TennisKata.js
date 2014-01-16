@@ -20,10 +20,15 @@
             return new window.tennisKata.Scoreboard(game);
         };
 
+        var _createController = function() {
+            return new window.tennisKata.Controller();
+        };
+
         return {
             createPlayer: _createPlayer,
             createGame: _createGame,
-            createScoreboard: _createScoreboard
+            createScoreboard: _createScoreboard,
+            createController: _createController
         };
     }());
 
@@ -110,6 +115,38 @@
     };
 
     window.tennisKata.Controller = function() {
+
+        var _player1 = window.tennisKata.factory.createPlayer("Player1");
+        var _player2 = window.tennisKata.factory.createPlayer("Player2");
+        var _game = window.tennisKata.factory.createGame(_player1, _player2);
+        var _scoreboard = window.tennisKata.factory.createScoreboard(_game);
+
+        // Should we have an array of these ?
+        var _scoreChangedCallback = null;
+
+        var _reportScore = function() {
+            if (_scoreChangedCallback !== null) {
+                _scoreChangedCallback({
+                    player1Score: _scoreboard.getPlayer1Score(),
+                    player2Score: _scoreboard.getPlayer2Score()
+                });
+            }
+        };
+
+
+        this.setScoreChangedCallback = function(cb) {
+            _scoreChangedCallback = cb;
+        };
+
+        this.pointScoredByPlayer1 = function() {
+            _game.pointScoredByPlayer1();
+            _reportScore();
+        };
+
+        this.pointScoredByPlayer2 = function() {
+            _game.pointScoredByPlayer2();
+            _reportScore();
+        };
     };
 
 } ());

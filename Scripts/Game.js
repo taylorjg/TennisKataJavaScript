@@ -40,5 +40,10 @@
         this.pointScoredByPlayer2 = function() {
             return _privateStuff[this].player2Score++;
         };
+
+        this.reset = function() {
+            _privateStuff[this].player1Score = 0;
+            _privateStuff[this].player2Score = 0;
+        };
     };
 } ());

@@ -41,5 +41,10 @@
             _game.pointScoredByPlayer2();
             _reportScore();
         };
+
+        this.reset = function() {
+            _game.reset();
+            _reportScore();
+        };
     };
 } ());

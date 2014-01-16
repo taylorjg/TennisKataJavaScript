@@ -107,6 +107,17 @@
                     [5, 5]
                 ]);
 
+            it("returns the score to 0/0 after a reset", function() {
+                    game.pointScoredByPlayer1();
+                    game.pointScoredByPlayer1();
+                    game.pointScoredByPlayer2();
+                    expect(game.getPlayer1Score()).toBe(2);
+                    expect(game.getPlayer2Score()).toBe(1);
+                    game.reset();
+                    expect(game.getPlayer1Score()).toBe(0);
+                    expect(game.getPlayer2Score()).toBe(0);
+            });
+
             it("games are independent of each other", function() {
 
                 var player1 = window.tennisKata.factory.createPlayer("Player1");
@@ -176,6 +187,29 @@
                 },
                 [].concat(commonTestCases)
             );
+
+            it("returns the score to ''/'' after a reset", function() {
+
+                    var callbackDataArray = [];
+
+                    controller.setScoreChangedCallback(function(x) {
+                        callbackDataArray.push(x);
+                    });
+
+                    controller.pointScoredByPlayer1();
+                    controller.pointScoredByPlayer1();
+                    controller.pointScoredByPlayer2();
+
+                    var lastIndex = callbackDataArray.length - 1;
+                    expect(callbackDataArray[lastIndex].player1Score).toBe("30");
+                    expect(callbackDataArray[lastIndex].player2Score).toBe("15");
+
+                    controller.reset();
+
+                    lastIndex = callbackDataArray.length - 1;
+                    expect(callbackDataArray[lastIndex].player1Score).toBe("");
+                    expect(callbackDataArray[lastIndex].player2Score).toBe("");
+            });
         });
     });
 } ());

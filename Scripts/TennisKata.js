@@ -131,7 +131,9 @@
         var _reportScore = function() {
             if (_scoreChangedCallback !== null) {
                 _scoreChangedCallback({
+                    player1Name: _game.getPlayer1().getName(),
                     player1Score: _scoreboard.getPlayer1Score(),
+                    player2Name: _game.getPlayer2().getName(),
                     player2Score: _scoreboard.getPlayer2Score()
                 });
             }

@@ -169,7 +169,9 @@
                     var i;
                     for (i = 0; i < numPoints1; i++) { controller.pointScoredByPlayer1(); }
                     for (i = 0; i < numPoints2; i++) { controller.pointScoredByPlayer2(); }
+                    expect(callbackData.player1Name).toBe("Player1");
                     expect(callbackData.player1Score).toBe(expectedScoreText1);
+                    expect(callbackData.player2Name).toBe("Player2");
                     expect(callbackData.player2Score).toBe(expectedScoreText2);
                 },
                 [].concat(commonTestCases)

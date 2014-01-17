@@ -1,6 +1,4 @@
-﻿// ReSharper disable InconsistentNaming
-
-(function () {
+﻿(function () {
 
     "use strict";
 
@@ -16,6 +14,6 @@
 
         this.getName = function() {
             return _privateStuff[this].name;
-        }
+        };
     };
 } ());

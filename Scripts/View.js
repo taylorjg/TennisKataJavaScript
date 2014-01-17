@@ -1,4 +1,4 @@
-// ReSharper disable InconsistentNaming
+/* global document */
 
 (function () {
 

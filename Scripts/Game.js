@@ -1,6 +1,4 @@
-﻿// ReSharper disable InconsistentNaming
-
-(function () {
+﻿(function () {
 
     "use strict";
 

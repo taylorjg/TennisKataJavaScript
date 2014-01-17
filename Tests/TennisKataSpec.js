@@ -118,6 +118,27 @@
                     expect(game.getPlayer2Score()).toBe(0);
             });
 
+            it("ignores points scored after the game has been won", function() {
+
+                    game.pointScoredByPlayer1();
+                    game.pointScoredByPlayer1();
+                    game.pointScoredByPlayer1();
+                    game.pointScoredByPlayer1();
+
+                    expect(game.getPlayer1Score()).toBe(4);
+                    expect(game.getPlayer2Score()).toBe(0);
+
+                    game.pointScoredByPlayer1();
+
+                    expect(game.getPlayer1Score()).toBe(4);
+                    expect(game.getPlayer2Score()).toBe(0);
+
+                    game.pointScoredByPlayer2();
+                    
+                    expect(game.getPlayer1Score()).toBe(4);
+                    expect(game.getPlayer2Score()).toBe(0);
+            });
+
             it("games are independent of each other", function() {
 
                 var player1 = window.tennisKata.factory.createPlayer("Player1");
@@ -136,6 +157,15 @@
 
                 expect(game2.getPlayer1Score()).toBe(0);
                 expect(game2.getPlayer2Score()).toBe(1);
+            });
+        });
+
+        describe("Player tests", function() {
+            it("players are independent of each other", function() {
+                var playerX = window.tennisKata.factory.createPlayer("PlayerX");
+                var playerY = window.tennisKata.factory.createPlayer("PlayerY");
+                expect(playerX.getName()).toBe("PlayerX");
+                expect(playerY.getName()).toBe("PlayerY");
             });
         });
 

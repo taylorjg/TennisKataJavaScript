@@ -17,6 +17,14 @@
             player2: player2
         };
 
+        var _isGameOver = function() {
+            var score1 = _privateStuff[this].player1Score;
+            var score2 = _privateStuff[this].player2Score;
+            return (
+                (score1 >= 4 && score1 - score2 >= 2) ||
+                (score2 >= 4 && score2 - score1 >= 2));
+        };
+
         this.getPlayer1 = function() {
             return _privateStuff[this].player1;
         };
@@ -34,11 +42,17 @@
         };
 
         this.pointScoredByPlayer1 = function() {
-            return _privateStuff[this].player1Score++;
+            if (_isGameOver.apply(this, arguments)) {
+                return;
+            }
+            _privateStuff[this].player1Score++;
         };
 
         this.pointScoredByPlayer2 = function() {
-            return _privateStuff[this].player2Score++;
+            if (_isGameOver.apply(this, arguments)) {
+                return;
+            }
+            _privateStuff[this].player2Score++;
         };
 
         this.reset = function() {

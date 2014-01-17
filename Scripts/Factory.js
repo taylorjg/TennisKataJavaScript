@@ -7,19 +7,19 @@
     window.tennisKata.factory = (function() {
 
         var _createPlayer = function(name) {
-            return new window.tennisKata.Player(name);
+            return window.tennisKata.player(name);
         };
 
         var _createGame = function(player1, player2) {
-            return new window.tennisKata.Game(player1, player2);
+            return window.tennisKata.game(player1, player2);
         };
 
         var _createScoreboard = function(game) {
-            return new window.tennisKata.Scoreboard(game);
+            return window.tennisKata.scoreboard(game);
         };
 
         var _createController = function() {
-            return new window.tennisKata.Controller();
+            return window.tennisKata.controller();
         };
 
         return {

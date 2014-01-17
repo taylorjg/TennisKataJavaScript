@@ -4,16 +4,21 @@
 
     window.tennisKata = window.tennisKata || {};
 
-    window.tennisKata.Player = function(name) {
+    window.tennisKata.player = function(name) {
 
-        var _privateStuff = [];
+        var _name = name;
 
-        _privateStuff[this] = {
-            name: name
+        var _getName = function() {
+            return _name;
         };
 
-        this.getName = function() {
-            return _privateStuff[this].name;
+        var _setName = function(name) {
+            _name = name;
+        };
+
+        return {
+            getName: _getName,
+            setName: _setName
         };
     };
 } ());

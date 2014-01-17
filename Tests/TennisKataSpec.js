@@ -165,6 +165,10 @@
                 var playerY = window.tennisKata.factory.createPlayer("PlayerY");
                 expect(playerX.getName()).toBe("PlayerX");
                 expect(playerY.getName()).toBe("PlayerY");
+                playerX.setName("Azarenka");
+                playerY.setName("Wozniacki");
+                expect(playerX.getName()).toBe("Azarenka");
+                expect(playerY.getName()).toBe("Wozniacki");
             });
         });
 

@@ -4,7 +4,7 @@
 
     window.tennisKata = window.tennisKata || {};
 
-    window.tennisKata.Controller = function() {
+    window.tennisKata.controller = function() {
 
         var _player1 = window.tennisKata.factory.createPlayer("Player1");
         var _player2 = window.tennisKata.factory.createPlayer("Player2");
@@ -26,23 +26,30 @@
         };
 
 
-        this.setScoreChangedCallback = function(cb) {
+        var _setScoreChangedCallback = function(cb) {
             _scoreChangedCallback = cb;
         };
 
-        this.pointScoredByPlayer1 = function() {
+        var _pointScoredByPlayer1 = function() {
             _game.pointScoredByPlayer1();
             _reportScore();
         };
 
-        this.pointScoredByPlayer2 = function() {
+        var _pointScoredByPlayer2 = function() {
             _game.pointScoredByPlayer2();
             _reportScore();
         };
 
-        this.reset = function() {
+        var _reset = function() {
             _game.reset();
             _reportScore();
+        };
+
+        return {
+            setScoreChangedCallback: _setScoreChangedCallback,
+            pointScoredByPlayer1: _pointScoredByPlayer1,
+            pointScoredByPlayer2: _pointScoredByPlayer2,
+            reset: _reset
         };
     };
 } ());

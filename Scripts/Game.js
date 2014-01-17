@@ -4,58 +4,60 @@
 
     window.tennisKata = window.tennisKata || {};
 
-    window.tennisKata.Game = function(player1, player2) {
+    window.tennisKata.game = function(player1, player2) {
 
-        var _privateStuff = [];
-
-        _privateStuff[this] = {
-            player1Score: 0,
-            player2Score: 0,
-            player1: player1,
-            player2: player2
-        };
+        var _player1Score = 0;
+        var _player2Score = 0;
+        var _player1 = player1;
+        var _player2 = player2;
 
         var _isGameOver = function() {
-            var score1 = _privateStuff[this].player1Score;
-            var score2 = _privateStuff[this].player2Score;
             return (
-                (score1 >= 4 && score1 - score2 >= 2) ||
-                (score2 >= 4 && score2 - score1 >= 2));
+                (_player1Score >= 4 && _player1Score - _player2Score >= 2) ||
+                (_player2Score >= 4 && _player2Score - _player1Score >= 2));
         };
 
-        this.getPlayer1 = function() {
-            return _privateStuff[this].player1;
+        var _getPlayer1 = function() {
+            return _player1;
         };
 
-        this.getPlayer2 = function() {
-            return _privateStuff[this].player2;
+        var _getPlayer2 = function() {
+            return _player2;
         };
 
-        this.getPlayer1Score = function() {
-            return _privateStuff[this].player1Score;
+        var _getPlayer1Score = function() {
+            return _player1Score;
         };
 
-        this.getPlayer2Score = function() {
-            return _privateStuff[this].player2Score;
+        var _getPlayer2Score = function() {
+            return _player2Score;
         };
 
-        this.pointScoredByPlayer1 = function() {
-            if (_isGameOver.apply(this, arguments)) {
-                return;
+        var _pointScoredByPlayer1 = function() {
+            if (!_isGameOver()) {
+                _player1Score++;
             }
-            _privateStuff[this].player1Score++;
         };
 
-        this.pointScoredByPlayer2 = function() {
-            if (_isGameOver.apply(this, arguments)) {
-                return;
+        var _pointScoredByPlayer2 = function() {
+            if (!_isGameOver()) {
+                _player2Score++;
             }
-            _privateStuff[this].player2Score++;
         };
 
-        this.reset = function() {
-            _privateStuff[this].player1Score = 0;
-            _privateStuff[this].player2Score = 0;
+        var _reset = function() {
+            _player1Score = 0;
+            _player2Score = 0;
+        };
+
+        return {
+            getPlayer1: _getPlayer1,
+            getPlayer2: _getPlayer2,
+            getPlayer1Score: _getPlayer1Score,
+            getPlayer2Score: _getPlayer2Score,
+            pointScoredByPlayer1: _pointScoredByPlayer1,
+            pointScoredByPlayer2: _pointScoredByPlayer2,
+            reset: _reset
         };
     };
 } ());

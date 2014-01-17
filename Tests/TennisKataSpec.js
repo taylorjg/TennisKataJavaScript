@@ -82,9 +82,10 @@
             it_multiple(
                 "has the correct score when points have been scored",
                 function(numPoints1, numPoints2) {
-                    var i;
-                    for (i = 0; i < numPoints1; i++) { game.pointScoredByPlayer1(); }
-                    for (i = 0; i < numPoints2; i++) { game.pointScoredByPlayer2(); }
+                    for (var i = 1; i <= Math.max(numPoints1, numPoints2); i++) {
+                        if (numPoints1 >= i) { game.pointScoredByPlayer1(); }
+                        if (numPoints2 >= i) { game.pointScoredByPlayer2(); }
+                    }
                     expect(game.getPlayer1Score()).toBe(numPoints1);
                     expect(game.getPlayer2Score()).toBe(numPoints2);
                 },
@@ -94,12 +95,10 @@
                     [2, 0],
                     [3, 0],
                     [4, 0],
-                    [5, 0],
                     [0, 1],
                     [0, 2],
                     [0, 3],
                     [0, 4],
-                    [0, 5],
                     [1, 1],
                     [2, 2],
                     [3, 3],
@@ -173,9 +172,10 @@
             it_multiple(
                 "has the correct score text when points have been scored",
                 function(numPoints1, numPoints2, expectedScoreText1, expectedScoreText2) {
-                    var i;
-                    for (i = 0; i < numPoints1; i++) { game.pointScoredByPlayer1(); }
-                    for (i = 0; i < numPoints2; i++) { game.pointScoredByPlayer2(); }
+                    for (var i = 1; i <= Math.max(numPoints1, numPoints2); i++) {
+                        if (numPoints1 >= i) { game.pointScoredByPlayer1(); }
+                        if (numPoints2 >= i) { game.pointScoredByPlayer2(); }
+                    }
                     expect(scoreboard.getPlayer1Score()).toBe(expectedScoreText1);
                     expect(scoreboard.getPlayer2Score()).toBe(expectedScoreText2);
                 },
@@ -201,24 +201,25 @@
             });
 
             it_multiple(
-                "reports the correct score when a points are scored",
+                "reports the correct score when points are scored",
                 function(numPoints1, numPoints2, expectedScoreText1, expectedScoreText2) {
                     var callbackData = null;
                     controller.setScoreChangedCallback(function(x) {
                         callbackData = x;
                     });
-                    var i;
-                    for (i = 0; i < numPoints1; i++) { controller.pointScoredByPlayer1(); }
-                    for (i = 0; i < numPoints2; i++) { controller.pointScoredByPlayer2(); }
+                    for (var i = 1; i <= Math.max(numPoints1, numPoints2); i++) {
+                        if (numPoints1 >= i) { controller.pointScoredByPlayer1(); }
+                        if (numPoints2 >= i) { controller.pointScoredByPlayer2(); }
+                    }
                     expect(callbackData.player1Name).toBe("Player1");
                     expect(callbackData.player1Score).toBe(expectedScoreText1);
                     expect(callbackData.player2Name).toBe("Player2");
                     expect(callbackData.player2Score).toBe(expectedScoreText2);
                 },
-                [].concat(commonTestCases)
+                commonTestCases
             );
 
-            it("returns the score to ''/'' after a reset", function() {
+            it("returns the score to \"\"/\"\" after a reset", function() {
 
                     var callbackDataArray = [];
 

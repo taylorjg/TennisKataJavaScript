@@ -1,0 +1,20 @@
+@font-face {
+  font-family: "erbos_draco_1st_open_nbp";
+  src: url(../Fonts/erbos_draco_1st_open_nbp.woff);
+}
+
+.name, .score {
+	font-family: "erbos_draco_1st_open_nbp";
+	font-size: 5em;
+	color: Gold;
+	background-color: DarkGreen;
+	padding: 20px;
+}
+
+.name {
+	min-width: 800px;
+}
+
+.score {
+	min-width: 150px;
+}

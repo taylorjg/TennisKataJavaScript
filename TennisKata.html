@@ -9,10 +9,20 @@
 		<script type="text/javascript" src="Scripts/Scoreboard.js"></script>
 		<script type="text/javascript" src="Scripts/Controller.js"></script>
 		<script type="text/javascript" src="Scripts/Factory.js"></script>
-		<script type="text/javascript" src="Scripts/View.js"></script>
+		<script type="text/javascript" src="Scripts/PresentationLayer.js"></script>
 	</head>
 
 	<body>
+
+        <label for="player1NameTxt">Player 1's name:</label>
+        <input type="text" id="player1NameTxt" size="30" />
+        <br />
+        <label for="player2NameTxt">Player 2's name:</label>
+        <input type="text" id="player2NameTxt" size="30" />
+        <br />
+        <button type="button" id="setPlayerNamesBtn">Set player names</button>
+
+        <hr />
 
 		<button type="button" id="player1ScoresPointBtn">Player 1 scores a point</button>
 		<button type="button" id="player2ScoresPointBtn">Player 2 scores a point</button>

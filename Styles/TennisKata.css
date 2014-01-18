@@ -3,8 +3,17 @@
   src: url(../Fonts/erbos_draco_1st_open_nbp.woff);
 }
 
+label {
+    margin-right: 10px;
+}
+
+button {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 .name, .score {
-	font-family: "erbos_draco_1st_open_nbp";
+	font-family: "erbos_draco_1st_open_nbp", sans-serif;
 	font-size: 5em;
 	color: Gold;
 	background-color: DarkGreen;

@@ -27,8 +27,9 @@
         };
 
         var _setPlayerNames = function(playerName1, playerName2) {
-            _player1.setName(playerName1);
-            _player2.setName(playerName2);
+            var newPlayer1 = window.tennisKata.factory.createPlayer(playerName1);
+            var newPlayer2 = window.tennisKata.factory.createPlayer(playerName2);
+            _game.changePlayers(newPlayer1, newPlayer2);
         };
 
         var _setScoreChangedCallback = function(cb) {

@@ -19,14 +19,9 @@
             return _name;
         };
 
-        var _setName = function(name) {
-            _name = name;
-        };
-
         return {
             getId: _getId,
-            getName: _getName,
-            setName: _setName
+            getName: _getName
         };
     };
 } ());

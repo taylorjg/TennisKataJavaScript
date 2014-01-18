@@ -24,27 +24,30 @@
         var _game = game;
         var _scores = {};
 
-        _scores[_game.getPlayer1().getId()] = LOVE_TEXT;
-        _scores[_game.getPlayer2().getId()] = LOVE_TEXT;
+        var _saveScores = function(ps1, ps2) {
+            _scores = {};
+            _scores[ps1[0].getId()] = ps1[1];
+            _scores[ps2[0].getId()] = ps2[1];
+        };
+
+        _saveScores([_game.getPlayer1(), LOVE_TEXT], [_game.getPlayer2(), LOVE_TEXT]);
 
         var _onWin = function(wp, lp) {
-            _scores[wp.getId()] = WON_TEXT;
-            _scores[lp.getId()] = LOST_TEXT;
+            _saveScores([wp, WON_TEXT], [lp, LOST_TEXT]);
         };
 
         var _onAdvantage = function(ap, op) {
-            _scores[ap.getId()] = ADVANTAGE_TEXT;
-            _scores[op.getId()] = FORTY_TEXT;
+            _saveScores([ap, ADVANTAGE_TEXT], [op, FORTY_TEXT]);
         };
 
         var _onDeuce = function() {
-            _scores[_game.getPlayer1().getId()] = FORTY_TEXT;
-            _scores[_game.getPlayer2().getId()] = FORTY_TEXT;
+            _saveScores([_game.getPlayer1(), FORTY_TEXT], [_game.getPlayer2(), FORTY_TEXT]);
         };
 
         var _onOtherScore = function(s1, s2) {
-            _scores[_game.getPlayer1().getId()] = _scoreTextDictionary[s1];
-            _scores[_game.getPlayer2().getId()] = _scoreTextDictionary[s2];
+            var scoreText1 = _scoreTextDictionary[s1];
+            var scoreText2 = _scoreTextDictionary[s2];
+            _saveScores([_game.getPlayer1(), scoreText1], [_game.getPlayer2(), scoreText2]);
         };
 
         var _getScores = function() {

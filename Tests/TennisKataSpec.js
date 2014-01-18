@@ -160,19 +160,18 @@
         });
 
         describe("Player tests", function() {
+
             it("players are independent of each other", function() {
-                var playerX = window.tennisKata.factory.createPlayer("PlayerX");
-                var playerY = window.tennisKata.factory.createPlayer("PlayerY");
-                expect(playerX.getName()).toBe("PlayerX");
-                expect(playerY.getName()).toBe("PlayerY");
-                playerX.setName("Azarenka");
-                playerY.setName("Wozniacki");
+                var playerX = window.tennisKata.factory.createPlayer("Azarenka");
+                var playerY = window.tennisKata.factory.createPlayer("Wozniacki");
                 expect(playerX.getName()).toBe("Azarenka");
                 expect(playerY.getName()).toBe("Wozniacki");
+                expect(playerX.getId()).not.toBe(playerY.getId());
             });
         });
 
         describe("Scoreboard tests", function() {
+
             it_multiple(
                 "has the correct score text when points have been scored",
                 function(numPoints1, numPoints2, expectedScoreText1, expectedScoreText2) {
@@ -247,15 +246,26 @@
                     expect(callbackDataArray[lastIndex].player2Score).toBe("");
             });
 
-            it("can change the player names", function() {
+            it("allows the player names to be changed which resets the game", function() {
+
                 var callbackData = null;
                 controller.setScoreChangedCallback(function(x) {
                     callbackData = x;
                 });
-                controller.setPlayerNames("XXX", "YYY");
+
                 controller.pointScoredByPlayer1();
+                expect(callbackData.player1Name).toBe("Player1");
+                expect(callbackData.player2Name).toBe("Player2");
+                expect(callbackData.player1Score).toBe("15");
+                expect(callbackData.player2Score).toBe("");
+
+                controller.setPlayerNames("XXX", "YYY");
+
+                controller.pointScoredByPlayer2();
                 expect(callbackData.player1Name).toBe("XXX");
                 expect(callbackData.player2Name).toBe("YYY");
+                expect(callbackData.player1Score).toBe("");
+                expect(callbackData.player2Score).toBe("15");
             });
         });
     });

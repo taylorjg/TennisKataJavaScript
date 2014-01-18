@@ -24,6 +24,12 @@
             return _player2;
         };
 
+        var _changePlayers = function(newPlayer1, newPlayer2) {
+            _player1 = newPlayer1;
+            _player2 = newPlayer2;
+            _reset();
+        };
+
         var _getPlayer1Score = function() {
             return _player1Score;
         };
@@ -128,6 +134,7 @@
         return {
             getPlayer1: _getPlayer1,
             getPlayer2: _getPlayer2,
+            changePlayers: _changePlayers,
             getPlayer1Score: _getPlayer1Score,
             getPlayer2Score: _getPlayer2Score,
             pointScoredByPlayer1: _pointScoredByPlayer1,

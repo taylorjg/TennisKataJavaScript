@@ -16,9 +16,12 @@
         });
 
         $("#setPlayerNamesBtn").click(function() {
-            var player1Name = $("#player1NameTxt").val();
-            var player2Name = $("#player2NameTxt").val();
-            _controller.setPlayerNames(player1Name, player2Name);
+            var player1Name = $("#player1NameTxt").val().trim();
+            var player2Name = $("#player2NameTxt").val().trim();
+            if (player1Name.length > 0 && player2Name.length > 0) {
+                _controller.setPlayerNames(player1Name, player2Name);
+                _controller.reset();
+            }
         });
 
         $("#player1ScoresPointBtn").click(function() {
@@ -32,6 +35,8 @@
         $("#resetBtn").click(function() {
             _controller.reset();
         });
+
+        _controller.reset();
     });
 
 } ());

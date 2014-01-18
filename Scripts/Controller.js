@@ -25,6 +25,10 @@
             }
         };
 
+        var _setPlayerNames = function(playerName1, playerName2) {
+            _player1.setName(playerName1);
+            _player2.setName(playerName2);
+        };
 
         var _setScoreChangedCallback = function(cb) {
             _scoreChangedCallback = cb;
@@ -46,6 +50,7 @@
         };
 
         return {
+            setPlayerNames: _setPlayerNames,
             setScoreChangedCallback: _setScoreChangedCallback,
             pointScoredByPlayer1: _pointScoredByPlayer1,
             pointScoredByPlayer2: _pointScoredByPlayer2,

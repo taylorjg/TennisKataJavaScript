@@ -245,6 +245,17 @@
                     expect(callbackDataArray[lastIndex].player1Score).toBe("");
                     expect(callbackDataArray[lastIndex].player2Score).toBe("");
             });
+
+            it("can change the player names", function() {
+                var callbackData = null;
+                controller.setScoreChangedCallback(function(x) {
+                    callbackData = x;
+                });
+                controller.setPlayerNames("XXX", "YYY");
+                controller.pointScoredByPlayer1();
+                expect(callbackData.player1Name).toBe("XXX");
+                expect(callbackData.player2Name).toBe("YYY");
+            });
         });
     });
 } ());

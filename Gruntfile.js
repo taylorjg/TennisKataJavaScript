@@ -10,6 +10,7 @@ module.exports = function (grunt) {
             options: grunt.file.readJSON(".jshintrc"),
             files: [
                 "Gruntfile.js",
+                "karma.conf.js",
                 "Scripts/*.js",
                 "Tests/*.js"
             ]

@@ -180,8 +180,9 @@
                         if (numPoints1 >= i) { game.pointScoredByPlayer1(); }
                         if (numPoints2 >= i) { game.pointScoredByPlayer2(); }
                     }
-                    expect(scoreboard.getPlayer1Score()).toBe(expectedScoreText1);
-                    expect(scoreboard.getPlayer2Score()).toBe(expectedScoreText2);
+                    var scores = scoreboard.getScores();
+                    expect(scores[0]).toBe(expectedScoreText1);
+                    expect(scores[1]).toBe(expectedScoreText2);
                 },
                 [[0, 0, "", ""]].concat(commonTestCases)
             );

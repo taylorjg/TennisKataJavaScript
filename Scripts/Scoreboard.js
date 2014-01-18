@@ -7,41 +7,38 @@
     window.tennisKata.scoreboard = function(game) {
 
         var _game = game;
-        var _scoreToText = ["", "15", "30", "40"];
+        var _loveScoreText = "";
+        var _15ScoreText = "15";
+        var _30ScoreText = "30";
+        var _40ScoreText = "40";
+        var _wonScoreText = "W";
+        var _lostScoreText = "L";
+        var _advantageScoreText = "A";
+        var _scoreToText = [
+            _loveScoreText,
+            _15ScoreText,
+            _30ScoreText,
+            _40ScoreText
+        ];
 
-        var _getPlayer1Score = function() {
-            var score1 = _game.getPlayer1Score();
-            var score2 = _game.getPlayer2Score();
-            if (score1 >= 4 && score1 - score2 >= 2) {
-                return "W";
-            }
-            if (score2 >= 4 && score2 - score1 >= 2) {
-                return "L";
-            }
-            if (score1 + score2 >= 6) {
-                return score1 === score2 + 1 ? "A" : "40";
-            }
-            return _scoreToText[score1];
-        };
-
-        var _getPlayer2Score = function() {
-            var score1 = _game.getPlayer1Score();
-            var score2 = _game.getPlayer2Score();
-            if (score2 >= 4 && score2 - score1 >= 2) {
-                return "W";
-            }
-            if (score1 >= 4 && score1 - score2 >= 2) {
-                return "L";
-            }
-            if (score1 + score2 >= 6) {
-                return score2 === score1 + 1 ? "A" : "40";
-            }
-            return _scoreToText[score2];
+        var _getScores = function() {
+            var w = _game.winner();
+            var a = _game.advantage();
+            var d = _game.deuce();
+            var p1 = _game.getPlayer1();
+            var p2 = _game.getPlayer2();
+            var s1 = _game.getPlayer1Score();
+            var s2 = _game.getPlayer2Score();
+            if (w === p1) { return [_wonScoreText, _lostScoreText]; }
+            if (w === p2) { return [_lostScoreText, _wonScoreText]; }
+            if (a === p1) { return [_advantageScoreText, _40ScoreText]; }
+            if (a === p2) { return [_40ScoreText, _advantageScoreText]; }
+            if (d) { return [_40ScoreText, _40ScoreText];}
+            return [_scoreToText[s1], _scoreToText[s2]];
         };
 
         return {
-            getPlayer1Score: _getPlayer1Score,
-            getPlayer2Score: _getPlayer2Score
+            getScores:_getScores
         };
     };
 } ());

@@ -16,11 +16,12 @@
 
         var _reportScore = function() {
             if (_scoreChangedCallback !== null) {
+                var scores = _scoreboard.getScores();
                 _scoreChangedCallback({
                     player1Name: _game.getPlayer1().getName(),
-                    player1Score: _scoreboard.getPlayer1Score(),
+                    player1Score: scores[0],
                     player2Name: _game.getPlayer2().getName(),
-                    player2Score: _scoreboard.getPlayer2Score()
+                    player2Score: scores[1]
                 });
             }
         };

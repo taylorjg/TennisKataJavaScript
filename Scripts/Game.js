@@ -45,6 +45,37 @@
             }
         };
 
+        var _winner = function() {
+
+            if (_player1Score >= 4 && _player1Score - _player2Score >= 2) {
+                return _player1;
+            }
+
+            if (_player2Score >= 4 && _player2Score - _player1Score >= 2) {
+                return _player2;
+            }
+
+            return null;
+        };
+
+        var _advantage = function() {
+
+            if (_player1Score + _player2Score >= 6) {
+                if (_player1Score - _player2Score === 1) {
+                    return _player1;
+                }
+                if (_player2Score - _player1Score === 1) {
+                    return _player2;
+                }
+            }
+
+            return null;
+        };
+
+        var _deuce = function() {
+            return (_player1Score + _player2Score >= 6 && _player1Score === _player2Score);
+        };
+
         var _reset = function() {
             _player1Score = 0;
             _player2Score = 0;
@@ -57,6 +88,9 @@
             getPlayer2Score: _getPlayer2Score,
             pointScoredByPlayer1: _pointScoredByPlayer1,
             pointScoredByPlayer2: _pointScoredByPlayer2,
+            winner: _winner,
+            advantage: _advantage,
+            deuce: _deuce,
             reset: _reset
         };
     };

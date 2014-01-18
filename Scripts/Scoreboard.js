@@ -22,22 +22,41 @@
     window.tennisKata.scoreboard = function(game) {
 
         var _game = game;
+        var _scores = {};
+
+        _scores[_game.getPlayer1().getId()] = LOVE_TEXT;
+        _scores[_game.getPlayer2().getId()] = LOVE_TEXT;
+
+        var _onWin = function(wp, lp) {
+            _scores[wp.getId()] = WON_TEXT;
+            _scores[lp.getId()] = LOST_TEXT;
+        };
+
+        var _onAdvantage = function(ap, op) {
+            _scores[ap.getId()] = ADVANTAGE_TEXT;
+            _scores[op.getId()] = FORTY_TEXT;
+        };
+
+        var _onDeuce = function() {
+            _scores[_game.getPlayer1().getId()] = FORTY_TEXT;
+            _scores[_game.getPlayer2().getId()] = FORTY_TEXT;
+        };
+
+        var _onOtherScore = function(s1, s2) {
+            _scores[_game.getPlayer1().getId()] = _scoreTextDictionary[s1];
+            _scores[_game.getPlayer2().getId()] = _scoreTextDictionary[s2];
+        };
 
         var _getScores = function() {
-            var w = _game.winner();
-            var a = _game.advantage();
-            var d = _game.deuce();
-            var p1 = _game.getPlayer1();
-            var p2 = _game.getPlayer2();
-            var s1 = _game.getPlayer1Score();
-            var s2 = _game.getPlayer2Score();
-            if (w === p1) { return [WON_TEXT, LOST_TEXT]; }
-            if (w === p2) { return [LOST_TEXT, WON_TEXT]; }
-            if (a === p1) { return [ADVANTAGE_TEXT, FORTY_TEXT]; }
-            if (a === p2) { return [FORTY_TEXT, ADVANTAGE_TEXT]; }
-            if (d) { return [FORTY_TEXT, FORTY_TEXT];}
-            return [_scoreTextDictionary[s1], _scoreTextDictionary[s2]];
+            var scoreText1 = _scores[_game.getPlayer1().getId()];
+            var scoreText2 = _scores[_game.getPlayer2().getId()];
+            return [scoreText1, scoreText2];
         };
+
+        _game.setWinCallback(_onWin);
+        _game.setAdvantageCallback(_onAdvantage);
+        _game.setDeuceCallback(_onDeuce);
+        _game.setOtherScoreCallback(_onOtherScore);
 
         return {
             getScores:_getScores

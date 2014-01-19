@@ -1,12 +1,11 @@
-
 ## TennisKata
 
 The description of the tennis kata is very open ended in terms of what shape a solution should take.
 I approached this kata with an idea for an HTML UI in mind.
 
 After getting the JavaScript solution working, I then added the UI. Then, I went back and applied
-further refactorings to the original code in an attempt to follow the "tell don't ask" principle
-- especially with regard to the interaction between the game and the scoreboard. The scoreboard
+further refactorings to the original code in an attempt to follow the "tell don't ask" principle - especially
+with regard to the interaction between the game and the scoreboard. The scoreboard
 establishes callbacks and uses these to maintain the score.
 
 ## Links

@@ -20,6 +20,6 @@ The following screenshot shows my tennis kata HTML UI in action:
 
 The following screenshot shows some of my unit tests running in WebStorm. I make use of my
 [it_multiple.js](https://github.com/taylorjg/TennisKataJavaScript/blob/master/Tests/it_multiple.js)
-Jasmine extension which provides a nice way to write parameterised tests:
+Jasmine extension which provides a nice way to write parameterised tests (like [TestCase] in NUnit):
 
 ![Screenshot of tennis kata unit tests](https://raw.github.com/taylorjg/TennisKataJavaScript/master/Images/WebStormKarmaScreenshot.png)

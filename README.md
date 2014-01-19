@@ -11,6 +11,9 @@ establishes callbacks and uses these to maintain the score.
 ## Links
 
 * http://codingdojo.org/cgi-bin/wiki.pl?KataTennis
+* http://martinfowler.com/bliki/TellDontAsk.html
+* http://media.pragprog.com/articles/jan_03_enbug.pdf
+* http://pragprog.com/articles/tell-dont-ask
 
 ## Screenshots
 

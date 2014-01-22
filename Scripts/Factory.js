@@ -22,11 +22,16 @@
             return window.tennisKata.controller();
         };
 
+        var _createScorecard = function (player1, player2) {
+            return window.tennisKata.scorecard(player1, player2);
+        };
+
         return {
             createPlayer: _createPlayer,
             createGame: _createGame,
             createScoreboard: _createScoreboard,
-            createController: _createController
+            createController: _createController,
+            createScorecard: _createScorecard
         };
     }());
 } ());

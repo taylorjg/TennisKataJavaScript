@@ -187,6 +187,87 @@
             );
         });
 
+        describe("Scorecard tests", function() {
+
+            var scorecard;
+
+            beforeEach(function() {
+                scorecard = window.tennisKata.factory.createScorecard(player1, player2);
+            });
+
+            describe("First game tests", function() {
+
+                it_multiple(
+                    "raises the gameWon event if a game is won",
+                    function(numPoints1, numPoints2, expected) {
+
+                        // Arrange
+                        var gameWonEventRaised = false;
+                        scorecard.addGameWonEventHandler(function() {
+                            gameWonEventRaised = true;
+                        });
+
+                        // Act
+                        for (var i = 1; i <= Math.max(numPoints1, numPoints2); i++) {
+                            if (numPoints1 >= i) { scorecard.player1WinsPoint(); }
+                            if (numPoints2 >= i) { scorecard.player2WinsPoint(); }
+                        }
+
+                        // Assert
+                        expect(gameWonEventRaised).toBe(expected);
+                    },
+                    [
+                        [4, 0, true],
+                        [0, 4, true],
+                        [2, 2, false],
+                        [4, 4, false],
+                        [3, 5, true],
+                        [5, 3, true],
+                        [6, 5, false],
+                        [7, 5, true]
+                    ]
+                );
+
+                it("supports multiple listeners for the gameWon event", function() {
+
+                    // Arrange
+                    var gameWonEventRaised1 = false;
+                    var gameWonEventRaised2 = false;
+                    scorecard.addGameWonEventHandler(function() {
+                        gameWonEventRaised1 = true;
+                    });
+                    scorecard.addGameWonEventHandler(function() {
+                        gameWonEventRaised2 = true;
+                    });
+
+                    // Act
+                    scorecard.player1WinsPoint();
+                    scorecard.player1WinsPoint();
+                    scorecard.player1WinsPoint();
+                    scorecard.player1WinsPoint();
+
+                    // Assert
+                    expect(gameWonEventRaised1).toBe(true);
+                    expect(gameWonEventRaised2).toBe(true);
+                });
+            });
+
+            describe("Tiebreaker tests", function() {
+                it("", function() {
+                });
+            });
+
+            describe("Set tests", function() {
+                it("", function() {
+                });
+            });
+
+            describe("Match tests", function() {
+                it("", function() {
+                });
+            });
+        });
+
         describe("Controller tests", function() {
 
             var controller;

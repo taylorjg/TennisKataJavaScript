@@ -252,6 +252,47 @@
                 });
             });
 
+            describe("Set tests", function() {
+
+                it_multiple(
+                    "raises the setWon event if a set is won",
+                    function(numGames1, numGames2, expected) {
+
+                        // Arrange
+                        var setWonEventRaised = false;
+                        scorecard.addSetWonEventHandler(function() {
+                            setWonEventRaised = true;
+                        });
+
+                        // Act
+                        for (var i = 1; i <= Math.max(numGames1, numGames2); i++) {
+                            if (numGames1 >= i) {
+                                scorecard.player1WinsPoint();
+                                scorecard.player1WinsPoint();
+                                scorecard.player1WinsPoint();
+                                scorecard.player1WinsPoint();
+                            }
+                            if (numGames2 >= i) {
+                                scorecard.player2WinsPoint();
+                                scorecard.player2WinsPoint();
+                                scorecard.player2WinsPoint();
+                                scorecard.player2WinsPoint();
+                            }
+                        }
+
+                        // Assert
+                        expect(setWonEventRaised).toBe(expected);
+                    },
+                    [
+                        [1, 0, false],
+                        [2, 0, false],
+                        [3, 0, false],
+                        [4, 0, false],
+                        [5, 0, false],
+                        [6, 0, true]
+                    ]);
+            });
+
             describe("Tiebreaker tests", function() {
                 it("", function() {
                 });

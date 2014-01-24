@@ -14,6 +14,8 @@
         var _player2Points = 0;
         var _player1Games = 0;
         var _player2Games = 0;
+        var _player1Sets = 0;
+        var _player2Sets = 0;
 
         var _player1WinsPoint = function() {
             _player1Points++;
@@ -53,26 +55,48 @@
             var setWinner = null;
 
             if (_player1Games >= 6 && _player1Games - _player2Games >= 2) {
+                _player1Sets++;
                 setWinner = _player1;
             }
             if (_player2Games >= 6 && _player2Games - _player1Games >= 2) {
+                _player2Sets++;
                 setWinner = _player2;
             }
 
             if (setWinner !== null) {
+                _player1Games = 0;
+                _player2Games = 0;
                 _raiseSetWonEvent();
             }
         };
 
         var _raiseGameWonEvent = function() {
             for (var i = 0; i < _gameWonEventHandler.length; i++) {
-                _gameWonEventHandler[i]();
+                _gameWonEventHandler[i]({
+                    player1: _player1,
+                    player2: _player2,
+                    player1Points: _player1Points,
+                    player2Points: _player2Points,
+                    player1Games: _player1Games,
+                    player2Games: _player2Games,
+                    player1Sets: _player1Sets,
+                    player2Sets: _player2Sets
+                });
             }
         };
 
         var _raiseSetWonEvent = function() {
             for (var i = 0; i < _setWonEventHandler.length; i++) {
-                _setWonEventHandler[i]();
+                _setWonEventHandler[i]({
+                    player1: _player1,
+                    player2: _player2,
+                    player1Points: _player1Points,
+                    player2Points: _player2Points,
+                    player1Games: _player1Games,
+                    player2Games: _player2Games,
+                    player1Sets: _player1Sets,
+                    player2Sets: _player2Sets
+                });
             }
         };
 

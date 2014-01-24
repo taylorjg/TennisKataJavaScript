@@ -228,6 +228,40 @@
                     ]
                 );
 
+                it_multiple(
+                    "passes the correct data to the gameWon event",
+                    function(numPoints1, numPoints2, expectedData) {
+
+                        expectedData.player1 = player1;
+                        expectedData.player2 = player2;
+
+                        // Arrange
+                        var gameWonEventData = null;
+                        scorecard.addGameWonEventHandler(function(eventData) {
+                            gameWonEventData = eventData;
+                        });
+
+                        // Act
+                        for (var i = 1; i <= Math.max(numPoints1, numPoints2); i++) {
+                            if (numPoints1 >= i) { scorecard.player1WinsPoint(); }
+                            if (numPoints2 >= i) { scorecard.player2WinsPoint(); }
+                        }
+
+                        // Assert
+                        expect(gameWonEventData).toEqual(expectedData);
+                    },
+                    [
+                        [4, 0, {
+                            player1Points: 0,
+                            player2Points: 0,
+                            player1Games: 1,
+                            player2Games: 0,
+                            player1Sets: 0,
+                            player2Sets: 0
+                        }]
+                    ]
+                );
+
                 it("supports multiple listeners for the gameWon event", function() {
 
                     // Arrange
@@ -291,6 +325,50 @@
                         [5, 0, false],
                         [6, 0, true]
                     ]);
+
+                it_multiple(
+                    "passes the correct data to the setWon event",
+                    function(numGames1, numGames2, expectedData) {
+
+                        expectedData.player1 = player1;
+                        expectedData.player2 = player2;
+
+                        // Arrange
+                        var setWonEventData = null;
+                        scorecard.addSetWonEventHandler(function(eventData) {
+                            setWonEventData = eventData;
+                        });
+
+                        // Act
+                        for (var i = 1; i <= Math.max(numGames1, numGames2); i++) {
+                            if (numGames1 >= i) {
+                                scorecard.player1WinsPoint();
+                                scorecard.player1WinsPoint();
+                                scorecard.player1WinsPoint();
+                                scorecard.player1WinsPoint();
+                            }
+                            if (numGames2 >= i) {
+                                scorecard.player2WinsPoint();
+                                scorecard.player2WinsPoint();
+                                scorecard.player2WinsPoint();
+                                scorecard.player2WinsPoint();
+                            }
+                        }
+
+                        // Assert
+                        expect(setWonEventData).toEqual(expectedData);
+                    },
+                    [
+                        [6, 0, {
+                            player1Points: 0,
+                            player2Points: 0,
+                            player1Games: 0,
+                            player2Games: 0,
+                            player1Sets: 1,
+                            player2Sets: 0
+                        }]
+                    ]
+                );
             });
 
             describe("Tiebreaker tests", function() {

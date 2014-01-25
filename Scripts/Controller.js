@@ -8,55 +8,61 @@
 
         var _player1 = window.tennisKata.factory.createPlayer("Player1");
         var _player2 = window.tennisKata.factory.createPlayer("Player2");
-        var _game = window.tennisKata.factory.createGame(_player1, _player2);
-        var _scoreboard = window.tennisKata.factory.createScoreboard(_game);
+        var _scorecard = window.tennisKata.factory.createScorecard(_player1, _player2);
+        var _scoreboard = window.tennisKata.factory.createScoreboard(_scorecard);
+        var _scoreChangedEventHandlers = [];
 
-        // Should we have an array of these ?
-        var _scoreChangedCallback = null;
+        var _raiseScoreChangedEvent = function() {
 
-        var _reportScore = function() {
-            if (_scoreChangedCallback !== null) {
-                var scores = _scoreboard.getScores();
-                _scoreChangedCallback({
-                    player1Name: _game.getPlayer1().getName(),
-                    player1Score: scores[0],
-                    player2Name: _game.getPlayer2().getName(),
-                    player2Score: scores[1]
-                });
+            var scores = _scoreboard.getScores();
+
+            var eventData = {
+                player1Name: _scorecard.getPlayer1().getName(),
+                player1Points: scores[0][0],
+                player1Games: scores[0][1],
+                player1Sets: scores[0][2],
+                player2Name: _scorecard.getPlayer2().getName(),
+                player2Points: scores[1][0],
+                player2Games: scores[1][1],
+                player2Sets: scores[1][2]
+            };
+
+            for (var i = 0; i < _scoreChangedEventHandlers.length; i++) {
+                _scoreChangedEventHandlers[i](eventData);
             }
         };
 
         var _setPlayerNames = function(playerName1, playerName2) {
             var newPlayer1 = window.tennisKata.factory.createPlayer(playerName1);
             var newPlayer2 = window.tennisKata.factory.createPlayer(playerName2);
-            _game.changePlayers(newPlayer1, newPlayer2);
+            _scorecard.changePlayers(newPlayer1, newPlayer2);
         };
 
-        var _setScoreChangedCallback = function(cb) {
-            _scoreChangedCallback = cb;
+        var _addScoreChangedEventHandler = function(handler) {
+            _scoreChangedEventHandlers.push(handler);
         };
 
-        var _pointScoredByPlayer1 = function() {
-            _game.pointScoredByPlayer1();
-            _reportScore();
+        var _player1WinsPoint = function() {
+            _scorecard.player1WinsPoint();
+            _raiseScoreChangedEvent();
         };
 
-        var _pointScoredByPlayer2 = function() {
-            _game.pointScoredByPlayer2();
-            _reportScore();
+        var _player2WinsPoint = function() {
+            _scorecard.player2WinsPoint();
+            _raiseScoreChangedEvent();
         };
 
         var _reset = function() {
-            _game.reset();
-            _reportScore();
+            _scorecard.reset();
+            _raiseScoreChangedEvent();
         };
 
         return {
             setPlayerNames: _setPlayerNames,
-            setScoreChangedCallback: _setScoreChangedCallback,
-            pointScoredByPlayer1: _pointScoredByPlayer1,
-            pointScoredByPlayer2: _pointScoredByPlayer2,
-            reset: _reset
+            player1WinsPoint: _player1WinsPoint,
+            player2WinsPoint: _player2WinsPoint,
+            reset: _reset,
+            addScoreChangedEventHandler: _addScoreChangedEventHandler
         };
     };
 } ());

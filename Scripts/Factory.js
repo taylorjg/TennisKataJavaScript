@@ -10,12 +10,8 @@
             return window.tennisKata.player(name);
         };
 
-        var _createGame = function(player1, player2) {
-            return window.tennisKata.game(player1, player2);
-        };
-
-        var _createScoreboard = function(game) {
-            return window.tennisKata.scoreboard(game);
+        var _createScoreboard = function(scorecard) {
+            return window.tennisKata.scoreboard(scorecard);
         };
 
         var _createController = function() {
@@ -28,10 +24,9 @@
 
         return {
             createPlayer: _createPlayer,
-            createGame: _createGame,
+            createScorecard: _createScorecard,
             createScoreboard: _createScoreboard,
-            createController: _createController,
-            createScorecard: _createScorecard
+            createController: _createController
         };
     }());
 } ());

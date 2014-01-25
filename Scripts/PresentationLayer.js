@@ -8,11 +8,11 @@
 
         var _controller = window.tennisKata.factory.createController();
 
-        _controller.setScoreChangedCallback(function(callbackData) {
-            $("#player1Name").html(callbackData.player1Name);
-            $("#player1Score").html(callbackData.player1Score);
-            $("#player2Name").html(callbackData.player2Name);
-            $("#player2Score").html(callbackData.player2Score);
+        _controller.addScoreChangedEventHandler(function(eventData) {
+            $("#player1Name").html(eventData.player1Name);
+            $("#player1Score").html(eventData.player1Points);
+            $("#player2Name").html(eventData.player2Name);
+            $("#player2Score").html(eventData.player2Points);
         });
 
         $("#setPlayerNamesBtn").click(function() {
@@ -25,11 +25,11 @@
         });
 
         $("#player1ScoresPointBtn").click(function() {
-            _controller.pointScoredByPlayer1();
+            _controller.player1WinsPoint();
         });
 
         $("#player2ScoresPointBtn").click(function() {
-            _controller.pointScoredByPlayer2();
+            _controller.player2WinsPoint();
         });
 
         $("#resetBtn").click(function() {

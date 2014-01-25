@@ -8,14 +8,23 @@
 
         var _player1 = player1;
         var _player2 = player2;
-        var _gameWonEventHandler = [];
-        var _setWonEventHandler = [];
+        var _gameWonEventHandlers = [];
+        var _setWonEventHandlers = [];
         var _player1Points = 0;
         var _player2Points = 0;
         var _player1Games = 0;
         var _player2Games = 0;
         var _player1Sets = 0;
         var _player2Sets = 0;
+
+        var _getPlayer1 = function() { return _player1; };
+        var _getPlayer2 = function() { return _player2; };
+        var _getPlayer1Points = function() { return _player1Points; }
+        var _getPlayer1Games = function() { return _player1Games; }
+        var _getPlayer1Sets = function() { return _player1Sets; }
+        var _getPlayer2Points = function() { return _player2Points; }
+        var _getPlayer2Games = function() { return _player2Games; }
+        var _getPlayer2Sets = function() { return _player2Sets; }
 
         var _player1WinsPoint = function() {
             _player1Points++;
@@ -25,6 +34,21 @@
         var _player2WinsPoint = function() {
             _player2Points++;
             _checkIfGameIsWon();
+        };
+
+        var _changePlayers = function(newPlayer1, newPlayer2) {
+            _player1 = newPlayer1;
+            _player2 = newPlayer2;
+            _reset();
+        };
+
+        var _reset = function() {
+            _player1Points = 0;
+            _player1Games = 0;
+            _player1Sets = 0;
+            _player2Points = 0;
+            _player2Games = 0;
+            _player2Sets = 0;
         };
 
         var _checkIfGameIsWon = function() {
@@ -71,46 +95,38 @@
         };
 
         var _raiseGameWonEvent = function() {
-            for (var i = 0; i < _gameWonEventHandler.length; i++) {
-                _gameWonEventHandler[i]({
-                    player1: _player1,
-                    player2: _player2,
-                    player1Points: _player1Points,
-                    player2Points: _player2Points,
-                    player1Games: _player1Games,
-                    player2Games: _player2Games,
-                    player1Sets: _player1Sets,
-                    player2Sets: _player2Sets
-                });
+            for (var i = 0; i < _gameWonEventHandlers.length; i++) {
+                _gameWonEventHandlers[i]();
             }
         };
 
         var _raiseSetWonEvent = function() {
-            for (var i = 0; i < _setWonEventHandler.length; i++) {
-                _setWonEventHandler[i]({
-                    player1: _player1,
-                    player2: _player2,
-                    player1Points: _player1Points,
-                    player2Points: _player2Points,
-                    player1Games: _player1Games,
-                    player2Games: _player2Games,
-                    player1Sets: _player1Sets,
-                    player2Sets: _player2Sets
-                });
+            for (var i = 0; i < _setWonEventHandlers.length; i++) {
+                _setWonEventHandlers[i]();
             }
         };
 
         var _addGameWonEventHandler = function(handler) {
-            _gameWonEventHandler.push(handler);
+            _gameWonEventHandlers.push(handler);
         };
 
         var _addSetWonEventHandler = function(handler) {
-            _setWonEventHandler.push(handler);
+            _setWonEventHandlers.push(handler);
         };
 
         return {
+            getPlayer1: _getPlayer1,
+            getPlayer2: _getPlayer2,
+            getPlayer1Points: _getPlayer1Points,
+            getPlayer1Games: _getPlayer1Games,
+            getPlayer1Sets: _getPlayer1Sets,
+            getPlayer2Points: _getPlayer2Points,
+            getPlayer2Games: _getPlayer2Games,
+            getPlayer2Sets: _getPlayer2Sets,
             player1WinsPoint: _player1WinsPoint,
             player2WinsPoint: _player2WinsPoint,
+            changePlayers: _changePlayers,
+            reset: _reset,
             addGameWonEventHandler: _addGameWonEventHandler,
             addSetWonEventHandler: _addSetWonEventHandler
         };

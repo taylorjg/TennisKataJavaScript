@@ -10,153 +10,10 @@
 
         var player1;
         var player2;
-        var game;
-        var scoreboard;
-
-        var commonTestCases = [
-            [1, 0, "15", ""],
-            [2, 0, "30", ""],
-            [3, 0, "40", ""],
-            [4, 0, "W", "L"],
-
-            [1, 1, "15", "15"],
-            [2, 1, "30", "15"],
-            [3, 1, "40", "15"],
-            [4, 1, "W", "L"],
-
-            [1, 2, "15", "30"],
-            [2, 2, "30", "30"],
-            [3, 2, "40", "30"],
-            [4, 2, "W", "L"],
-
-            [1, 3, "15", "40"],
-            [2, 3, "30", "40"],
-            [3, 3, "40", "40"],
-
-            [0, 1, "", "15"],
-            [0, 2, "", "30"],
-            [0, 3, "", "40"],
-            [0, 4, "L", "W"],
-
-            [1, 1, "15", "15"],
-            [1, 2, "15", "30"],
-            [1, 3, "15", "40"],
-            [1, 4, "L", "W"],
-
-            [2, 1, "30", "15"],
-            [2, 2, "30", "30"],
-            [2, 3, "30", "40"],
-            [2, 4, "L", "W"],
-
-            [3, 1, "40", "15"],
-            [3, 2, "40", "30"],
-            [3, 3, "40", "40"],
-
-            [4, 3, "A", "40"],
-            [3, 4, "40", "A"],
-            [4, 4, "40", "40"],
-            [5, 4, "A", "40"],
-            [4, 5, "40", "A"],
-            [5, 5, "40", "40"],
-            [6, 5, "A", "40"],
-            [5, 6, "40", "A"]
-        ];
 
         beforeEach(function() {
             player1 = window.tennisKata.factory.createPlayer("Becker");
             player2 = window.tennisKata.factory.createPlayer("McEnroe");
-            game = window.tennisKata.factory.createGame(player1, player2);
-            scoreboard = window.tennisKata.factory.createScoreboard(game);
-        });
-
-        describe("Game tests", function () {
-
-            it("has the correct player1 name", function() {
-                expect(game.getPlayer1().getName()).toBe("Becker");
-            });
-
-            it("has the correct player2 name", function() {
-                expect(game.getPlayer2().getName()).toBe("McEnroe");
-            });
-
-            it_multiple(
-                "has the correct score when points have been scored",
-                function(numPoints1, numPoints2) {
-                    for (var i = 1; i <= Math.max(numPoints1, numPoints2); i++) {
-                        if (numPoints1 >= i) { game.pointScoredByPlayer1(); }
-                        if (numPoints2 >= i) { game.pointScoredByPlayer2(); }
-                    }
-                    expect(game.getPlayer1Score()).toBe(numPoints1);
-                    expect(game.getPlayer2Score()).toBe(numPoints2);
-                },
-                [
-                    [0, 0],
-                    [1, 0],
-                    [2, 0],
-                    [3, 0],
-                    [4, 0],
-                    [0, 1],
-                    [0, 2],
-                    [0, 3],
-                    [0, 4],
-                    [1, 1],
-                    [2, 2],
-                    [3, 3],
-                    [4, 4],
-                    [5, 5]
-                ]);
-
-            it("returns the score to 0/0 after a reset", function() {
-                    game.pointScoredByPlayer1();
-                    game.pointScoredByPlayer1();
-                    game.pointScoredByPlayer2();
-                    expect(game.getPlayer1Score()).toBe(2);
-                    expect(game.getPlayer2Score()).toBe(1);
-                    game.reset();
-                    expect(game.getPlayer1Score()).toBe(0);
-                    expect(game.getPlayer2Score()).toBe(0);
-            });
-
-            it("ignores points scored after the game has been won", function() {
-
-                    game.pointScoredByPlayer1();
-                    game.pointScoredByPlayer1();
-                    game.pointScoredByPlayer1();
-                    game.pointScoredByPlayer1();
-
-                    expect(game.getPlayer1Score()).toBe(4);
-                    expect(game.getPlayer2Score()).toBe(0);
-
-                    game.pointScoredByPlayer1();
-
-                    expect(game.getPlayer1Score()).toBe(4);
-                    expect(game.getPlayer2Score()).toBe(0);
-
-                    game.pointScoredByPlayer2();
-                    
-                    expect(game.getPlayer1Score()).toBe(4);
-                    expect(game.getPlayer2Score()).toBe(0);
-            });
-
-            it("games are independent of each other", function() {
-
-                var player1 = window.tennisKata.factory.createPlayer("Player1");
-                var player2 = window.tennisKata.factory.createPlayer("Player2");
-                var game1 = window.tennisKata.factory.createGame(player1, player2);
-
-                var player3 = window.tennisKata.factory.createPlayer("Player3");
-                var player4 = window.tennisKata.factory.createPlayer("Player4");
-                var game2 = window.tennisKata.factory.createGame(player3, player4);
-
-                game1.pointScoredByPlayer1();
-                game2.pointScoredByPlayer2();
-
-                expect(game1.getPlayer1Score()).toBe(1);
-                expect(game1.getPlayer2Score()).toBe(0);
-
-                expect(game2.getPlayer1Score()).toBe(0);
-                expect(game2.getPlayer2Score()).toBe(1);
-            });
         });
 
         describe("Player tests", function() {
@@ -168,23 +25,6 @@
                 expect(playerY.getName()).toBe("Wozniacki");
                 expect(playerX.getId()).not.toBe(playerY.getId());
             });
-        });
-
-        describe("Scoreboard tests", function() {
-
-            it_multiple(
-                "has the correct score text when points have been scored",
-                function(numPoints1, numPoints2, expectedScoreText1, expectedScoreText2) {
-                    for (var i = 1; i <= Math.max(numPoints1, numPoints2); i++) {
-                        if (numPoints1 >= i) { game.pointScoredByPlayer1(); }
-                        if (numPoints2 >= i) { game.pointScoredByPlayer2(); }
-                    }
-                    var scores = scoreboard.getScores();
-                    expect(scores[0]).toBe(expectedScoreText1);
-                    expect(scores[1]).toBe(expectedScoreText2);
-                },
-                [[0, 0, "", ""]].concat(commonTestCases)
-            );
         });
 
         describe("Scorecard tests", function() {
@@ -229,17 +69,10 @@
                 );
 
                 it_multiple(
-                    "passes the correct data to the gameWon event",
+                    "has the correct score properties after raising the gameWon event",
                     function(numPoints1, numPoints2, expectedData) {
 
-                        expectedData.player1 = player1;
-                        expectedData.player2 = player2;
-
                         // Arrange
-                        var gameWonEventData = null;
-                        scorecard.addGameWonEventHandler(function(eventData) {
-                            gameWonEventData = eventData;
-                        });
 
                         // Act
                         for (var i = 1; i <= Math.max(numPoints1, numPoints2); i++) {
@@ -248,15 +81,20 @@
                         }
 
                         // Assert
-                        expect(gameWonEventData).toEqual(expectedData);
+                        expect(scorecard.getPlayer1Points()).toEqual(expectedData.player1Points);
+                        expect(scorecard.getPlayer1Games()).toEqual(expectedData.player1Games);
+                        expect(scorecard.getPlayer1Sets()).toEqual(expectedData.player1Sets);
+                        expect(scorecard.getPlayer2Points()).toEqual(expectedData.player2Points);
+                        expect(scorecard.getPlayer2Games()).toEqual(expectedData.player2Games);
+                        expect(scorecard.getPlayer2Sets()).toEqual(expectedData.player2Sets);
                     },
                     [
                         [4, 0, {
                             player1Points: 0,
-                            player2Points: 0,
                             player1Games: 1,
-                            player2Games: 0,
                             player1Sets: 0,
+                            player2Points: 0,
+                            player2Games: 0,
                             player2Sets: 0
                         }]
                     ]
@@ -327,17 +165,10 @@
                     ]);
 
                 it_multiple(
-                    "passes the correct data to the setWon event",
+                    "has the correct score properties after raising the setWon event",
                     function(numGames1, numGames2, expectedData) {
 
-                        expectedData.player1 = player1;
-                        expectedData.player2 = player2;
-
                         // Arrange
-                        var setWonEventData = null;
-                        scorecard.addSetWonEventHandler(function(eventData) {
-                            setWonEventData = eventData;
-                        });
 
                         // Act
                         for (var i = 1; i <= Math.max(numGames1, numGames2); i++) {
@@ -356,33 +187,73 @@
                         }
 
                         // Assert
-                        expect(setWonEventData).toEqual(expectedData);
+                        expect(scorecard.getPlayer1Points()).toEqual(expectedData.player1Points);
+                        expect(scorecard.getPlayer1Games()).toEqual(expectedData.player1Games);
+                        expect(scorecard.getPlayer1Sets()).toEqual(expectedData.player1Sets);
+                        expect(scorecard.getPlayer2Points()).toEqual(expectedData.player2Points);
+                        expect(scorecard.getPlayer2Games()).toEqual(expectedData.player2Games);
+                        expect(scorecard.getPlayer2Sets()).toEqual(expectedData.player2Sets);
                     },
                     [
                         [6, 0, {
                             player1Points: 0,
-                            player2Points: 0,
                             player1Games: 0,
-                            player2Games: 0,
                             player1Sets: 1,
+                            player2Points: 0,
+                            player2Games: 0,
                             player2Sets: 0
                         }]
                     ]
                 );
             });
 
-            describe("Tiebreaker tests", function() {
-                it("", function() {
-                });
-            });
+//            describe("Tiebreaker tests", function() {
+//                it("", function() {
+//                });
+//            });
+//
+//            describe("Set tests", function() {
+//                it("", function() {
+//                });
+//            });
+//
+//            describe("Match tests", function() {
+//                it("", function() {
+//                });
+//            });
 
-            describe("Set tests", function() {
-                it("", function() {
-                });
-            });
+            describe("Other tests", function() {
 
-            describe("Match tests", function() {
-                it("", function() {
+                it("can be reset", function() {
+
+                    scorecard.player1WinsPoint();
+                    scorecard.player1WinsPoint();
+                    scorecard.player1WinsPoint();
+                    scorecard.player1WinsPoint();
+
+                    scorecard.player1WinsPoint();
+                    scorecard.player1WinsPoint();
+                    scorecard.player1WinsPoint();
+                    scorecard.player1WinsPoint();
+
+                    scorecard.player2WinsPoint();
+                    scorecard.player2WinsPoint();
+
+                    expect(scorecard.getPlayer1Points()).toEqual(0);
+                    expect(scorecard.getPlayer1Games()).toEqual(2);
+                    expect(scorecard.getPlayer1Sets()).toEqual(0);
+                    expect(scorecard.getPlayer2Points()).toEqual(2);
+                    expect(scorecard.getPlayer2Games()).toEqual(0);
+                    expect(scorecard.getPlayer2Sets()).toEqual(0);
+
+                    scorecard.reset();
+
+                    expect(scorecard.getPlayer1Points()).toEqual(0);
+                    expect(scorecard.getPlayer1Games()).toEqual(0);
+                    expect(scorecard.getPlayer1Sets()).toEqual(0);
+                    expect(scorecard.getPlayer2Points()).toEqual(0);
+                    expect(scorecard.getPlayer2Games()).toEqual(0);
+                    expect(scorecard.getPlayer2Sets()).toEqual(0);
                 });
             });
         });
@@ -396,76 +267,105 @@
             });
 
             it("fires scored changed callback when a point is scored", function() {
-                var callbackInvoked = false;
-                controller.setScoreChangedCallback(function() {
-                    callbackInvoked = true;
+                var eventRaised = false;
+                controller.addScoreChangedEventHandler(function() {
+                    eventRaised = true;
                 });
-                controller.pointScoredByPlayer1();
-                expect(callbackInvoked).toBe(true);
+                controller.player1WinsPoint();
+                expect(eventRaised).toBe(true);
             });
 
             it_multiple(
                 "reports the correct score when points are scored",
                 function(numPoints1, numPoints2, expectedScoreText1, expectedScoreText2) {
-                    var callbackData = null;
-                    controller.setScoreChangedCallback(function(x) {
-                        callbackData = x;
+                    var eventData = null;
+                    controller.addScoreChangedEventHandler(function(x) {
+                        eventData = x;
                     });
                     for (var i = 1; i <= Math.max(numPoints1, numPoints2); i++) {
-                        if (numPoints1 >= i) { controller.pointScoredByPlayer1(); }
-                        if (numPoints2 >= i) { controller.pointScoredByPlayer2(); }
+                        if (numPoints1 >= i) { controller.player1WinsPoint(); }
+                        if (numPoints2 >= i) { controller.player2WinsPoint(); }
                     }
-                    expect(callbackData.player1Name).toBe("Player1");
-                    expect(callbackData.player1Score).toBe(expectedScoreText1);
-                    expect(callbackData.player2Name).toBe("Player2");
-                    expect(callbackData.player2Score).toBe(expectedScoreText2);
+                    expect(eventData.player1Name).toBe("Player1");
+                    expect(eventData.player1Points).toBe(expectedScoreText1);
+                    expect(eventData.player2Name).toBe("Player2");
+                    expect(eventData.player2Points).toBe(expectedScoreText2);
                 },
-                commonTestCases
+                [
+                    [1, 0, "15", ""],
+                    [2, 0, "30", ""],
+                    [3, 0, "40", ""],
+
+                    [1, 1, "15", "15"],
+                    [2, 1, "30", "15"],
+                    [3, 1, "40", "15"],
+
+                    [1, 2, "15", "30"],
+                    [2, 2, "30", "30"],
+                    [3, 2, "40", "30"],
+
+                    [1, 3, "15", "40"],
+                    [2, 3, "30", "40"],
+                    [3, 3, "40", "40"],
+
+                    [0, 1, "", "15"],
+                    [0, 2, "", "30"],
+                    [0, 3, "", "40"],
+
+                    [4, 3, "A", "40"],
+                    [3, 4, "40", "A"],
+                    [4, 4, "40", "40"],
+                    [5, 4, "A", "40"],
+                    [4, 5, "40", "A"],
+                    [5, 5, "40", "40"],
+                    [6, 5, "A", "40"],
+                    [5, 6, "40", "A"]
+                ]
             );
 
             it("returns the score to \"\"/\"\" after a reset", function() {
 
-                    var callbackDataArray = [];
+                    var eventDataHistory = [];
 
-                    controller.setScoreChangedCallback(function(x) {
-                        callbackDataArray.push(x);
+                    controller.addScoreChangedEventHandler(function(x) {
+                        eventDataHistory.push(x);
                     });
 
-                    controller.pointScoredByPlayer1();
-                    controller.pointScoredByPlayer1();
-                    controller.pointScoredByPlayer2();
+                    controller.player1WinsPoint();
+                    controller.player1WinsPoint();
+                    controller.player2WinsPoint();
 
-                    var lastIndex = callbackDataArray.length - 1;
-                    expect(callbackDataArray[lastIndex].player1Score).toBe("30");
-                    expect(callbackDataArray[lastIndex].player2Score).toBe("15");
+                    var lastIndex = eventDataHistory.length - 1;
+                    expect(eventDataHistory[lastIndex].player1Points).toBe("30");
+                    expect(eventDataHistory[lastIndex].player2Points).toBe("15");
 
                     controller.reset();
 
-                    lastIndex = callbackDataArray.length - 1;
-                    expect(callbackDataArray[lastIndex].player1Score).toBe("");
-                    expect(callbackDataArray[lastIndex].player2Score).toBe("");
+                    lastIndex = eventDataHistory.length - 1;
+                    expect(eventDataHistory[lastIndex].player1Points).toBe("");
+                    expect(eventDataHistory[lastIndex].player2Points).toBe("");
             });
 
-            it("allows the player names to be changed which resets the game", function() {
+            it("allows the player names to be changed which also resets the game", function() {
 
-                var callbackData = null;
-                controller.setScoreChangedCallback(function(x) {
-                    callbackData = x;
+                var eventData = null;
+                controller.addScoreChangedEventHandler(function(x) {
+                    eventData = x;
                 });
 
-                controller.pointScoredByPlayer1();
-                expect(callbackData.player1Name).toBe("Player1");
-                expect(callbackData.player2Name).toBe("Player2");
-                expect(callbackData.player1Score).toBe("15");
-                expect(callbackData.player2Score).toBe("");
+                controller.player1WinsPoint();
+                expect(eventData.player1Name).toBe("Player1");
+                expect(eventData.player2Name).toBe("Player2");
+                expect(eventData.player1Points).toBe("15");
+                expect(eventData.player2Points).toBe("");
 
                 controller.setPlayerNames("XXX", "YYY");
 
-                controller.pointScoredByPlayer2();
-                expect(callbackData.player1Name).toBe("XXX");
-                expect(callbackData.player2Name).toBe("YYY");
-                expect(callbackData.player1Score).toBe("");
-                expect(callbackData.player2Score).toBe("15");
+                controller.player2WinsPoint();
+                expect(eventData.player1Name).toBe("XXX");
+                expect(eventData.player2Name).toBe("YYY");
+                expect(eventData.player1Points).toBe("");
+                expect(eventData.player2Points).toBe("15");
             });
         });
     });

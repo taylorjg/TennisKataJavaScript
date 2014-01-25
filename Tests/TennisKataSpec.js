@@ -35,6 +35,19 @@
                 scorecard = window.tennisKata.factory.createScorecard(player1, player2);
             });
 
+            var scoreSixGamesEach = function() {
+                for (var i = 1; i <= 6; i++) {
+                    scorecard.player1WinsPoint();
+                    scorecard.player1WinsPoint();
+                    scorecard.player1WinsPoint();
+                    scorecard.player1WinsPoint();
+                    scorecard.player2WinsPoint();
+                    scorecard.player2WinsPoint();
+                    scorecard.player2WinsPoint();
+                    scorecard.player2WinsPoint();
+                }
+            };
+
             describe("First game tests", function() {
 
                 it_multiple(
@@ -207,16 +220,52 @@
                 );
             });
 
-//            describe("Tiebreaker tests", function() {
-//                it("", function() {
-//                });
-//            });
-//
+            describe("Tiebreaker tests", function() {
+
+                it("enters tie-breaker mode at six games all", function() {
+
+                    scoreSixGamesEach();
+
+                    expect(scorecard.getPlayer1Points()).toEqual(0);
+                    expect(scorecard.getPlayer1Games()).toEqual(6);
+                    expect(scorecard.getPlayer1Sets()).toEqual(0);
+                    expect(scorecard.getPlayer2Points()).toEqual(0);
+                    expect(scorecard.getPlayer2Games()).toEqual(6);
+                    expect(scorecard.getPlayer2Sets()).toEqual(0);
+                    expect(scorecard.isTieBreaker()).toBe(true);
+                });
+
+                it("leaves tie-breaker mode after a tie-breaker set is won", function() {
+
+                    scoreSixGamesEach();
+
+                    expect(scorecard.getPlayer1Points()).toEqual(0);
+                    expect(scorecard.getPlayer1Games()).toEqual(6);
+                    expect(scorecard.getPlayer1Sets()).toEqual(0);
+                    expect(scorecard.getPlayer2Points()).toEqual(0);
+                    expect(scorecard.getPlayer2Games()).toEqual(6);
+                    expect(scorecard.getPlayer2Sets()).toEqual(0);
+                    expect(scorecard.isTieBreaker()).toBe(true);
+
+                    for (var i = 1; i <= 7; i++) {
+                        scorecard.player1WinsPoint();
+                    }
+
+                    expect(scorecard.getPlayer1Points()).toEqual(0);
+                    expect(scorecard.getPlayer1Games()).toEqual(0);
+                    expect(scorecard.getPlayer1Sets()).toEqual(1);
+                    expect(scorecard.getPlayer2Points()).toEqual(0);
+                    expect(scorecard.getPlayer2Games()).toEqual(0);
+                    expect(scorecard.getPlayer2Sets()).toEqual(0);
+                    expect(scorecard.isTieBreaker()).toBe(false);
+                });
+            });
+
 //            describe("Set tests", function() {
 //                it("", function() {
 //                });
 //            });
-//
+
 //            describe("Match tests", function() {
 //                it("", function() {
 //                });
@@ -320,6 +369,46 @@
                     [5, 5, "40", "40"],
                     [6, 5, "A", "40"],
                     [5, 6, "40", "A"]
+                ]
+            );
+
+            it_multiple(
+                "reports points as regular numbers (1,2,3,etc.) when in tie-breaker mode",
+                function(numPoints1, numPoints2) {
+
+                    var eventDataHistory = [];
+                    controller.addScoreChangedEventHandler(function(x) {
+                        eventDataHistory.push(x);
+                    });
+
+                    var i;
+
+                    for (i = 1; i <= 6; i++) {
+
+                        controller.player1WinsPoint();
+                        controller.player1WinsPoint();
+                        controller.player1WinsPoint();
+                        controller.player1WinsPoint();
+
+                        controller.player2WinsPoint();
+                        controller.player2WinsPoint();
+                        controller.player2WinsPoint();
+                        controller.player2WinsPoint();
+                    }
+
+                    for (var i = 1; i <= Math.max(numPoints1, numPoints2); i++) {
+                        if (numPoints1 >= i) { controller.player1WinsPoint(); }
+                        if (numPoints2 >= i) { controller.player2WinsPoint(); }
+                    }
+
+                    var lastIndex = eventDataHistory.length - 1;
+                    expect(eventDataHistory[lastIndex].player1Points).toBe(numPoints1.toString());
+                    expect(eventDataHistory[lastIndex].player2Points).toBe(numPoints2.toString());
+                },
+                [
+                    [2, 1],
+                    [5, 4],
+                    [6, 3]
                 ]
             );
 

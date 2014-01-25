@@ -33,6 +33,27 @@
             var p1p = _scorecard.getPlayer1Points();
             var p2p = _scorecard.getPlayer2Points();
 
+            if (_scorecard.isTieBreaker()) {
+                if (p1p > 0) { player1PointsText = p1p.toString(); }
+                if (p2p > 0) { player2PointsText = p2p.toString(); }
+            }
+            else {
+                if (p1p + p2p >= 6) {
+                    player1PointsText = FORTY_TEXT;
+                    player2PointsText = FORTY_TEXT;
+                    if (p1p === p2p + 1) {
+                        player1PointsText = ADVANTAGE_TEXT;
+                    }
+                    if (p2p === p1p + 1) {
+                        player2PointsText = ADVANTAGE_TEXT;
+                    }
+                }
+                else {
+                    player1PointsText = POINTS_TO_TEXT[p1p];
+                    player2PointsText = POINTS_TO_TEXT[p2p];
+                }
+            }
+
             var p1g = _scorecard.getPlayer1Games();
             var p2g = _scorecard.getPlayer2Games();
 
@@ -44,21 +65,6 @@
 
             if (p1s > 0) { player1SetsText = p1s.toString(); }
             if (p2s > 0) { player2SetsText = p2s.toString(); }
-
-            if (p1p + p2p >= 6) {
-                player1PointsText = FORTY_TEXT;
-                player2PointsText = FORTY_TEXT;
-                if (p1p === p2p + 1) {
-                    player1PointsText = ADVANTAGE_TEXT;
-                }
-                if (p2p === p1p + 1) {
-                    player2PointsText = ADVANTAGE_TEXT;
-                }
-            }
-            else {
-                player1PointsText = POINTS_TO_TEXT[p1p];
-                player2PointsText = POINTS_TO_TEXT[p2p];
-            }
 
             var player1Score = [player1PointsText, player1GamesText, player1SetsText];
             var player2Score = [player2PointsText, player2GamesText, player2SetsText];

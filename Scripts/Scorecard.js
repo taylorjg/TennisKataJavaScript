@@ -16,6 +16,7 @@
         var _player2Games = 0;
         var _player1Sets = 0;
         var _player2Sets = 0;
+        var _isTieBreakerFlag = false;
 
         var _getPlayer1 = function() { return _player1; };
         var _getPlayer2 = function() { return _player2; };
@@ -25,6 +26,7 @@
         var _getPlayer2Points = function() { return _player2Points; }
         var _getPlayer2Games = function() { return _player2Games; }
         var _getPlayer2Sets = function() { return _player2Sets; }
+        var _isTieBreaker = function() { return _isTieBreakerFlag; }
 
         var _player1WinsPoint = function() {
             _player1Points++;
@@ -49,20 +51,33 @@
             _player2Points = 0;
             _player2Games = 0;
             _player2Sets = 0;
+            _isTieBreakerFlag = false;
         };
 
         var _checkIfGameIsWon = function() {
 
             var gameWinner = null;
 
-            if (_player1Points >= 4 || _player2Points >= 4) {
-                if (_player1Points - _player2Points >= 2) {
+            if (_isTieBreakerFlag) {
+                if (_player1Points >= 7 && _player1Points - _player2Points >= 2) {
                     _player1Games++;
                     gameWinner = _player1;
                 }
-                if (_player2Points - _player1Points >= 2) {
+                if (_player2Points >= 7 && _player2Points - _player1Points >= 2) {
                     _player2Games++;
                     gameWinner = _player2;
+                }
+            }
+            else {
+                if (_player1Points >= 4 || _player2Points >= 4) {
+                    if (_player1Points - _player2Points >= 2) {
+                        _player1Games++;
+                        gameWinner = _player1;
+                    }
+                    if (_player2Points - _player1Points >= 2) {
+                        _player2Games++;
+                        gameWinner = _player2;
+                    }
                 }
             }
 
@@ -78,18 +93,36 @@
 
             var setWinner = null;
 
-            if (_player1Games >= 6 && _player1Games - _player2Games >= 2) {
-                _player1Sets++;
-                setWinner = _player1;
+            if (_isTieBreakerFlag) {
+                if (_player1Games === 7 && _player2Games === 6) {
+                    _player1Sets++;
+                    setWinner = _player1;
+                }
+                if (_player2Games === 7 && _player1Games === 6) {
+                    _player2Sets++;
+                    setWinner = _player2;
+                }
             }
-            if (_player2Games >= 6 && _player2Games - _player1Games >= 2) {
-                _player2Sets++;
-                setWinner = _player2;
+            else {
+                if (_player1Games === 6 && _player2Games === 6) {
+                    _isTieBreakerFlag = true;
+                }
+                else {
+                    if (_player1Games >= 6 && _player1Games - _player2Games >= 2) {
+                        _player1Sets++;
+                        setWinner = _player1;
+                    }
+                    if (_player2Games >= 6 && _player2Games - _player1Games >= 2) {
+                        _player2Sets++;
+                        setWinner = _player2;
+                    }
+                }
             }
 
             if (setWinner !== null) {
                 _player1Games = 0;
                 _player2Games = 0;
+                _isTieBreakerFlag = false;
                 _raiseSetWonEvent();
             }
         };
@@ -123,6 +156,7 @@
             getPlayer2Points: _getPlayer2Points,
             getPlayer2Games: _getPlayer2Games,
             getPlayer2Sets: _getPlayer2Sets,
+            isTieBreaker: _isTieBreaker,
             player1WinsPoint: _player1WinsPoint,
             player2WinsPoint: _player2WinsPoint,
             changePlayers: _changePlayers,

@@ -9,10 +9,16 @@
         var _controller = window.tennisKata.factory.createController();
 
         _controller.addScoreChangedEventHandler(function(eventData) {
+
             $("#player1Name").html(eventData.player1Name);
-            $("#player1Score").html(eventData.player1Points);
+            $("#player1Points").html(eventData.player1Points);
+            $("#player1Games").html(eventData.player1Games);
+            $("#player1Sets").html(eventData.player1Sets);
+
             $("#player2Name").html(eventData.player2Name);
-            $("#player2Score").html(eventData.player2Points);
+            $("#player2Points").html(eventData.player2Points);
+            $("#player2Games").html(eventData.player2Games);
+            $("#player2Sets").html(eventData.player2Sets);
         });
 
         $("#setPlayerNamesBtn").click(function() {

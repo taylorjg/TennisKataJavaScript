@@ -33,6 +33,18 @@
             var p1p = _scorecard.getPlayer1Points();
             var p2p = _scorecard.getPlayer2Points();
 
+            var p1g = _scorecard.getPlayer1Games();
+            var p2g = _scorecard.getPlayer2Games();
+
+            if (p1g > 0) { player1GamesText = p1g.toString(); }
+            if (p2g > 0) { player2GamesText = p2g.toString(); }
+
+            var p1s = _scorecard.getPlayer1Sets();
+            var p2s = _scorecard.getPlayer2Sets();
+
+            if (p1s > 0) { player1SetsText = p1s.toString(); }
+            if (p2s > 0) { player2SetsText = p2s.toString(); }
+
             if (p1p + p2p >= 6) {
                 player1PointsText = FORTY_TEXT;
                 player2PointsText = FORTY_TEXT;

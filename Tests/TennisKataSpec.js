@@ -396,7 +396,7 @@
                         controller.player2WinsPoint();
                     }
 
-                    for (var i = 1; i <= Math.max(numPoints1, numPoints2); i++) {
+                    for (i = 1; i <= Math.max(numPoints1, numPoints2); i++) {
                         if (numPoints1 >= i) { controller.player1WinsPoint(); }
                         if (numPoints2 >= i) { controller.player2WinsPoint(); }
                     }

@@ -20,13 +20,13 @@
 
         var _getPlayer1 = function() { return _player1; };
         var _getPlayer2 = function() { return _player2; };
-        var _getPlayer1Points = function() { return _player1Points; }
-        var _getPlayer1Games = function() { return _player1Games; }
-        var _getPlayer1Sets = function() { return _player1Sets; }
-        var _getPlayer2Points = function() { return _player2Points; }
-        var _getPlayer2Games = function() { return _player2Games; }
-        var _getPlayer2Sets = function() { return _player2Sets; }
-        var _isTieBreaker = function() { return _isTieBreakerFlag; }
+        var _getPlayer1Points = function() { return _player1Points; };
+        var _getPlayer1Games = function() { return _player1Games; };
+        var _getPlayer1Sets = function() { return _player1Sets; };
+        var _getPlayer2Points = function() { return _player2Points; };
+        var _getPlayer2Games = function() { return _player2Games; };
+        var _getPlayer2Sets = function() { return _player2Sets; };
+        var _isTieBreaker = function() { return _isTieBreakerFlag; };
 
         var _player1WinsPoint = function() {
             _player1Points++;

@@ -15,12 +15,26 @@
 	<body>
 
         <label for="player1NameTxt">Player 1's name:</label>
-        <input type="text" id="player1NameTxt" size="30" />
+        <input type="text" id="player1NameTxt" size="30" placeholder="Player1" />
         <br />
         <label for="player2NameTxt">Player 2's name:</label>
-        <input type="text" id="player2NameTxt" size="30" />
+        <input type="text" id="player2NameTxt" size="30" placeholder="Player2" />
         <br />
         <button type="button" id="setPlayerNamesBtn">Set player names</button>
+
+        <hr />
+
+        <p>Match length:</p>
+        <input id="matchLength1" type="radio" name="matchLengthRadioButtonGroup" value="1" checked="checked">
+        <label for="matchLength1">1 set</label>
+        <br />
+        <input id="matchLength3" type="radio" name="matchLengthRadioButtonGroup" value="3">
+        <label for="matchLength3">3 sets</label>
+        <br />
+        <input id="matchLength5" type="radio" name="matchLengthRadioButtonGroup" value="5">
+        <label for="matchLength5">5 sets</label>
+        <br />
+        <button type="button" id="setBestOfBtn">Set match length</button>
 
         <hr />
 

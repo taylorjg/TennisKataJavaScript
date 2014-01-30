@@ -10,7 +10,7 @@
         var _player2 = player2;
         var _gameWonEventHandlers = [];
         var _setWonEventHandlers = [];
-        var _matchLength = 1;
+        var _matchLength = 3;
         var _player1Points = 0;
         var _player2Points = 0;
         var _player1Games = 0;
@@ -111,7 +111,10 @@
             }
             else {
                 if (_player1Games === 6 && _player2Games === 6) {
-                    _isTieBreakerFlag = true;
+                    var thisSetNumber = _player1Sets + _player2Sets + 1;
+                    if (thisSetNumber < _matchLength) {
+                        _isTieBreakerFlag = true;
+                    }
                 }
                 else {
                     if (_player1Games >= 6 && _player1Games - _player2Games >= 2) {

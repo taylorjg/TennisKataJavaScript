@@ -10,6 +10,7 @@
         var _player2 = player2;
         var _gameWonEventHandlers = [];
         var _setWonEventHandlers = [];
+        var _matchLength = 1;
         var _player1Points = 0;
         var _player2Points = 0;
         var _player1Games = 0;
@@ -41,6 +42,11 @@
         var _changePlayers = function(newPlayer1, newPlayer2) {
             _player1 = newPlayer1;
             _player2 = newPlayer2;
+            _reset();
+        };
+
+        var _changeMatchLength = function(matchLength) {
+            _matchLength = matchLength;
             _reset();
         };
 
@@ -160,6 +166,7 @@
             player1WinsPoint: _player1WinsPoint,
             player2WinsPoint: _player2WinsPoint,
             changePlayers: _changePlayers,
+            changeMatchLength: _changeMatchLength,
             reset: _reset,
             addGameWonEventHandler: _addGameWonEventHandler,
             addSetWonEventHandler: _addSetWonEventHandler

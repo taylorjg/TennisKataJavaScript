@@ -36,6 +36,12 @@
             var newPlayer1 = window.tennisKata.factory.createPlayer(playerName1);
             var newPlayer2 = window.tennisKata.factory.createPlayer(playerName2);
             _scorecard.changePlayers(newPlayer1, newPlayer2);
+            _raiseScoreChangedEvent();
+        };
+
+        var _setMatchLength = function(matchLength) {
+            _scorecard.changeMatchLength(matchLength);
+            _raiseScoreChangedEvent();
         };
 
         var _addScoreChangedEventHandler = function(handler) {
@@ -59,6 +65,7 @@
 
         return {
             setPlayerNames: _setPlayerNames,
+            setMatchLength: _setMatchLength,
             player1WinsPoint: _player1WinsPoint,
             player2WinsPoint: _player2WinsPoint,
             reset: _reset,

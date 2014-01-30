@@ -450,11 +450,29 @@
 
                 controller.setPlayerNames("XXX", "YYY");
 
-                controller.player2WinsPoint();
                 expect(eventData.player1Name).toBe("XXX");
                 expect(eventData.player2Name).toBe("YYY");
                 expect(eventData.player1Points).toBe("");
+                expect(eventData.player2Points).toBe("");
+            });
+
+            it("allows the match length to be changed which also resets the game", function() {
+
+                var eventData = null;
+                controller.addScoreChangedEventHandler(function(x) {
+                    eventData = x;
+                });
+
+                controller.player1WinsPoint();
+                controller.player1WinsPoint();
+                controller.player2WinsPoint();
+                expect(eventData.player1Points).toBe("30");
                 expect(eventData.player2Points).toBe("15");
+
+                controller.setMatchLength(3);
+
+                expect(eventData.player1Points).toBe("");
+                expect(eventData.player2Points).toBe("");
             });
         });
     });

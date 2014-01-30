@@ -30,6 +30,11 @@
             }
         });
 
+        $("#setMatchLengthBtn").click(function() {
+            // var matchLength = $("input[name='matchLengthRadioButtonGroup']:checked").val();
+            // _controller.setMatchLength(matchLength);
+        });
+
         $("#player1ScoresPointBtn").click(function() {
             _controller.player1WinsPoint();
         });

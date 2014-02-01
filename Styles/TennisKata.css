@@ -43,3 +43,7 @@ button {
 .forSizingOnly {
     visibility: hidden;
 }
+
+#player1Serving, #player2Serving {
+    display: none;
+}

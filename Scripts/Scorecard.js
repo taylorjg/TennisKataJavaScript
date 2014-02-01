@@ -8,10 +8,13 @@
 
         var _player1 = player1;
         var _player2 = player2;
+        var _initialServer = _player1;
+        var _server = _initialServer;
         var _resetEventHandlers = [];
         var _gameWonEventHandlers = [];
         var _setWonEventHandlers = [];
         var _matchWonEventHandlers = [];
+        var _serverChangedEventHandlers = [];
         var _matchLength = 3;
         var _player1Points = 0;
         var _player2Points = 0;
@@ -20,9 +23,13 @@
         var _player1Sets = 0;
         var _player2Sets = 0;
         var _isTieBreakerFlag = false;
+        var _tieBreakerServeCount = 0;
+        var _tieBreakerFirstPoint = false;
+        var _tieBreakerFirstServer = null;
 
         var _getPlayer1 = function() { return _player1; };
         var _getPlayer2 = function() { return _player2; };
+        var _getServer = function() { return _server; };
         var _getPlayer1Points = function() { return _player1Points; };
         var _getPlayer1Games = function() { return _player1Games; };
         var _getPlayer1Sets = function() { return _player1Sets; };
@@ -64,6 +71,9 @@
             _player2Games = 0;
             _player2Sets = 0;
             _isTieBreakerFlag = false;
+            _tieBreakerServeCount = 0;
+            _tieBreakerFirstServer = null;
+            _server = _initialServer;
             _raiseResetEvent();
         };
 
@@ -79,6 +89,9 @@
                 if (_player2Points >= 7 && _player2Points - _player1Points >= 2) {
                     _player2Games++;
                     gameWinner = _player2;
+                }
+                if (gameWinner === null) {
+                    _changeServer();
                 }
             }
             else {
@@ -98,6 +111,7 @@
                 _player1Points = 0;
                 _player2Points = 0;
                 _raiseGameWonEvent();
+                _changeServer();
                 _checkIfSetIsWon();
             }
         };
@@ -121,6 +135,9 @@
                     var thisSetNumber = _player1Sets + _player2Sets + 1;
                     if (thisSetNumber < _matchLength) {
                         _isTieBreakerFlag = true;
+                        _tieBreakerServeCount = 0;
+                        _tieBreakerFirstPoint = true;
+                        _tieBreakerFirstServer = _server;
                     }
                 }
                 else {
@@ -138,7 +155,19 @@
             if (setWinner !== null) {
                 _player1Games = 0;
                 _player2Games = 0;
-                _isTieBreakerFlag = false;
+                if (_isTieBreakerFlag) {
+                    if (_tieBreakerFirstServer === _player1) {
+                        _server = _player2;
+                    }
+                    else {
+                        _server = _player1;
+                    }
+                    _isTieBreakerFlag = false;
+                    _tieBreakerServeCount = 0;
+                    _tieBreakerFirstPoint = false;
+                    _tieBreakerFirstServer = null;
+                    _changeServer();
+                }
                 _raiseSetWonEvent();
                 _checkIfMatchIsWon();
             }
@@ -155,6 +184,36 @@
             if (_player2Sets === numberOfSetsNeededToWin) {
                 _raiseMatchWonEvent(_player2);
             }
+        };
+
+        var _changeServer = function() {
+
+            var flipTurn = false;
+
+            if (_isTieBreakerFlag) {
+                if (_tieBreakerFirstPoint) {
+                    _tieBreakerFirstPoint = false;
+                    _tieBreakerServeCount = 1;
+                    flipTurn = true;
+                }
+                else {
+                    _tieBreakerServeCount++;
+                    if (_tieBreakerServeCount === 2) {
+                        _tieBreakerServeCount = 0;
+                        flipTurn = true;
+                    }
+                }
+            }
+            else {
+                flipTurn = true;
+            }
+
+            if (flipTurn) {
+                _server = (_server === _player1) ? _player2 : _player1;
+            }
+
+//            console.log("raising _server: " + _server.getName());
+            _raiseServerChangedEvent(_server);
         };
 
         var _raiseResetEvent = function() {
@@ -181,6 +240,12 @@
             }
         };
 
+        var _raiseServerChangedEvent = function(server) {
+            for (var i = 0; i < _serverChangedEventHandlers.length; i++) {
+                _serverChangedEventHandlers[i](server);
+            }
+        };
+
         var _addResetEventHandler = function(handler) {
             _resetEventHandlers.push(handler);
         };
@@ -197,9 +262,14 @@
             _matchWonEventHandlers.push(handler);
         };
 
+        var _addServerChangedEventHandler = function(handler) {
+            _serverChangedEventHandlers.push(handler);
+        };
+
         return {
             getPlayer1: _getPlayer1,
             getPlayer2: _getPlayer2,
+            getServer: _getServer,
             getPlayer1Points: _getPlayer1Points,
             getPlayer1Games: _getPlayer1Games,
             getPlayer1Sets: _getPlayer1Sets,
@@ -216,7 +286,8 @@
             addResetEventHandler: _addResetEventHandler,
             addGameWonEventHandler: _addGameWonEventHandler,
             addSetWonEventHandler: _addSetWonEventHandler,
-            addMatchWonEventHandler: _addMatchWonEventHandler
+            addMatchWonEventHandler: _addMatchWonEventHandler,
+            addServerChangedEventHandler: _addServerChangedEventHandler
         };
     };
 }());

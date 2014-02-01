@@ -13,6 +13,7 @@
         var _resetEventHandlers = [];
         var _scoreChangedEventHandlers = [];
         var _matchWonEventHandlers = [];
+        var _serverChangedEventHandlers = [];
 
         var _raiseResetEvent = function() {
             for (var i = 0; i < _resetEventHandlers.length; i++) {
@@ -46,6 +47,12 @@
             }
         };
 
+        var _raiseServerChangedEvent = function(eventData) {
+            for (var i = 0; i < _serverChangedEventHandlers.length; i++) {
+                _serverChangedEventHandlers[i](eventData);
+            }
+        };
+
         var _setPlayerNames = function(playerName1, playerName2) {
             var newPlayer1 = window.tennisKata.factory.createPlayer(playerName1);
             var newPlayer2 = window.tennisKata.factory.createPlayer(playerName2);
@@ -55,6 +62,7 @@
 
         var _getPlayer1 = function() { return _player1; };
         var _getPlayer2 = function() { return _player2; };
+        var _getServer = function() { return _scorecard.getServer(); };
 
         var _getMatchLength = function() {
             return _scorecard.getMatchLength();
@@ -75,6 +83,10 @@
 
         var _addMatchWonEventHandler = function(handler) {
             _matchWonEventHandlers.push(handler);
+        };
+
+        var _addServerChangedEventHandler = function(handler) {
+            _serverChangedEventHandlers.push(handler);
         };
 
         var _player1WinsPoint = function() {
@@ -100,13 +112,19 @@
             _raiseMatchWonEvent(eventData);
         };
 
+        var _onServerChangedEventHandler = function(eventData) {
+            _raiseServerChangedEvent(eventData);
+        };
+
         _scorecard.addResetEventHandler(_onResetEventHandler);
         _scorecard.addMatchWonEventHandler(_onMatchWonEventHandler);
+        _scorecard.addServerChangedEventHandler(_onServerChangedEventHandler);
 
         return {
             setPlayerNames: _setPlayerNames,
             getPlayer1: _getPlayer1,
             getPlayer2: _getPlayer2,
+            getServer: _getServer,
             getMatchLength: _getMatchLength,
             setMatchLength: _setMatchLength,
             player1WinsPoint: _player1WinsPoint,
@@ -114,7 +132,8 @@
             reset: _reset,
             addResetEventHandler: _addResetEventHandler,
             addScoreChangedEventHandler: _addScoreChangedEventHandler,
-            addMatchWonEventHandler: _addMatchWonEventHandler
+            addMatchWonEventHandler: _addMatchWonEventHandler,
+            addServerChangedEventHandler: _addServerChangedEventHandler
         };
     };
 } ());

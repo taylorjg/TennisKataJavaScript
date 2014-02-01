@@ -17,7 +17,6 @@
         };
 
         _controller.addResetEventHandler(function() {
-            console.log("_controller.addResetEventHandler");
             $("#player1ScoresPointBtn").prop("disabled", false);
             $("#player2ScoresPointBtn").prop("disabled", false);
         });
@@ -35,11 +34,17 @@
             $("#player2Sets").html(eventData.player2Sets);
         });
 
-        _controller.addMatchWonEventHandler(function(winner) {
-            console.log("_controller.addMatchWonEventHandler: " + winner.getName());
+        _controller.addMatchWonEventHandler(function(/* winner */) {
             $("#player1ScoresPointBtn").prop("disabled", true);
             $("#player2ScoresPointBtn").prop("disabled", true);
         });
+
+        var _updateServer = function(server) {
+            $("#player1Serving").toggle(server === _controller.getPlayer1());
+            $("#player2Serving").toggle(server === _controller.getPlayer2());
+        };
+
+        _controller.addServerChangedEventHandler(_updateServer);
 
         $("#setPlayerNamesBtn").click(function() {
             var player1Name = $("#player1NameTxt").val();
@@ -63,6 +68,7 @@
 
         $("#resetBtn").click(function() {
             _controller.reset();
+            _updateServer(_controller.getServer());
         });
 
         _controller.reset();
@@ -73,6 +79,7 @@
         };
 
         _updateMatchLengthRadioButtons();
+        _updateServer(_controller.getServer());
     });
 
 } ());

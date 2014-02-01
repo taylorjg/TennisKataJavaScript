@@ -55,7 +55,7 @@
                 }
             };
 
-            var winSixGamesEach = function() {
+            var playersWinSixGamesEach = function() {
                 for (var i = 1; i <= 6; i++) {
                     player1WinsLoveGame();
                     player2WinsLoveGame();
@@ -220,7 +220,7 @@
                 it("enters tie-breaker mode at six games all when not last set", function() {
 
                     scorecard.setMatchLength(5);
-                    winSixGamesEach();
+                    playersWinSixGamesEach();
 
                     expect(scorecard.getPlayer1Points()).toEqual(0);
                     expect(scorecard.getPlayer1Games()).toEqual(6);
@@ -234,7 +234,7 @@
                 it("leaves tie-breaker mode after a tie-breaker set is won", function() {
 
                     scorecard.setMatchLength(5);
-                    winSixGamesEach();
+                    playersWinSixGamesEach();
 
                     expect(scorecard.getPlayer1Points()).toEqual(0);
                     expect(scorecard.getPlayer1Games()).toEqual(6);
@@ -264,7 +264,7 @@
                     player1WinsLoveSet();
                     player2WinsLoveSet();
                     player2WinsLoveSet();
-                    winSixGamesEach();
+                    playersWinSixGamesEach();
 
                     expect(scorecard.getPlayer1Points()).toEqual(0);
                     expect(scorecard.getPlayer1Games()).toEqual(6);
@@ -341,7 +341,7 @@
                 }
             };
 
-            var winSixGamesEach = function() {
+            var playersWinSixGamesEach = function() {
                 for (var i = 1; i <= 6; i++) {
                     player1WinsLoveGame();
                     player2WinsLoveGame();
@@ -359,6 +359,112 @@
                 });
                 controller.player1WinsPoint();
                 expect(eventRaised).toBe(true);
+            });
+
+            describe("which player is currently serving", function() {
+
+                var servingHistory;
+
+                beforeEach(function() {
+
+                    servingHistory = [];
+
+                    controller.addServerChangedEventHandler(function(server) {
+                        servingHistory.push(server);
+                    });
+                });
+
+                it("changes after each game", function() {
+
+                    controller.setMatchLength(3);
+                    player1WinsLoveGame();
+                    player2WinsLoveGame();
+                    player1WinsLoveGame();
+                    player2WinsLoveGame();
+
+                    expect(servingHistory.length).toBe(4);
+                    expect(servingHistory[0]).toBe(controller.getPlayer2());
+                    expect(servingHistory[1]).toBe(controller.getPlayer1());
+                    expect(servingHistory[2]).toBe(controller.getPlayer2());
+                    expect(servingHistory[3]).toBe(controller.getPlayer1());
+                });
+
+                it("is correct for the first few points of a tie-breaker", function() {
+
+                    controller.setMatchLength(3);
+                    playersWinSixGamesEach();
+
+                    controller.player1WinsPoint();
+                    controller.player1WinsPoint();
+                    controller.player1WinsPoint();
+                    controller.player1WinsPoint();
+                    controller.player1WinsPoint();
+                    controller.player1WinsPoint();
+
+                    expect(servingHistory.length).toBe(18);
+                    expect(servingHistory[0]).toBe(controller.getPlayer2());
+                    expect(servingHistory[1]).toBe(controller.getPlayer1());
+                    expect(servingHistory[2]).toBe(controller.getPlayer2());
+                    expect(servingHistory[3]).toBe(controller.getPlayer1());
+                    expect(servingHistory[4]).toBe(controller.getPlayer2());
+                    expect(servingHistory[5]).toBe(controller.getPlayer1());
+                    expect(servingHistory[6]).toBe(controller.getPlayer2());
+                    expect(servingHistory[7]).toBe(controller.getPlayer1());
+                    expect(servingHistory[8]).toBe(controller.getPlayer2());
+                    expect(servingHistory[9]).toBe(controller.getPlayer1());
+                    expect(servingHistory[10]).toBe(controller.getPlayer2());
+                    expect(servingHistory[11]).toBe(controller.getPlayer1());
+
+                    expect(servingHistory[12]).toBe(controller.getPlayer2());
+                    expect(servingHistory[13]).toBe(controller.getPlayer1());
+                    expect(servingHistory[14]).toBe(controller.getPlayer1());
+                    expect(servingHistory[15]).toBe(controller.getPlayer2());
+                    expect(servingHistory[16]).toBe(controller.getPlayer2());
+                    expect(servingHistory[17]).toBe(controller.getPlayer1());
+                });
+
+                it("is correct at the start of a new set that was not decided by a tie-breaker", function() {
+
+                    controller.setMatchLength(3);
+                    player1WinsLoveSet();
+                    player1WinsLoveGame();
+
+                    expect(servingHistory.length).toBe(7);
+                    expect(servingHistory[0]).toBe(controller.getPlayer2());
+                    expect(servingHistory[1]).toBe(controller.getPlayer1());
+                    expect(servingHistory[2]).toBe(controller.getPlayer2());
+                    expect(servingHistory[3]).toBe(controller.getPlayer1());
+                    expect(servingHistory[4]).toBe(controller.getPlayer2());
+                    expect(servingHistory[5]).toBe(controller.getPlayer1());
+                    expect(servingHistory[6]).toBe(controller.getPlayer2());
+                });
+
+                it("is correct at the start of a new set that was decided by a tie-breaker", function() {
+
+                    controller.setMatchLength(3);
+                    playersWinSixGamesEach();
+                    servingHistory = [];
+
+                    controller.player1WinsPoint();
+                    controller.player1WinsPoint();
+                    controller.player1WinsPoint();
+                    controller.player1WinsPoint();
+                    controller.player1WinsPoint();
+                    controller.player1WinsPoint();
+                    controller.player1WinsPoint();
+
+                    controller.player1WinsPoint();
+
+                    expect(servingHistory.length).toBe(8);
+                    expect(servingHistory[0]).toBe(controller.getPlayer2());
+                    expect(servingHistory[1]).toBe(controller.getPlayer1());
+                    expect(servingHistory[2]).toBe(controller.getPlayer1());
+                    expect(servingHistory[3]).toBe(controller.getPlayer2());
+                    expect(servingHistory[4]).toBe(controller.getPlayer2());
+                    expect(servingHistory[5]).toBe(controller.getPlayer1());
+                    expect(servingHistory[6]).toBe(controller.getPlayer1());
+                    expect(servingHistory[7]).toBe(controller.getPlayer1());
+                });
             });
 
             it_multiple(
@@ -427,7 +533,7 @@
                         eventData = x;
                     });
 
-                    winSixGamesEach();
+                    playersWinSixGamesEach();
 
                     for (var i = 1; i <= Math.max(numPoints1, numPoints2); i++) {
                         if (numPoints1 >= i) { controller.player1WinsPoint(); }

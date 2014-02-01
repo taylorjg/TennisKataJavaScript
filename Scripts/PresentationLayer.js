@@ -57,7 +57,7 @@
         var _updateMatchLengthRadioButtons = function() {
             var matchLength = _controller.getMatchLength();
             $("input[name='matchLengthRadioButtonGroup'][value='" + matchLength + "']").prop("checked", true);
-        }
+        };
 
         _updateMatchLengthRadioButtons();
     });

@@ -16,28 +16,28 @@ button {
 	font-family: "erbos_draco_1st_open_nbp", sans-serif;
 	color: Gold;
 	background-color: DarkGreen;
-	padding: 20px;
+	padding: 0.5em
 }
 
 .name {
-    font-size: 2em;
-	min-width: 300px;
+    font-size: 1em;
+	width: 10em;
 }
 
 .score {
-    font-size: 5em;
+    font-size: 2em;
 }
 
 .points {
-    min-width: 160px;
+    width: 2em;
 }
 
 .games {
-    min-width: 160px;
+    width: 2em;
 }
 
 .sets {
-    min-width: 80px;
+    width: 1em;
 }
 
 .forSizingOnly {

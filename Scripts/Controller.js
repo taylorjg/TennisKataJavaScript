@@ -39,8 +39,12 @@
             _raiseScoreChangedEvent();
         };
 
+        var _getMatchLength = function() {
+            return _scorecard.getMatchLength();
+        };
+
         var _setMatchLength = function(matchLength) {
-            _scorecard.changeMatchLength(matchLength);
+            _scorecard.setMatchLength(matchLength);
             _raiseScoreChangedEvent();
         };
 
@@ -65,6 +69,7 @@
 
         return {
             setPlayerNames: _setPlayerNames,
+            getMatchLength: _getMatchLength,
             setMatchLength: _setMatchLength,
             player1WinsPoint: _player1WinsPoint,
             player2WinsPoint: _player2WinsPoint,

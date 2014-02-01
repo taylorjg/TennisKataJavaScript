@@ -45,7 +45,11 @@
             _reset();
         };
 
-        var _changeMatchLength = function(matchLength) {
+        var _getMatchLength = function() {
+            return _matchLength;
+        };
+
+        var _setMatchLength = function(matchLength) {
             _matchLength = matchLength;
             _reset();
         };
@@ -169,7 +173,8 @@
             player1WinsPoint: _player1WinsPoint,
             player2WinsPoint: _player2WinsPoint,
             changePlayers: _changePlayers,
-            changeMatchLength: _changeMatchLength,
+            getMatchLength: _getMatchLength,
+            setMatchLength: _setMatchLength,
             reset: _reset,
             addGameWonEventHandler: _addGameWonEventHandler,
             addSetWonEventHandler: _addSetWonEventHandler

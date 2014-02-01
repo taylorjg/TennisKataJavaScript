@@ -219,7 +219,7 @@
 
                 it("enters tie-breaker mode at six games all when not last set", function() {
 
-                    scorecard.changeMatchLength(5);
+                    scorecard.setMatchLength(5);
                     winSixGamesEach();
 
                     expect(scorecard.getPlayer1Points()).toEqual(0);
@@ -233,7 +233,7 @@
 
                 it("leaves tie-breaker mode after a tie-breaker set is won", function() {
 
-                    scorecard.changeMatchLength(5);
+                    scorecard.setMatchLength(5);
                     winSixGamesEach();
 
                     expect(scorecard.getPlayer1Points()).toEqual(0);
@@ -259,7 +259,7 @@
 
                 it("does not enter tie-breaker mode at six games all when last set", function() {
 
-                    scorecard.changeMatchLength(5);
+                    scorecard.setMatchLength(5);
                     player1WinsLoveSet();
                     player1WinsLoveSet();
                     player2WinsLoveSet();
@@ -275,16 +275,6 @@
                     expect(scorecard.isTieBreaker()).toBe(false);
                 });
             });
-
-//            describe("Set tests", function() {
-//                it("", function() {
-//                });
-//            });
-
-//            describe("Match tests", function() {
-//                it("", function() {
-//                });
-//            });
 
             describe("Reset tests", function() {
 
@@ -374,23 +364,30 @@
             it_multiple(
                 "reports the correct score when points are scored",
                 function(numPoints1, numPoints2, expectedScoreText1, expectedScoreText2) {
+
                     var eventData = null;
                     controller.addScoreChangedEventHandler(function(x) {
                         eventData = x;
                     });
+
                     for (var i = 1; i <= Math.max(numPoints1, numPoints2); i++) {
                         if (numPoints1 >= i) { controller.player1WinsPoint(); }
                         if (numPoints2 >= i) { controller.player2WinsPoint(); }
                     }
+
                     expect(eventData.player1Name).toBe("Player1");
                     expect(eventData.player1Points).toBe(expectedScoreText1);
+                    expect(eventData.player1Games).toBe("");
+                    expect(eventData.player1Sets).toBe("");
                     expect(eventData.player2Name).toBe("Player2");
                     expect(eventData.player2Points).toBe(expectedScoreText2);
+                    expect(eventData.player2Games).toBe("");
+                    expect(eventData.player2Sets).toBe("");
                 },
                 [
-                    [1, 0, "15", ""],
-                    [2, 0, "30", ""],
-                    [3, 0, "40", ""],
+                    [1, 0, "15", "0"],
+                    [2, 0, "30", "0"],
+                    [3, 0, "40", "0"],
 
                     [1, 1, "15", "15"],
                     [2, 1, "30", "15"],
@@ -404,9 +401,9 @@
                     [2, 3, "30", "40"],
                     [3, 3, "40", "40"],
 
-                    [0, 1, "", "15"],
-                    [0, 2, "", "30"],
-                    [0, 3, "", "40"],
+                    [0, 1, "0", "15"],
+                    [0, 2, "0", "30"],
+                    [0, 3, "0", "40"],
 
                     [4, 3, "A", "40"],
                     [3, 4, "40", "A"],
@@ -423,9 +420,11 @@
                 "reports points as regular numbers (1,2,3,etc.) when in tie-breaker mode",
                 function(numPoints1, numPoints2) {
 
-                    var eventDataHistory = [];
+                    controller.setMatchLength(3);
+
+                    var eventData = null;
                     controller.addScoreChangedEventHandler(function(x) {
-                        eventDataHistory.push(x);
+                        eventData = x;
                     });
 
                     winSixGamesEach();
@@ -435,14 +434,81 @@
                         if (numPoints2 >= i) { controller.player2WinsPoint(); }
                     }
 
-                    var lastIndex = eventDataHistory.length - 1;
-                    expect(eventDataHistory[lastIndex].player1Points).toBe(numPoints1.toString());
-                    expect(eventDataHistory[lastIndex].player2Points).toBe(numPoints2.toString());
+                    expect(eventData.player1Points).toBe(numPoints1.toString());
+                    expect(eventData.player2Points).toBe(numPoints2.toString());
+                    expect(eventData.player1Games).toBe("6");
+                    expect(eventData.player2Games).toBe("6");
+                    expect(eventData.player1Sets).toBe("");
+                    expect(eventData.player2Sets).toBe("");
                 },
                 [
                     [2, 1],
                     [5, 4],
                     [6, 3]
+                ]
+            );
+
+            it_multiple(
+                "reports the correct score when games are won",
+                function(numGames1, numGames2) {
+
+                    controller.setMatchLength(3);
+
+                    var eventData = null;
+                    controller.addScoreChangedEventHandler(function(x) {
+                        eventData = x;
+                    });
+
+                    for (var i = 1; i <= Math.max(numGames1, numGames2); i++) {
+                        if (numGames1 >= i) { player1WinsLoveGame(); }
+                        if (numGames2 >= i) { player2WinsLoveGame(); }
+                    }
+
+                    expect(eventData.player1Points).toBe("");
+                    expect(eventData.player2Points).toBe("");
+                    expect(eventData.player1Games).toBe(numGames1.toString());
+                    expect(eventData.player2Games).toBe(numGames2.toString());
+                    expect(eventData.player1Sets).toBe("");
+                    expect(eventData.player2Sets).toBe("");
+                },
+                [
+                    [1, 1],
+                    [4, 4],
+                    [5, 0],
+                    [0, 5]
+                ]
+            );
+
+            it_multiple(
+                "reports the correct score when sets are won",
+                function(numSets1, numSets2) {
+
+                    controller.setMatchLength(3);
+
+                    var eventData = null;
+                    controller.addScoreChangedEventHandler(function(x) {
+                        eventData = x;
+                    });
+
+                    for (var i = 1; i <= Math.max(numSets1, numSets2); i++) {
+                        if (numSets1 >= i) { player1WinsLoveSet(); }
+                        if (numSets2 >= i) { player2WinsLoveSet(); }
+                    }
+
+                    expect(eventData.player1Points).toBe("");
+                    expect(eventData.player2Points).toBe("");
+                    expect(eventData.player1Games).toBe("");
+                    expect(eventData.player2Games).toBe("");
+                    expect(eventData.player1Sets).toBe(numSets1.toString());
+                    expect(eventData.player2Sets).toBe(numSets2.toString());
+                },
+                [
+                    [1, 0],
+                    [0, 1],
+                    [2, 0],
+                    [0, 2],
+                    [2, 1],
+                    [1, 2]
                 ]
             );
 
@@ -480,7 +546,7 @@
                 expect(eventData.player1Name).toBe("Player1");
                 expect(eventData.player2Name).toBe("Player2");
                 expect(eventData.player1Points).toBe("15");
-                expect(eventData.player2Points).toBe("");
+                expect(eventData.player2Points).toBe("0");
 
                 controller.setPlayerNames("XXX", "YYY");
 
@@ -507,6 +573,13 @@
 
                 expect(eventData.player1Points).toBe("");
                 expect(eventData.player2Points).toBe("");
+            });
+
+            it("allows the match length to be retrieved", function() {
+                controller.setMatchLength(3);
+                expect(controller.getMatchLength()).toBe(3);
+                controller.setMatchLength(5);
+                expect(controller.getMatchLength()).toBe(5);
             });
         });
     });

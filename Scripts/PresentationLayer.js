@@ -8,16 +8,24 @@
 
         var _controller = window.tennisKata.factory.createController();
 
+        var _rightJustifyScoreText = function(scoreText, minWidth) {
+            var padding = "";
+            for (var i = scoreText.length; i < minWidth; i++) {
+                padding += "&nbsp;";
+            }
+            return padding + scoreText;
+        };
+
         _controller.addScoreChangedEventHandler(function(eventData) {
 
             $("#player1Name").html(eventData.player1Name);
-            $("#player1Points").html(eventData.player1Points);
-            $("#player1Games").html(eventData.player1Games);
+            $("#player1Points").html(_rightJustifyScoreText(eventData.player1Points, 2));
+            $("#player1Games").html(_rightJustifyScoreText(eventData.player1Games, 2));
             $("#player1Sets").html(eventData.player1Sets);
 
             $("#player2Name").html(eventData.player2Name);
-            $("#player2Points").html(eventData.player2Points);
-            $("#player2Games").html(eventData.player2Games);
+            $("#player2Points").html(_rightJustifyScoreText(eventData.player2Points, 2));
+            $("#player2Games").html(_rightJustifyScoreText(eventData.player2Games, 2));
             $("#player2Sets").html(eventData.player2Sets);
         });
 
@@ -45,6 +53,13 @@
         });
 
         _controller.reset();
+
+        var _updateMatchLengthRadioButtons = function() {
+            var matchLength = _controller.getMatchLength();
+            $("input[name='matchLengthRadioButtonGroup'][value='" + matchLength + "']").prop("checked", true);
+        }
+
+        _updateMatchLengthRadioButtons();
     });
 
 } ());

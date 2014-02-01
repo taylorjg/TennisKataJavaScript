@@ -352,7 +352,7 @@
                 controller = window.tennisKata.factory.createController();
             });
 
-            it("fires scored changed callback when a point is scored", function() {
+            it("raises the scoredChanged event when a point is scored", function() {
                 var eventRaised = false;
                 controller.addScoreChangedEventHandler(function() {
                     eventRaised = true;
@@ -509,6 +509,55 @@
                     [0, 2],
                     [2, 1],
                     [1, 2]
+                ]
+            );
+
+            it("raises the reset event when the match is reset", function() {
+                var resetEventRaised = false;
+                controller.addResetEventHandler(function() {
+                    resetEventRaised = true;
+                });
+                controller.reset();
+                expect(resetEventRaised).toBe(true);
+            });
+
+            it_multiple(
+                "raises the matchWon event passing the winner when the match is won",
+                function(matchLength, numSets1, numSets2, expectedWinnerNumber) {
+
+                    // Arrange
+                    var matchWonEventData = null;
+                    controller.addMatchWonEventHandler(function(x) {
+                        matchWonEventData = x;
+                    });
+
+                    // Act
+                    controller.setMatchLength(matchLength);
+                    for (var i = 1; i <= Math.max(numSets1, numSets2); i++) {
+                        if (numSets1 >= i) { player1WinsLoveSet(); }
+                        if (numSets2 >= i) { player2WinsLoveSet(); }
+                    }
+
+                    // Assert
+                    expect(matchWonEventData).not.toBe(null);
+                    var expectedWinner = (expectedWinnerNumber === 1) ? controller.getPlayer1() : controller.getPlayer2();
+                    expect(matchWonEventData).toBe(expectedWinner);
+                },
+                [
+                    [1, 1, 0, 1],
+                    [1, 0, 1, 2],
+
+                    [3, 2, 0, 1],
+                    [3, 2, 1, 1],
+                    [3, 0, 2, 2],
+                    [3, 1, 2, 2],
+
+                    [5, 3, 0, 1],
+                    [5, 3, 1, 1],
+                    [5, 3, 2, 1],
+                    [5, 0, 3, 2],
+                    [5, 1, 3, 2],
+                    [5, 2, 3, 2]
                 ]
             );
 

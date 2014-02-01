@@ -16,6 +16,12 @@
             return padding + scoreText;
         };
 
+        _controller.addResetEventHandler(function() {
+            console.log("_controller.addResetEventHandler");
+            $("#player1ScoresPointBtn").prop("disabled", false);
+            $("#player2ScoresPointBtn").prop("disabled", false);
+        });
+
         _controller.addScoreChangedEventHandler(function(eventData) {
 
             $("#player1Name").html(eventData.player1Name);
@@ -29,6 +35,12 @@
             $("#player2Sets").html(eventData.player2Sets);
         });
 
+        _controller.addMatchWonEventHandler(function(winner) {
+            console.log("_controller.addMatchWonEventHandler: " + winner.getName());
+            $("#player1ScoresPointBtn").prop("disabled", true);
+            $("#player2ScoresPointBtn").prop("disabled", true);
+        });
+
         $("#setPlayerNamesBtn").click(function() {
             var player1Name = $("#player1NameTxt").val();
             var player2Name = $("#player2NameTxt").val();
@@ -36,7 +48,8 @@
         });
 
         $("#setMatchLengthBtn").click(function() {
-            var matchLength = $("input[name='matchLengthRadioButtonGroup']:checked").val();
+            var matchLengthString = $("input[name='matchLengthRadioButtonGroup']:checked").val();
+            var matchLength = parseInt(matchLengthString, 10);
             _controller.setMatchLength(matchLength);
         });
 

@@ -8,8 +8,10 @@
 
         var _player1 = player1;
         var _player2 = player2;
+        var _resetEventHandlers = [];
         var _gameWonEventHandlers = [];
         var _setWonEventHandlers = [];
+        var _matchWonEventHandlers = [];
         var _matchLength = 3;
         var _player1Points = 0;
         var _player2Points = 0;
@@ -62,6 +64,7 @@
             _player2Games = 0;
             _player2Sets = 0;
             _isTieBreakerFlag = false;
+            _raiseResetEvent();
         };
 
         var _checkIfGameIsWon = function() {
@@ -137,6 +140,26 @@
                 _player2Games = 0;
                 _isTieBreakerFlag = false;
                 _raiseSetWonEvent();
+                _checkIfMatchIsWon();
+            }
+        };
+
+        var _checkIfMatchIsWon = function() {
+
+            var numberOfSetsNeededToWin = (_matchLength + 1) / 2;
+
+            if (_player1Sets === numberOfSetsNeededToWin) {
+                _raiseMatchWonEvent(_player1);
+            }
+
+            if (_player2Sets === numberOfSetsNeededToWin) {
+                _raiseMatchWonEvent(_player2);
+            }
+        };
+
+        var _raiseResetEvent = function() {
+            for (var i = 0; i < _resetEventHandlers.length; i++) {
+                _resetEventHandlers[i]();
             }
         };
 
@@ -152,12 +175,26 @@
             }
         };
 
+        var _raiseMatchWonEvent = function(winner) {
+            for (var i = 0; i < _matchWonEventHandlers.length; i++) {
+                _matchWonEventHandlers[i](winner);
+            }
+        };
+
+        var _addResetEventHandler = function(handler) {
+            _resetEventHandlers.push(handler);
+        };
+
         var _addGameWonEventHandler = function(handler) {
             _gameWonEventHandlers.push(handler);
         };
 
         var _addSetWonEventHandler = function(handler) {
             _setWonEventHandlers.push(handler);
+        };
+
+        var _addMatchWonEventHandler = function(handler) {
+            _matchWonEventHandlers.push(handler);
         };
 
         return {
@@ -176,8 +213,10 @@
             getMatchLength: _getMatchLength,
             setMatchLength: _setMatchLength,
             reset: _reset,
+            addResetEventHandler: _addResetEventHandler,
             addGameWonEventHandler: _addGameWonEventHandler,
-            addSetWonEventHandler: _addSetWonEventHandler
+            addSetWonEventHandler: _addSetWonEventHandler,
+            addMatchWonEventHandler: _addMatchWonEventHandler
         };
     };
 }());

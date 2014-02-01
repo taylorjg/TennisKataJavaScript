@@ -10,7 +10,15 @@
         var _player2 = window.tennisKata.factory.createPlayer("Player2");
         var _scorecard = window.tennisKata.factory.createScorecard(_player1, _player2);
         var _scoreboard = window.tennisKata.factory.createScoreboard(_scorecard);
+        var _resetEventHandlers = [];
         var _scoreChangedEventHandlers = [];
+        var _matchWonEventHandlers = [];
+
+        var _raiseResetEvent = function() {
+            for (var i = 0; i < _resetEventHandlers.length; i++) {
+                _resetEventHandlers[i]();
+            }
+        };
 
         var _raiseScoreChangedEvent = function() {
 
@@ -32,12 +40,21 @@
             }
         };
 
+        var _raiseMatchWonEvent = function(eventData) {
+            for (var i = 0; i < _matchWonEventHandlers.length; i++) {
+                _matchWonEventHandlers[i](eventData);
+            }
+        };
+
         var _setPlayerNames = function(playerName1, playerName2) {
             var newPlayer1 = window.tennisKata.factory.createPlayer(playerName1);
             var newPlayer2 = window.tennisKata.factory.createPlayer(playerName2);
             _scorecard.changePlayers(newPlayer1, newPlayer2);
-            _raiseScoreChangedEvent();
+            _reset();
         };
+
+        var _getPlayer1 = function() { return _player1; };
+        var _getPlayer2 = function() { return _player2; };
 
         var _getMatchLength = function() {
             return _scorecard.getMatchLength();
@@ -45,11 +62,19 @@
 
         var _setMatchLength = function(matchLength) {
             _scorecard.setMatchLength(matchLength);
-            _raiseScoreChangedEvent();
+            _reset();
+        };
+
+        var _addResetEventHandler = function(handler) {
+            _resetEventHandlers.push(handler);
         };
 
         var _addScoreChangedEventHandler = function(handler) {
             _scoreChangedEventHandlers.push(handler);
+        };
+
+        var _addMatchWonEventHandler = function(handler) {
+            _matchWonEventHandlers.push(handler);
         };
 
         var _player1WinsPoint = function() {
@@ -67,14 +92,29 @@
             _raiseScoreChangedEvent();
         };
 
+        var _onResetEventHandler = function() {
+            _raiseResetEvent();
+        };
+
+        var _onMatchWonEventHandler = function(eventData) {
+            _raiseMatchWonEvent(eventData);
+        };
+
+        _scorecard.addResetEventHandler(_onResetEventHandler);
+        _scorecard.addMatchWonEventHandler(_onMatchWonEventHandler);
+
         return {
             setPlayerNames: _setPlayerNames,
+            getPlayer1: _getPlayer1,
+            getPlayer2: _getPlayer2,
             getMatchLength: _getMatchLength,
             setMatchLength: _setMatchLength,
             player1WinsPoint: _player1WinsPoint,
             player2WinsPoint: _player2WinsPoint,
             reset: _reset,
-            addScoreChangedEventHandler: _addScoreChangedEventHandler
+            addResetEventHandler: _addResetEventHandler,
+            addScoreChangedEventHandler: _addScoreChangedEventHandler,
+            addMatchWonEventHandler: _addMatchWonEventHandler
         };
     };
 } ());

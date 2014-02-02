@@ -23,7 +23,6 @@
                 var playerY = window.tennisKata.factory.createPlayer("Wozniacki");
                 expect(playerX.getName()).toBe("Azarenka");
                 expect(playerY.getName()).toBe("Wozniacki");
-                expect(playerX.getId()).not.toBe(playerY.getId());
             });
         });
 
@@ -311,6 +310,28 @@
                     expect(scorecard.getPlayer2Sets()).toEqual(0);
                 });
             });
+        });
+
+        describe("scoreSummary tests", function() {
+
+            var controller;
+
+            beforeEach(function() {
+                controller = window.tennisKata.factory.createController();
+            });
+
+            it("resets to the empty string on reset", function() {
+                var scoreSummaryText;
+                controller.addScoreSummaryChangedEventHandler(function(eventData) {
+                    scoreSummaryText = eventData;
+                });
+                controller.reset();
+                expect(scoreSummaryText).toBe("");
+            });
+
+//            it("is initially an empty string", function() {
+//                controller.reset();
+//            });
         });
 
         describe("Controller tests", function() {

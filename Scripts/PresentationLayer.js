@@ -34,6 +34,10 @@
             $("#player2Sets").html(eventData.player2Sets);
         });
 
+        _controller.addScoreSummaryChangedEventHandler(function(eventData) {
+            $("#scoreSummary").html(eventData);
+        });
+
         _controller.addMatchWonEventHandler(function(/* winner */) {
             $("#player1ScoresPointBtn").prop("disabled", true);
             $("#player2ScoresPointBtn").prop("disabled", true);

@@ -312,28 +312,6 @@
             });
         });
 
-        describe("scoreSummary tests", function() {
-
-            var controller;
-
-            beforeEach(function() {
-                controller = window.tennisKata.factory.createController();
-            });
-
-            it("resets to the empty string on reset", function() {
-                var scoreSummaryText;
-                controller.addScoreSummaryChangedEventHandler(function(eventData) {
-                    scoreSummaryText = eventData;
-                });
-                controller.reset();
-                expect(scoreSummaryText).toBe("");
-            });
-
-//            it("is initially an empty string", function() {
-//                controller.reset();
-//            });
-        });
-
         describe("Controller tests", function() {
 
             var controller;
@@ -366,6 +344,13 @@
                 for (var i = 1; i <= 6; i++) {
                     player1WinsLoveGame();
                     player2WinsLoveGame();
+                }
+            };
+
+            var playersWinLoveGames = function(numGames1, numGames2) {
+                for (var i = 1; i <= Math.max(numGames1, numGames2); i++) {
+                    if (numGames1 >= i) { player1WinsLoveGame(); }
+                    if (numGames2 >= i) { player2WinsLoveGame(); }
                 }
             };
 
@@ -756,6 +741,54 @@
                 expect(controller.getMatchLength()).toBe(3);
                 controller.setMatchLength(5);
                 expect(controller.getMatchLength()).toBe(5);
+            });
+
+            describe("Score summary tests", function() {
+
+                it_multiple(
+                    "is correct for various match states",
+                    function(player1ScoreParts, player2ScoreParts, expectedScoreSummaryText) {
+
+                        // Arrange
+                        var scoreSummaryText = null;
+                        controller.addScoreSummaryChangedEventHandler(function(eventData) {
+                            scoreSummaryText = eventData;
+                        });
+
+                        // Act
+                        controller.setMatchLength(3);
+
+                        var num1stSetGames1 = player1ScoreParts[0];
+                        var num1stSetGames2 = player2ScoreParts[0];
+
+                        var num2ndSetGames1 = player1ScoreParts[1];
+                        var num2ndSetGames2 = player2ScoreParts[1];
+
+                        var num3rdSetGames1 = player1ScoreParts[2];
+                        var num3rdSetGames2 = player2ScoreParts[2];
+
+                        var numPoints1 = player1ScoreParts[3];
+                        var numPoints2 = player2ScoreParts[3];
+
+                        playersWinLoveGames(num1stSetGames1, num1stSetGames2);
+                        playersWinLoveGames(num2ndSetGames1, num2ndSetGames2);
+                        playersWinLoveGames(num3rdSetGames1, num3rdSetGames2);
+
+                        for (var i = 1; i <= Math.max(numPoints1, numPoints2); i++) {
+                            if (numPoints1 >= i) { controller.player1WinsPoint(); }
+                            if (numPoints2 >= i) { controller.player2WinsPoint(); }
+                        }
+
+                        // Assert
+                        expect(scoreSummaryText).toBe(expectedScoreSummaryText);
+                    },
+                    [
+                        [[0, 0, 0, 0], [0, 0, 0, 0], ""],
+                        [[2, 0, 0, 0], [1, 0, 0, 0], "2-1"],
+                        [[3, 0, 0, 0], [5, 0, 0, 0], "3-5"],
+                        [[6, 2, 0, 0], [3, 4, 0, 0], "6-3, 2-4"]
+                    ]
+                );
             });
         });
     });

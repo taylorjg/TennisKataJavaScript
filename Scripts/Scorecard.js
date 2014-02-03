@@ -79,15 +79,18 @@
         var _checkIfGameIsWon = function() {
 
             var gameWinner = null;
+            var gameWonOnTieBreak = false;
 
             if (_isTieBreakerFlag) {
                 if (_player1Points >= 7 && _player1Points - _player2Points >= 2) {
                     _player1Games++;
                     gameWinner = _player1;
+                    gameWonOnTieBreak = true;
                 }
                 if (_player2Points >= 7 && _player2Points - _player1Points >= 2) {
                     _player2Games++;
                     gameWinner = _player2;
+                    gameWonOnTieBreak = true;
                 }
                 if (gameWinner === null) {
                     _changeServer();
@@ -110,7 +113,9 @@
                 _player1Points = 0;
                 _player2Points = 0;
                 _raiseGameWonEvent();
-                _changeServer();
+                if (!gameWonOnTieBreak) {
+                    _changeServer();
+                }
                 _checkIfSetIsWon();
             }
         };
@@ -154,11 +159,16 @@
                 _player1Games = 0;
                 _player2Games = 0;
                 if (_isTieBreakerFlag) {
-                    _server = _tieBreakerFirstServer;
+                    var needToChangeServer = false;
+                    if (_server === _tieBreakerFirstServer) {
+                        needToChangeServer = true;
+                    }
                     _isTieBreakerFlag = false;
                     _tieBreakerServeCount = 0;
                     _tieBreakerFirstServer = null;
-                    _changeServer();
+                    if (needToChangeServer) {
+                        _changeServer();
+                    }
                 }
                 _raiseSetWonEvent();
                 _checkIfMatchIsWon();
@@ -195,9 +205,8 @@
 
             if (flipTurn) {
                 _server = (_server === _player1) ? _player2 : _player1;
+                _raiseServerChangedEvent(_server);
             }
-
-            _raiseServerChangedEvent(_server);
         };
 
         var _raiseResetEvent = function() {

@@ -401,13 +401,16 @@
                     playersWinSixGamesEach();
 
                     controller.player1WinsPoint();
-                    controller.player1WinsPoint();
-                    controller.player1WinsPoint();
-                    controller.player1WinsPoint();
+
                     controller.player1WinsPoint();
                     controller.player1WinsPoint();
 
-                    expect(servingHistory.length).toBe(18);
+                    controller.player1WinsPoint();
+                    controller.player1WinsPoint();
+
+                    controller.player1WinsPoint();
+
+                    expect(servingHistory.length).toBe(15);
                     expect(servingHistory[0]).toBe(controller.getPlayer2());
                     expect(servingHistory[1]).toBe(controller.getPlayer1());
                     expect(servingHistory[2]).toBe(controller.getPlayer2());
@@ -422,11 +425,8 @@
                     expect(servingHistory[11]).toBe(controller.getPlayer1());
 
                     expect(servingHistory[12]).toBe(controller.getPlayer2());
-                    expect(servingHistory[13]).toBe(controller.getPlayer2());
-                    expect(servingHistory[14]).toBe(controller.getPlayer1());
-                    expect(servingHistory[15]).toBe(controller.getPlayer1());
-                    expect(servingHistory[16]).toBe(controller.getPlayer2());
-                    expect(servingHistory[17]).toBe(controller.getPlayer2());
+                    expect(servingHistory[13]).toBe(controller.getPlayer1());
+                    expect(servingHistory[14]).toBe(controller.getPlayer2());
                 });
 
                 it("is correct at the start of a new set that was not decided by a tie-breaker", function() {
@@ -445,31 +445,58 @@
                     expect(servingHistory[6]).toBe(controller.getPlayer2());
                 });
 
-                it("is correct at the start of a new set that was decided by a tie-breaker", function() {
+                describe("is correct at the start of a new set that was decided by a tie-breaker", function() {
 
-                    controller.setMatchLength(3);
-                    playersWinSixGamesEach();
-                    servingHistory = [];
+                    it("when the first and last tie-breaker points were served by different players", function() {
 
-                    controller.player1WinsPoint();
-                    controller.player1WinsPoint();
-                    controller.player1WinsPoint();
-                    controller.player1WinsPoint();
-                    controller.player1WinsPoint();
-                    controller.player1WinsPoint();
-                    controller.player1WinsPoint();
+                        controller.setMatchLength(3);
+                        playersWinSixGamesEach();
+                        servingHistory = [];
 
-                    controller.player1WinsPoint();
+                        controller.player1WinsPoint(); // p1 -> p2
 
-                    expect(servingHistory.length).toBe(8);
-                    expect(servingHistory[0]).toBe(controller.getPlayer2());
-                    expect(servingHistory[1]).toBe(controller.getPlayer2());
-                    expect(servingHistory[2]).toBe(controller.getPlayer1());
-                    expect(servingHistory[3]).toBe(controller.getPlayer1());
-                    expect(servingHistory[4]).toBe(controller.getPlayer2());
-                    expect(servingHistory[5]).toBe(controller.getPlayer2());
-                    expect(servingHistory[6]).toBe(controller.getPlayer1());
-                    expect(servingHistory[7]).toBe(controller.getPlayer2());
+                        controller.player1WinsPoint();
+                        controller.player1WinsPoint(); // p2 -> p1
+
+                        controller.player1WinsPoint();
+                        controller.player1WinsPoint(); // p1 -> p2
+
+                        controller.player1WinsPoint();
+                        controller.player1WinsPoint(); // p2 to serve the first game of the next set so no flip
+
+                        expect(servingHistory.length).toBe(3);
+                        expect(servingHistory[0]).toBe(controller.getPlayer2());
+                        expect(servingHistory[1]).toBe(controller.getPlayer1());
+                        expect(servingHistory[2]).toBe(controller.getPlayer2());
+                    });
+
+                    it("when the first and last tie-breaker points were served the same player", function() {
+
+                        controller.setMatchLength(3);
+                        playersWinSixGamesEach();
+                        servingHistory = [];
+
+                        controller.player1WinsPoint(); // p1 -> p2
+
+                        controller.player1WinsPoint();
+                        controller.player1WinsPoint(); // p2 -> p1
+
+                        controller.player1WinsPoint();
+                        controller.player1WinsPoint(); // p1 -> p2
+
+                        controller.player2WinsPoint();
+                        controller.player2WinsPoint(); // p2 -> p1
+
+                        controller.player1WinsPoint();
+                        controller.player1WinsPoint(); // p1 -> p2
+
+                        expect(servingHistory.length).toBe(5);
+                        expect(servingHistory[0]).toBe(controller.getPlayer2());
+                        expect(servingHistory[1]).toBe(controller.getPlayer1());
+                        expect(servingHistory[2]).toBe(controller.getPlayer2());
+                        expect(servingHistory[3]).toBe(controller.getPlayer1());
+                        expect(servingHistory[4]).toBe(controller.getPlayer2());
+                    });
                 });
             });
 

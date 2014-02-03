@@ -422,11 +422,11 @@
                     expect(servingHistory[11]).toBe(controller.getPlayer1());
 
                     expect(servingHistory[12]).toBe(controller.getPlayer2());
-                    expect(servingHistory[13]).toBe(controller.getPlayer1());
+                    expect(servingHistory[13]).toBe(controller.getPlayer2());
                     expect(servingHistory[14]).toBe(controller.getPlayer1());
-                    expect(servingHistory[15]).toBe(controller.getPlayer2());
+                    expect(servingHistory[15]).toBe(controller.getPlayer1());
                     expect(servingHistory[16]).toBe(controller.getPlayer2());
-                    expect(servingHistory[17]).toBe(controller.getPlayer1());
+                    expect(servingHistory[17]).toBe(controller.getPlayer2());
                 });
 
                 it("is correct at the start of a new set that was not decided by a tie-breaker", function() {
@@ -463,13 +463,13 @@
 
                     expect(servingHistory.length).toBe(8);
                     expect(servingHistory[0]).toBe(controller.getPlayer2());
-                    expect(servingHistory[1]).toBe(controller.getPlayer1());
+                    expect(servingHistory[1]).toBe(controller.getPlayer2());
                     expect(servingHistory[2]).toBe(controller.getPlayer1());
-                    expect(servingHistory[3]).toBe(controller.getPlayer2());
+                    expect(servingHistory[3]).toBe(controller.getPlayer1());
                     expect(servingHistory[4]).toBe(controller.getPlayer2());
-                    expect(servingHistory[5]).toBe(controller.getPlayer1());
+                    expect(servingHistory[5]).toBe(controller.getPlayer2());
                     expect(servingHistory[6]).toBe(controller.getPlayer1());
-                    expect(servingHistory[7]).toBe(controller.getPlayer1());
+                    expect(servingHistory[7]).toBe(controller.getPlayer2());
                 });
             });
 

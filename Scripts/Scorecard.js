@@ -24,7 +24,6 @@
         var _player2Sets = 0;
         var _isTieBreakerFlag = false;
         var _tieBreakerServeCount = 0;
-        var _tieBreakerFirstPoint = false;
         var _tieBreakerFirstServer = null;
 
         var _getPlayer1 = function() { return _player1; };
@@ -135,8 +134,7 @@
                     var thisSetNumber = _player1Sets + _player2Sets + 1;
                     if (thisSetNumber < _matchLength) {
                         _isTieBreakerFlag = true;
-                        _tieBreakerServeCount = 0;
-                        _tieBreakerFirstPoint = true;
+                        _tieBreakerServeCount = 1;
                         _tieBreakerFirstServer = _server;
                     }
                 }
@@ -156,15 +154,9 @@
                 _player1Games = 0;
                 _player2Games = 0;
                 if (_isTieBreakerFlag) {
-                    if (_tieBreakerFirstServer === _player1) {
-                        _server = _player2;
-                    }
-                    else {
-                        _server = _player1;
-                    }
+                    _server = _tieBreakerFirstServer;
                     _isTieBreakerFlag = false;
                     _tieBreakerServeCount = 0;
-                    _tieBreakerFirstPoint = false;
                     _tieBreakerFirstServer = null;
                     _changeServer();
                 }
@@ -191,18 +183,11 @@
             var flipTurn = false;
 
             if (_isTieBreakerFlag) {
-                if (_tieBreakerFirstPoint) {
-                    _tieBreakerFirstPoint = false;
-                    _tieBreakerServeCount = 1;
-                    flipTurn = true;
-                }
-                else {
                     _tieBreakerServeCount++;
                     if (_tieBreakerServeCount === 2) {
                         _tieBreakerServeCount = 0;
                         flipTurn = true;
                     }
-                }
             }
             else {
                 flipTurn = true;
@@ -212,7 +197,6 @@
                 _server = (_server === _player1) ? _player2 : _player1;
             }
 
-//            console.log("raising _server: " + _server.getName());
             _raiseServerChangedEvent(_server);
         };
 

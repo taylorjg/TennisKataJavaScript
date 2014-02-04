@@ -470,7 +470,7 @@
                         expect(servingHistory[2]).toBe(controller.getPlayer2());
                     });
 
-                    it("when the first and last tie-breaker points were served the same player", function() {
+                    it("when the first and last tie-breaker points were served by the same player", function() {
 
                         controller.setMatchLength(3);
                         playersWinSixGamesEach();
@@ -814,6 +814,65 @@
                         [[2, 0, 0, 0], [1, 0, 0, 0], "2-1"],
                         [[3, 0, 0, 0], [5, 0, 0, 0], "3-5"],
                         [[6, 2, 0, 0], [3, 4, 0, 0], "6-3, 2-4"]
+                    ]
+                );
+
+                it_multiple(
+                    "is correct for various match states involving tie-breakers",
+                    function(player1ScoreParts, player2ScoreParts, expectedScoreSummaryText) {
+
+                        // Arrange
+                        var scoreSummaryText = null;
+                        controller.addScoreSummaryChangedEventHandler(function(eventData) {
+                            scoreSummaryText = eventData;
+                        });
+
+                        // Act
+                        controller.setMatchLength(3);
+
+                        var i;
+
+                        var num1stSetGames1 = player1ScoreParts[0][0];
+                        var num1stSetGames2 = player2ScoreParts[0][0];
+                        playersWinLoveGames(num1stSetGames1, num1stSetGames2);
+                        if (player1ScoreParts[0].length === 2 && player2ScoreParts[0].length === 2) {
+                            var num1stSetTieBreakerPoints1 = player1ScoreParts[0][1];
+                            var num1stSetTieBreakerPoints2 = player2ScoreParts[0][1];
+                            for (i = 1; i <= Math.max(num1stSetTieBreakerPoints1, num1stSetTieBreakerPoints2); i++) {
+                                if (num1stSetTieBreakerPoints1 >= i) { controller.player1WinsPoint(); }
+                                if (num1stSetTieBreakerPoints2 >= i) { controller.player2WinsPoint(); }
+                            }
+                        }
+
+                        var num2ndSetGames1 = player1ScoreParts[1][0];
+                        var num2ndSetGames2 = player2ScoreParts[1][0];
+                        playersWinLoveGames(num2ndSetGames1, num2ndSetGames2);
+                        if (player1ScoreParts[1].length === 2 && player2ScoreParts[1].length === 2) {
+                            var num2ndSetTieBreakerPoints1 = player1ScoreParts[1][1];
+                            var num2ndSetTieBreakerPoints2 = player2ScoreParts[1][1];
+                            for (i = 1; i <= Math.max(num2ndSetTieBreakerPoints1, num2ndSetTieBreakerPoints2); i++) {
+                                if (num2ndSetTieBreakerPoints1 >= i) { controller.player1WinsPoint(); }
+                                if (num2ndSetTieBreakerPoints2 >= i) { controller.player2WinsPoint(); }
+                            }
+                        }
+
+                        var num3rdSetGames1 = player1ScoreParts[2];
+                        var num3rdSetGames2 = player2ScoreParts[2];
+                        playersWinLoveGames(num3rdSetGames1, num3rdSetGames2);
+
+                        var numPoints1 = player1ScoreParts[3];
+                        var numPoints2 = player2ScoreParts[3];
+                        for (i = 1; i <= Math.max(numPoints1, numPoints2); i++) {
+                            if (numPoints1 >= i) { controller.player1WinsPoint(); }
+                            if (numPoints2 >= i) { controller.player2WinsPoint(); }
+                        }
+
+                        // Assert
+                        expect(scoreSummaryText).toBe(expectedScoreSummaryText);
+                    },
+                    [
+                        [[[6, 7], [0], 0, 0], [[6, 4], [0], 0, 0], "7-6 (7-4)"],
+                        [[[3], [6, 8], 2, 0], [[6], [6, 10], 5, 0], "3-6, 6-7 (8-10), 2-5"]
                     ]
                 );
             });

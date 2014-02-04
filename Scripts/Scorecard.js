@@ -12,6 +12,7 @@
         var _server = _initialServer;
         var _resetEventHandlers = [];
         var _gameWonEventHandlers = [];
+        var _tieBreakerWonEventHandlers = [];
         var _setWonEventHandlers = [];
         var _matchWonEventHandlers = [];
         var _serverChangedEventHandlers = [];
@@ -110,17 +111,19 @@
             }
 
             if (gameWinner !== null) {
+                var p1p = _player1Points;
+                var p2p = _player2Points;
                 _player1Points = 0;
                 _player2Points = 0;
                 _raiseGameWonEvent();
                 if (!gameWonOnTieBreak) {
                     _changeServer();
                 }
-                _checkIfSetIsWon();
+                _checkIfSetIsWon(p1p, p2p);
             }
         };
 
-        var _checkIfSetIsWon = function() {
+        var _checkIfSetIsWon = function(p1p, p2p) {
 
             var setWinner = null;
 
@@ -159,6 +162,7 @@
                 _player1Games = 0;
                 _player2Games = 0;
                 if (_isTieBreakerFlag) {
+                    _raiseTieBreakerWonEvent(p1p, p2p);
                     var needToChangeServer = false;
                     if (_server === _tieBreakerFirstServer) {
                         needToChangeServer = true;
@@ -217,13 +221,19 @@
 
         var _raiseGameWonEvent = function() {
             for (var i = 0; i < _gameWonEventHandlers.length; i++) {
-                _gameWonEventHandlers[i]();
+                _gameWonEventHandlers[i](_player1Games, _player2Games);
+            }
+        };
+
+        var _raiseTieBreakerWonEvent = function(p1p, p2p) {
+            for (var i = 0; i < _tieBreakerWonEventHandlers.length; i++) {
+                _tieBreakerWonEventHandlers[i](p1p, p2p);
             }
         };
 
         var _raiseSetWonEvent = function() {
             for (var i = 0; i < _setWonEventHandlers.length; i++) {
-                _setWonEventHandlers[i]();
+                _setWonEventHandlers[i](_player1Sets, _player2Sets);
             }
         };
 
@@ -245,6 +255,10 @@
 
         var _addGameWonEventHandler = function(handler) {
             _gameWonEventHandlers.push(handler);
+        };
+
+        var _addTieBreakerWonEventHandler = function(handler) {
+            _tieBreakerWonEventHandlers.push(handler);
         };
 
         var _addSetWonEventHandler = function(handler) {
@@ -278,6 +292,7 @@
             reset: _reset,
             addResetEventHandler: _addResetEventHandler,
             addGameWonEventHandler: _addGameWonEventHandler,
+            addTieBreakerWonEventHandler: _addTieBreakerWonEventHandler,
             addSetWonEventHandler: _addSetWonEventHandler,
             addMatchWonEventHandler: _addMatchWonEventHandler,
             addServerChangedEventHandler: _addServerChangedEventHandler

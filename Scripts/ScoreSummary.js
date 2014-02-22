@@ -10,30 +10,12 @@
 
     window.tennisKata.scoreSummary = function(scorecard) {
 
-        var _scorecard = scorecard;
         var _setData = [];
         var _scoreSummaryChangedEventHandlers = [];
 
-        var _buildScoreSummaryTextFromSetData = function() {
-            var setScores = [];
-            for (var i = 0; i < _setData.length; i++) {
-                var setValues = _setData[i];
-                if (setValues.length >= 2) {
-                    var setScore = setValues[0] + "-" + setValues[1];
-                    if (setValues.length === 4) {
-                        var tieBreakerResult = " (" + setValues[2] + "-" + setValues[3] + ")";
-                        setScore += tieBreakerResult;
-                    }
-                    setScores.push(setScore);
-                }
-            }
-            return setScores.join(", ");
-        };
-
         var _raiseScoreSummaryChangedEvent = function() {
-            var scoreSummaryText = _buildScoreSummaryTextFromSetData();
             for (var i = 0; i < _scoreSummaryChangedEventHandlers.length; i++) {
-                _scoreSummaryChangedEventHandlers[i](scoreSummaryText);
+                _scoreSummaryChangedEventHandlers[i](_setData);
             }
         };
 
@@ -76,10 +58,10 @@
             _raiseScoreSummaryChangedEvent();
         };
 
-        _scorecard.addResetEventHandler(_onReset);
-        _scorecard.addGameWonEventHandler(_onGameWon);
-        _scorecard.addTieBreakerWonEventHandler(_onTieBreakerWon);
-        _scorecard.addSetWonEventHandler(_onSetWon);
+        scorecard.addResetEventHandler(_onReset);
+        scorecard.addGameWonEventHandler(_onGameWon);
+        scorecard.addTieBreakerWonEventHandler(_onTieBreakerWon);
+        scorecard.addSetWonEventHandler(_onSetWon);
 
         return {
             addScoreSummaryChangedEventHandler: _addScoreSummaryChangedEventHandler

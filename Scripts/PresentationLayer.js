@@ -35,7 +35,9 @@
         });
 
         _controller.addScoreSummaryChangedEventHandler(function(eventData) {
-            $("#scoreSummary").html(eventData);
+            var scoreSummaryFormatter = window.tennisKata.factory.createScoreSummaryFormatter();
+            var scoreSummaryText = scoreSummaryFormatter.formatScoreSummary(eventData, true);
+            $("#scoreSummary").html(scoreSummaryText);
         });
 
         _controller.addMatchWonEventHandler(function(/* winner */) {

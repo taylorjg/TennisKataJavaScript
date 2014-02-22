@@ -26,12 +26,17 @@
             return window.tennisKata.scorecard(player1, player2);
         };
 
+        var _createScoreSummaryFormatter = function () {
+            return window.tennisKata.scoreSummaryFormatter();
+        };
+
         return {
             createPlayer: _createPlayer,
             createScorecard: _createScorecard,
             createScoreboard: _createScoreboard,
             createScoreSummary: _createScoreSummary,
-            createController: _createController
+            createController: _createController,
+            createScoreSummaryFormatter: _createScoreSummaryFormatter
         };
     }());
 } ());

@@ -115,10 +115,10 @@
                 var p2p = _player2Points;
                 _player1Points = 0;
                 _player2Points = 0;
-                _raiseGameWonEvent();
                 if (!gameWonOnTieBreak) {
                     _changeServer();
                 }
+                _raiseGameWonEvent();
                 _checkIfSetIsWon(p1p, p2p);
             }
         };

@@ -7,6 +7,8 @@
     $(document).ready(function() {
 
         var _controller = window.tennisKata.factory.createController();
+        var _currentServer = null;
+        var _lastSetData = null;
 
         var _rightJustifyScoreText = function(scoreText, minWidth) {
             var padding = "";
@@ -34,23 +36,42 @@
             $("#player2Sets").html(eventData.player2Sets);
         });
 
-        _controller.addScoreSummaryChangedEventHandler(function(eventData) {
+        var _updateScoreSummaryText = (function(setData, player1First, gameOver) {
             var scoreSummaryFormatter = window.tennisKata.factory.createScoreSummaryFormatter();
-            var scoreSummaryText = scoreSummaryFormatter.formatScoreSummary(eventData, true);
-            $("#scoreSummary").html(scoreSummaryText);
+            var player1First = (_currentServer == _controller.getPlayer1());
+            var scoreSummaryText = scoreSummaryFormatter.formatScoreSummary(setData, player1First);
+            if (scoreSummaryText) {
+                if (gameOver) {
+                    $("#scoreSummaryWhoFirst").html("&nbsp;(winner first)");
+                }
+                else {
+                    $("#scoreSummaryWhoFirst").html("&nbsp;(server first)");
+                }
+                $("#scoreSummaryValue").html(scoreSummaryText);
+            }
+            $("#scoreSummary").toggle(!!scoreSummaryText);
+            _lastSetData = setData;
         });
 
-        _controller.addMatchWonEventHandler(function(/* winner */) {
+        _controller.addScoreSummaryChangedEventHandler(function(eventData) {
+            var player1First = (_currentServer == _controller.getPlayer1());
+            _updateScoreSummaryText(eventData, player1First, false);
+        });
+
+        _controller.addMatchWonEventHandler(function(winner) {
             $("#player1ScoresPointBtn").prop("disabled", true);
             $("#player2ScoresPointBtn").prop("disabled", true);
+            var player1First = (winner == _controller.getPlayer1());
+            _updateScoreSummaryText(_lastSetData, player1First, true);
         });
 
-        var _updateServer = function(server) {
-            $("#player1Serving").toggle(server === _controller.getPlayer1());
-            $("#player2Serving").toggle(server === _controller.getPlayer2());
+        var _updateCurrentServer = function(currentServer) {
+            _currentServer = currentServer;
+            $("#player1Serving").toggle(_currentServer === _controller.getPlayer1());
+            $("#player2Serving").toggle(_currentServer === _controller.getPlayer2());
         };
 
-        _controller.addServerChangedEventHandler(_updateServer);
+        _controller.addServerChangedEventHandler(_updateCurrentServer);
 
         $("#setPlayerNamesBtn").click(function() {
             var player1Name = $("#player1NameTxt").val();
@@ -74,7 +95,7 @@
 
         $("#resetBtn").click(function() {
             _controller.reset();
-            _updateServer(_controller.getServer());
+            _updateCurrentServer(_controller.getServer());
         });
 
         _controller.reset();
@@ -85,7 +106,7 @@
         };
 
         _updateMatchLengthRadioButtons();
-        _updateServer(_controller.getServer());
+        _updateCurrentServer(_controller.getServer());
     });
 
 } ());

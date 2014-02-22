@@ -777,9 +777,10 @@
                     function(player1ScoreParts, player2ScoreParts, expectedScoreSummaryText) {
 
                         // Arrange
+                        var scoreSummaryFormatter = window.tennisKata.factory.createScoreSummaryFormatter();
                         var scoreSummaryText = null;
                         controller.addScoreSummaryChangedEventHandler(function(eventData) {
-                            scoreSummaryText = eventData;
+                            scoreSummaryText = scoreSummaryFormatter.formatScoreSummary(eventData, true);
                         });
 
                         // Act
@@ -822,9 +823,10 @@
                     function(player1ScoreParts, player2ScoreParts, expectedScoreSummaryText) {
 
                         // Arrange
+                        var scoreSummaryFormatter = window.tennisKata.factory.createScoreSummaryFormatter();
                         var scoreSummaryText = null;
                         controller.addScoreSummaryChangedEventHandler(function(eventData) {
-                            scoreSummaryText = eventData;
+                            scoreSummaryText = scoreSummaryFormatter.formatScoreSummary(eventData, true);
                         });
 
                         // Act
@@ -871,8 +873,8 @@
                         expect(scoreSummaryText).toBe(expectedScoreSummaryText);
                     },
                     [
-                        [[[6, 7], [0], 0, 0], [[6, 4], [0], 0, 0], "7-6 (7-4)"],
-                        [[[3], [6, 8], 2, 0], [[6], [6, 10], 5, 0], "3-6, 6-7 (8-10), 2-5"]
+                        [[[6, 7], [0], 0, 0], [[6, 4], [0], 0, 0], "7-6 <sup><i>(7-4)</i></sup>"],
+                        [[[3], [6, 8], 2, 0], [[6], [6, 10], 5, 0], "3-6, 6-7 <sup><i>(8-10)</i></sup>, 2-5"]
                     ]
                 );
             });

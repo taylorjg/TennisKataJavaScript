@@ -21,10 +21,10 @@
             return null;
         };
 
-        var _buildScoreSummaryTextHelper = function(setData, idx1, idx2, idx3, idx4) {
+        var _buildScoreSummaryTextHelper = function(scoreSummaryData, idx1, idx2, idx3, idx4) {
             var setScores = [];
-            for (var i = 0; i < setData.length; i++) {
-                var setValues = setData[i];
+            for (var i = 0; i < scoreSummaryData.length; i++) {
+                var setValues = scoreSummaryData[i];
                 var setScore = _buildSetScoreHelper(setValues, idx1, idx2, idx3, idx4);
                 if (setScore) {
                     setScores.push(setScore);
@@ -33,18 +33,18 @@
             return setScores.join(", ");
         };
 
-        var _buildScoreSummaryTextWithPlayer1First = function(setData) {
-            return _buildScoreSummaryTextHelper(setData, 0, 1, 2, 3);
+        var _buildScoreSummaryTextWithPlayer1First = function(scoreSummaryData) {
+            return _buildScoreSummaryTextHelper(scoreSummaryData, 0, 1, 2, 3);
         };
 
-        var _buildScoreSummaryTextWithPlayer2First = function(setData) {
-            return _buildScoreSummaryTextHelper(setData, 1, 0, 3, 2);
+        var _buildScoreSummaryTextWithPlayer2First = function(scoreSummaryData) {
+            return _buildScoreSummaryTextHelper(scoreSummaryData, 1, 0, 3, 2);
         };
 
-        var _formatScoreSummary = function(setData, player1First) {
+        var _formatScoreSummary = function(scoreSummaryData, player1First) {
             return (player1First)
-                ? _buildScoreSummaryTextWithPlayer1First(setData)
-                : _buildScoreSummaryTextWithPlayer2First(setData);
+                ? _buildScoreSummaryTextWithPlayer1First(scoreSummaryData)
+                : _buildScoreSummaryTextWithPlayer2First(scoreSummaryData);
         };
 
         return {

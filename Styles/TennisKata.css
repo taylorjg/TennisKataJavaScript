@@ -12,20 +12,29 @@ button {
     margin-bottom: 10px;
 }
 
-.name, .score {
+.heading, .name, .score {
 	font-family: "erbos_draco_1st_open_nbp", sans-serif;
 	color: Gold;
 	background-color: DarkGreen;
 	padding: 0.5em
 }
 
+.heading {
+    text-align: left;
+    font-size: 1em;
+}
+
 .name {
     font-size: 1em;
-	width: 10em;
+	width: 15em;
 }
 
 .score {
     font-size: 2em;
+}
+
+.sets {
+    text-align: center;
 }
 
 .points {

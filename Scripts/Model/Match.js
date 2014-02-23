@@ -9,19 +9,48 @@
     window.tennisKata = window.tennisKata || {};
     window.tennisKata.model = window.tennisKata.model || {};
 
-    window.tennisKata.model.match = function(matchLength) {
+    window.tennisKata.model.match = function(player1, player2, initialServer, matchLength) {
 
-        var _sets = [];
+        var _player1 = player1;
+        var _player2 = player2;
+        var _initialServer = initialServer;
         var _matchLength = matchLength;
+        var _sets = [];
         var _matchWinner = null;
 
-        var _addSet = function(set) {
-            // TODO: throw if !!_matchWinner
-            _sets.push(set);
+        var _determineInitialServerForNewSet = function() {
+
+            if (_sets.length === 0) {
+                return _initialServer;
+            }
+
+            var lastSet = _sets[_sets.length - 1];
+            var lastServer = lastSet.getLastServer();
+            return (lastServer === _player1) ? _player2 : _player1;
         };
 
-        var _getMatchLength = function() {
-            return _matchLength;
+        var _newSet = function() {
+            var initialServerForNewSet = _determineInitialServerForNewSet();
+            var isFinalSet = (_sets.length === (_matchLength - 1));
+            var newSet = window.tennisKata.model.set(_player1, _player2, initialServerForNewSet, isFinalSet);
+            _sets.push(newSet);
+            return newSet;
+        };
+
+        var _currentSet = function() {
+            if (_sets.length) {
+                var last = _sets[_sets.length - 1];
+                if (!last.getSetWinner()) {
+                    return last;
+                }
+            }
+            return _newSet();
+        };
+
+        var _scorePoint = function(point) {
+            // TODO: throw if !!_matchWinner
+            var currentSet = _currentSet();
+            currentSet.scorePoint(point);
         };
 
         var _countSets = function(player) {
@@ -34,12 +63,12 @@
             return result;
         };
 
-        var _getPlayer1Sets = function(player1) {
-            return _countSets(player1);
+        var _getPlayer1Sets = function() {
+            return _countSets(_player1);
         };
 
-        var _getPlayer2Sets = function(player2) {
-            return _countSets(player2);
+        var _getPlayer2Sets = function() {
+            return _countSets(_player2);
         };
 
         // TODO: extract method
@@ -87,8 +116,7 @@
         };
 
         return {
-            addSet: _addSet,
-            getMatchLength: _getMatchLength,
+            scorePoint: _scorePoint,
             getPlayer1Sets: _getPlayer1Sets,
             getPlayer2Sets: _getPlayer2Sets,
             getMatchWinner: _getMatchWinner

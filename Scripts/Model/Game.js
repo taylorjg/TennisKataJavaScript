@@ -9,12 +9,18 @@
     window.tennisKata = window.tennisKata || {};
     window.tennisKata.model = window.tennisKata.model || {};
 
-    window.tennisKata.model.game = function(server, isTieBreakFlag) {
+    window.tennisKata.model.game = function(player1, player2, server, isTieBreakFlag) {
 
-        var _points = [];
+        var _player1 = player1;
+        var _player2 = player2;
         var _server = server;
         var _isTieBreakFlag = (arguments.length === 2) ? isTieBreakFlag : false;
+        var _points = [];
         var _gameWinner = null;
+
+        var _scorePoint = function(point) {
+            _points.push(point);
+        };
 
         var _countPoints = function(player) {
             var result = 0;
@@ -70,37 +76,27 @@
             return _calculateGameWinner(7);
         };
 
-        var _addPoint = function(point) {
-            // TODO: throw if !!_gameWinner
-            _points.push(point);
+        var _getPlayer1Points = function() {
+            return _countPoints(_player1);
         };
 
-        var _getPlayer1Points = function(player1) {
-            return _countPoints(player1);
-        };
-
-        var _getPlayer2Points = function(player2) {
-            return _countPoints(player2);
+        var _getPlayer2Points = function() {
+            return _countPoints(_player2);
         };
 
         var _getServer = function() {
             return _server;
         };
 
-        var _isTieBreak = function() {
-            return _isTieBreakFlag;
-        };
-
         var _getGameWinner = function() {
             if (_gameWinner === null) {
-                _gameWinner = (_isTieBreak()) ? _calculateTieBreakGameWinner() : _calculateNormalGameWinner();
+                _gameWinner = (_isTieBreakFlag) ? _calculateTieBreakGameWinner() : _calculateNormalGameWinner();
             }
             return _gameWinner;
         };
 
         return {
-            addPoint: _addPoint,
-            isTieBreak: _isTieBreak,
+            scorePoint: _scorePoint,
             getPlayer1Points: _getPlayer1Points,
             getPlayer2Points: _getPlayer2Points,
             getServer: _getServer,

@@ -9,26 +9,65 @@
     window.tennisKata = window.tennisKata || {};
     window.tennisKata.model = window.tennisKata.model || {};
 
-    window.tennisKata.model.set = function(islastSetFlag) {
+    window.tennisKata.model.set = function(player1, player2, initialServer, isFinalSet) {
 
+        var _player1 = player1;
+        var _player2 = player2;
+        var _initialServer = initialServer;
+        var _isFinalSetFlag = (arguments.length === 1) ? isFinalSet : false;
         var _games = [];
-        var _islastSetFlag = (arguments.length === 1) ? islastSetFlag : false;
         var _tieBreak = null;
         var _setWinner = null;
 
-        var _isLastSet = function() {
-            return _islastSetFlag;
+        var _determineServerForNewGame = function() {
+
+            if (_games.length === 0) {
+                return _initialServer;
+            }
+
+            var lastGame = _games[_games.length - 1];
+            var lastServer = lastGame.getLastServer();
+            return (lastServer === _player1) ? _player2 : _player1;
         };
 
-        var _addGame = function(game) {
+        var _determineIfNewGameIsTieBreak = function() {
+
+            if (_isFinalSet()) {
+                return false;
+            }
+
+            var xs = _partitionGames();
+            var x1 = xs[0];
+            var x2 = xs[1];
+            return x1.length === 6 && x2.length === 6;
+        };
+
+        var _newGame = function() {
+            var initialServerForNewGame = _determineServerForNewGame();
+            var isTieBreak = _determineIfNewGameIsTieBreak();
+            var newGame = window.tennisKata.model.game(_player1, _player2, initialServerForNewGame, isTieBreak);
+            _games.push(newGame);
+            return newGame;
+        };
+
+        var _currentGame = function() {
+            if (_games.length) {
+                var last = _games[_games.length - 1];
+                if (!last.getGameWinner()) {
+                    return last;
+                }
+            }
+            return _newGame();
+        };
+
+        var _scorePoint = function(point) {
             // TODO: throw if !!_setWinner
-            _games.push(game);
+            var currentGame = _currentGame();
+            currentGame.scorePoint(point);
         };
 
-        var _addTieBreak = function(tieBreak) {
-            // TODO: throw if !!_isLastSetFLag
-            // TODO: throw if !!_tieBreak
-            _tieBreak = tieBreak;
+        var _isFinalSet = function() {
+            return _isFinalSetFlag;
         };
 
         var _countGames = function(player) {
@@ -50,20 +89,6 @@
 
         var _getPlayer2Games = function(player2) {
             return _countGames(player2);
-        };
-
-        var _getPlayer1TieBreakPoints = function(player1) {
-            if (_tieBreak) {
-                return _tieBreak.getPlayer1Points(player1);
-            }
-            return null;
-        };
-
-        var _getPlayer2TieBreakPoints = function(player2) {
-            if (_tieBreak) {
-                return _tieBreak.getPlayer2Points(player2);
-            }
-            return null;
         };
 
         // TODO: extract method
@@ -114,15 +139,25 @@
             return _setWinner;
         };
 
+        var _getLastServer = function() {
+
+            if (_tieBreak) {
+                return _tieBreak.getServer();
+            }
+
+            if (_games.length) {
+                return _games[_games.length - 1].getServer();
+            }
+
+            return null;
+        };
+
         return {
-            addGame: _addGame,
-            addTieBreak: _addTieBreak,
-            isLastSet: _isLastSet,
+            scorePoint: _scorePoint,
             getPlayer1Games: _getPlayer1Games,
             getPlayer2Games: _getPlayer2Games,
-            getPlayer1TieBreakPoints: _getPlayer1TieBreakPoints,
-            getPlayer2TieBreakPoints: _getPlayer2TieBreakPoints,
-            getSetWinner: _getSetWinner
+            getSetWinner: _getSetWinner,
+            getLastServer: _getLastServer
         };
     };
 }());

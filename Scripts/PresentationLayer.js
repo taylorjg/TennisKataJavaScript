@@ -21,9 +21,10 @@
         _controller.addResetEventHandler(function() {
             $("#player1ScoresPointBtn").prop("disabled", false);
             $("#player2ScoresPointBtn").prop("disabled", false);
+            $(".previousSets").empty();
         });
 
-        _controller.addScoreChangedEventHandler(function(eventData) {
+        _controller.addScoreChangedEventHandler(function(eventData, match) {
 
             $("#player1Name").html(eventData.player1Name);
             $("#player1Points").html(_rightJustifyScoreText(eventData.player1Points, 2));
@@ -34,6 +35,15 @@
             $("#player2Points").html(_rightJustifyScoreText(eventData.player2Points, 2));
             $("#player2Games").html(_rightJustifyScoreText(eventData.player2Games, 2));
             $("#player2Sets").html(eventData.player2Sets);
+
+            var setNumber = 1;
+            match.iterateSets(function(set) {
+                if (set.getSetWinner() && !set.isFinalSet()) {
+                    $("#player1PreviousSets" + setNumber).html(set.getPlayer1Games());
+                    $("#player2PreviousSets" + setNumber).html(set.getPlayer2Games());
+                    setNumber++;
+                }
+            });
         });
 
         var _updateScoreSummaryText = (function(setData, player1First, gameOver) {

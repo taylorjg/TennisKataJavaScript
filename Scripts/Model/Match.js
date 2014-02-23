@@ -108,12 +108,18 @@
             }
         };
 
+        var _reset = function() {
+            _sets = [];
+            _matchWinner = null;
+        };
+
         return {
             scorePoint: _scorePoint,
             getPlayer1Sets: _getPlayer1Sets,
             getPlayer2Sets: _getPlayer2Sets,
             getMatchWinner: _getMatchWinner,
-            iterateSets: _iterateSets
+            iterateSets: _iterateSets,
+            reset: _reset
         };
     };
 }());

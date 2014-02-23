@@ -42,8 +42,7 @@
         };
 
         var _formatScoreSummary = function(scoreSummaryData, player1First) {
-            return (player1First)
-                ? _buildScoreSummaryTextWithPlayer1First(scoreSummaryData)
+            return (player1First) ? _buildScoreSummaryTextWithPlayer1First(scoreSummaryData)
                 : _buildScoreSummaryTextWithPlayer2First(scoreSummaryData);
         };
 

@@ -38,7 +38,6 @@
 
         var _updateScoreSummaryText = (function(setData, player1First, gameOver) {
             var scoreSummaryFormatter = window.tennisKata.factory.createScoreSummaryFormatter();
-            var player1First = (_currentServer == _controller.getPlayer1());
             var scoreSummaryText = scoreSummaryFormatter.formatScoreSummary(setData, player1First);
             if (scoreSummaryText) {
                 if (gameOver) {
@@ -54,14 +53,14 @@
         });
 
         _controller.addScoreSummaryChangedEventHandler(function(eventData) {
-            var player1First = (_currentServer == _controller.getPlayer1());
+            var player1First = (_currentServer === _controller.getPlayer1());
             _updateScoreSummaryText(eventData, player1First, false);
         });
 
         _controller.addMatchWonEventHandler(function(winner) {
             $("#player1ScoresPointBtn").prop("disabled", true);
             $("#player2ScoresPointBtn").prop("disabled", true);
-            var player1First = (winner == _controller.getPlayer1());
+            var player1First = (winner === _controller.getPlayer1());
             _updateScoreSummaryText(_lastSetData, player1First, true);
         });
 

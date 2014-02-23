@@ -71,25 +71,12 @@
             return _countSets(_player2);
         };
 
-        // TODO: extract method
         var _partitionSets = function() {
-            var x1 = [];
-            var x2 = [];
-            for (var i = 0; i < _sets.length; i++) {
-                var set = _sets[i];
-                if (x1.length) {
-                    if (set.getSetWinner() === x1[0].getSetWinner()) {
-                        x1.push(set);
-                    }
-                    else {
-                        x2.push(set);
-                    }
-                }
-                else {
-                    x1.push(set);
-                }
-            }
-            return [x1, x2];
+            return window.tennisKata.model.utils.partition(
+                _sets,
+                function(set){
+                    return set.getSetWinner();
+                });
         };
 
         var _calculateMatchWinner = function() {
@@ -115,11 +102,18 @@
             return _matchWinner;
         };
 
+        var _iterateSets = function(fn) {
+            for (var i = 0; i < _sets.length; i++) {
+                fn(_sets[i]);
+            }
+        };
+
         return {
             scorePoint: _scorePoint,
             getPlayer1Sets: _getPlayer1Sets,
             getPlayer2Sets: _getPlayer2Sets,
-            getMatchWinner: _getMatchWinner
+            getMatchWinner: _getMatchWinner,
+            iterateSets: _iterateSets
         };
     };
 }());

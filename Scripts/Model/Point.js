@@ -9,21 +9,15 @@
     window.tennisKata = window.tennisKata || {};
     window.tennisKata.model = window.tennisKata.model || {};
 
-    window.tennisKata.model.point = function(server, pointWinner) {
+    window.tennisKata.model.point = function(pointWinner) {
 
-        var _server = server;
         var _pointWinner = pointWinner;
-
-        var _getServer = function() {
-            return _server;
-        };
 
         var _getPointWinner = function() {
             return _pointWinner;
         };
 
         return {
-            getServer: _getServer,
             getPointWinner: _getPointWinner
         };
     };

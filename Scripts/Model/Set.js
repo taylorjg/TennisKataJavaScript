@@ -14,7 +14,7 @@
         var _player1 = player1;
         var _player2 = player2;
         var _initialServer = initialServer;
-        var _isFinalSetFlag = (arguments.length === 1) ? isFinalSet : false;
+        var _isFinalSet = isFinalSet;
         var _games = [];
         var _tieBreak = null;
         var _setWinner = null;
@@ -26,13 +26,13 @@
             }
 
             var lastGame = _games[_games.length - 1];
-            var lastServer = lastGame.getLastServer();
+            var lastServer = lastGame.getServer();
             return (lastServer === _player1) ? _player2 : _player1;
         };
 
         var _determineIfNewGameIsTieBreak = function() {
 
-            if (_isFinalSet()) {
+            if (_isFinalSet) {
                 return false;
             }
 
@@ -66,10 +66,6 @@
             currentGame.scorePoint(point);
         };
 
-        var _isFinalSet = function() {
-            return _isFinalSetFlag;
-        };
-
         var _countGames = function(player) {
             var result = 0;
             for (var i = 0; i < _games.length; i++) {
@@ -83,33 +79,20 @@
             return result;
         };
 
-        var _getPlayer1Games = function(player1) {
-            return _countGames(player1);
+        var _getPlayer1Games = function() {
+            return _countGames(_player1);
         };
 
-        var _getPlayer2Games = function(player2) {
-            return _countGames(player2);
+        var _getPlayer2Games = function() {
+            return _countGames(_player2);
         };
 
-        // TODO: extract method
         var _partitionGames = function() {
-            var x1 = [];
-            var x2 = [];
-            for (var i = 0; i < _games.length; i++) {
-                var game = _games[i];
-                if (x1.length) {
-                    if (game.getGameWinner() === x1[0].getGameWinner()) {
-                        x1.push(game);
-                    }
-                    else {
-                        x2.push(game);
-                    }
-                }
-                else {
-                    x1.push(game);
-                }
-            }
-            return [x1, x2];
+            return window.tennisKata.model.utils.partition(
+                _games,
+                function(game){
+                    return game.getGameWinner();
+                });
         };
 
         var _calculateSetWinner = function() {
@@ -152,12 +135,22 @@
             return null;
         };
 
+        var _iterateGames = function(fn) {
+            for (var i = 0; i < _games.length; i++) {
+                fn(_games[i]);
+            }
+            if (_tieBreak) {
+                fn(_tieBreak);
+            }
+        };
+
         return {
             scorePoint: _scorePoint,
             getPlayer1Games: _getPlayer1Games,
             getPlayer2Games: _getPlayer2Games,
             getSetWinner: _getSetWinner,
-            getLastServer: _getLastServer
+            getLastServer: _getLastServer,
+            iterateGames: _iterateGames
         };
     };
 }());

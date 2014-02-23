@@ -14,7 +14,7 @@
         var _player1 = player1;
         var _player2 = player2;
         var _server = server;
-        var _isTieBreakFlag = (arguments.length === 2) ? isTieBreakFlag : false;
+        var _isTieBreakFlag = isTieBreakFlag;
         var _points = [];
         var _gameWinner = null;
 
@@ -32,25 +32,12 @@
             return result;
         };
 
-        // TODO: extract method
         var _partitionPoints = function() {
-            var x1 = [];
-            var x2 = [];
-            for (var i = 0; i < _points.length; i++) {
-                var point = _points[i];
-                if (x1.length) {
-                    if (point.getPointWinner() === x1[0].getPointWinner()) {
-                        x1.push(point);
-                    }
-                    else {
-                        x2.push(point);
-                    }
-                }
-                else {
-                    x1.push(point);
-                }
-            }
-            return [x1, x2];
+            return window.tennisKata.model.utils.partition(
+                _points,
+                function(point) {
+                    return point.getPointWinner();
+                });
         };
 
         var _calculateGameWinner = function(minPointsToWin) {
@@ -95,12 +82,19 @@
             return _gameWinner;
         };
 
+        var _iteratePoints = function(fn) {
+            for (var i = 0; i < _points.length; i++) {
+                fn(_points[i]);
+            }
+        };
+
         return {
             scorePoint: _scorePoint,
             getPlayer1Points: _getPlayer1Points,
             getPlayer2Points: _getPlayer2Points,
             getServer: _getServer,
-            getGameWinner: _getGameWinner
+            getGameWinner: _getGameWinner,
+            iteratePoints: _iteratePoints
         };
     };
 }());

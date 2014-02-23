@@ -10,6 +10,8 @@
         var _player2 = window.tennisKata.factory.createPlayer("Player2");
         var _scorecard = window.tennisKata.factory.createScorecard(_player1, _player2);
         var _scoreboard = window.tennisKata.factory.createScoreboard(_scorecard);
+        var _match = window.tennisKata.model.match(_player1, _player2, _player1, 3);
+        window.match = _match; // TODO: temp for debugging...
         var _scoreSummary = window.tennisKata.factory.createScoreSummary(_scorecard);
         var _resetEventHandlers = [];
         var _scoreChangedEventHandlers = [];
@@ -77,6 +79,7 @@
 
         var _setMatchLength = function(matchLength) {
             _scorecard.setMatchLength(matchLength);
+            _match = window.tennisKata.model.match(_player1, _player2, _player1, matchLength);
         };
 
         var _addResetEventHandler = function(handler) {
@@ -101,11 +104,15 @@
 
         var _player1WinsPoint = function() {
             _scorecard.player1WinsPoint();
+            var point = window.tennisKata.model.point(_player1);
+            _match.scorePoint(point);
             _raiseScoreChangedEvent();
         };
 
         var _player2WinsPoint = function() {
             _scorecard.player2WinsPoint();
+            var point = window.tennisKata.model.point(_player2);
+            _match.scorePoint(point);
             _raiseScoreChangedEvent();
         };
 

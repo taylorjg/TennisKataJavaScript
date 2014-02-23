@@ -88,9 +88,54 @@
                 [2, 3, false],
                 [6, 0, true],
                 [2, 5, false],
-                [2, 6, true]
+                [2, 6, true],
+                [6, 6, false]
             ]
         );
+
+        it("tie break", function() {
+
+            var set = window.tennisKata.model.set(_player1, _player2, _player1, false);
+
+            for (var i = 1; i <= 6; i++) {
+
+                set.scorePoint(window.tennisKata.model.point(_player1));
+                set.scorePoint(window.tennisKata.model.point(_player1));
+                set.scorePoint(window.tennisKata.model.point(_player1));
+                set.scorePoint(window.tennisKata.model.point(_player1));
+
+                set.scorePoint(window.tennisKata.model.point(_player2));
+                set.scorePoint(window.tennisKata.model.point(_player2));
+                set.scorePoint(window.tennisKata.model.point(_player2));
+                set.scorePoint(window.tennisKata.model.point(_player2));
+            }
+
+            expect(set.getPlayer1Games()).toBe(6);
+            expect(set.getPlayer2Games()).toBe(6);
+
+            set.scorePoint(window.tennisKata.model.point(_player1));
+            set.scorePoint(window.tennisKata.model.point(_player1));
+            set.scorePoint(window.tennisKata.model.point(_player1));
+            set.scorePoint(window.tennisKata.model.point(_player1));
+
+            set.scorePoint(window.tennisKata.model.point(_player2));
+            set.scorePoint(window.tennisKata.model.point(_player2));
+            set.scorePoint(window.tennisKata.model.point(_player2));
+            set.scorePoint(window.tennisKata.model.point(_player2));
+            set.scorePoint(window.tennisKata.model.point(_player2));
+            set.scorePoint(window.tennisKata.model.point(_player2));
+            set.scorePoint(window.tennisKata.model.point(_player2));
+
+            expect(set.getPlayer1Games()).toBe(6);
+            expect(set.getPlayer2Games()).toBe(7);
+            expect(set.getSetWinner()).toBe(_player2);
+
+            var lastGame;
+            set.iterateGames(function(g){lastGame = g;});
+            expect(lastGame.getPlayer1Points()).toBe(4);
+            expect(lastGame.getPlayer2Points()).toBe(7);
+            expect(lastGame.getGameWinner()).toBe(_player2);
+        });
     });
 
     describe("Model match tests", function() {

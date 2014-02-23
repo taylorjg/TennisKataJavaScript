@@ -88,8 +88,13 @@
             }
         };
 
+        var _isTieBreakGame = function() {
+            return _isTieBreakFlag;
+        };
+
         return {
             scorePoint: _scorePoint,
+            isTieBreakGame: _isTieBreakGame,
             getPlayer1Points: _getPlayer1Points,
             getPlayer2Points: _getPlayer2Points,
             getServer: _getServer,

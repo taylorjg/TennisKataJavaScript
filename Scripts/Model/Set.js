@@ -16,7 +16,6 @@
         var _initialServer = initialServer;
         var _isFinalSetFlag = isFinalSetFlag;
         var _games = [];
-        var _tieBreak = null;
         var _setWinner = null;
 
         var _determineServerForNewGame = function() {
@@ -68,7 +67,7 @@
 
         var _isFinalSet = function() {
             return _isFinalSetFlag;
-        }
+        };
 
         var _countGames = function(player) {
             var result = 0;
@@ -76,9 +75,6 @@
                 if (_games[i].getGameWinner() === player) {
                     result += 1;
                 }
-            }
-            if (_tieBreak && _tieBreak.getGameWinner() === player) {
-                result += 1;
             }
             return result;
         };
@@ -101,8 +97,11 @@
 
         var _calculateSetWinner = function() {
 
-            if (_tieBreak) {
-                return _tieBreak.getGameWinner();
+            if (_games.length) {
+                var last = _games[_games.length - 1];
+                if (last.isTieBreakGame()) {
+                    return last.getGameWinner();
+                }
             }
 
             var xs = _partitionGames();
@@ -128,10 +127,6 @@
 
         var _getLastServer = function() {
 
-            if (_tieBreak) {
-                return _tieBreak.getServer();
-            }
-
             if (_games.length) {
                 return _games[_games.length - 1].getServer();
             }
@@ -142,9 +137,6 @@
         var _iterateGames = function(fn) {
             for (var i = 0; i < _games.length; i++) {
                 fn(_games[i]);
-            }
-            if (_tieBreak) {
-                fn(_tieBreak);
             }
         };
 

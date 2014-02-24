@@ -347,13 +347,6 @@
                 }
             };
 
-            var playersWinLoveGames = function(numGames1, numGames2) {
-                for (var i = 1; i <= Math.max(numGames1, numGames2); i++) {
-                    if (numGames1 >= i) { player1WinsLoveGame(); }
-                    if (numGames2 >= i) { player2WinsLoveGame(); }
-                }
-            };
-
             beforeEach(function() {
                 controller = window.tennisKata.factory.createController();
             });

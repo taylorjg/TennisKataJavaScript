@@ -30,7 +30,6 @@
                     if (numPoints2 >= i) { player2WinsPoint(); }
                 }
 
-                var lastSet;
                 var lastGame;
                 _match.iterateSets(function(set) {
                     set.iterateGames(function(game) {
@@ -85,7 +84,6 @@
                     if (numPoints2 >= i) { player2WinsPoint(); }
                 }
 
-                var lastSet;
                 var lastGame;
                 _match.iterateSets(function(set) {
                     set.iterateGames(function(game) {

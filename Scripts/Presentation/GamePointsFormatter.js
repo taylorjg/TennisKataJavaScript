@@ -5,21 +5,59 @@
 (function(){
 
     "use strict";
+
+    var LOVE_TEXT = "0";
+    var FIFTEEN_TEXT = "15";
+    var THIRTY_TEXT = "30";
+    var FORTY_TEXT = "40";
+    var ADVANTAGE_TEXT = "A";
+
+    var POINTS_TO_TEXT = [
+        LOVE_TEXT,
+        FIFTEEN_TEXT,
+        THIRTY_TEXT,
+        FORTY_TEXT
+    ];
+
     window.tennisKata = window.tennisKata || {};
     window.tennisKata.presentation = window.tennisKata.presentation || {};
 
     window.tennisKata.presentation.gamePointsFormatter = function() {
 
         var _formatTieBreakGamePoints = function(game) {
-            var player1Points = game.getPlayer1Points();
-            var player2Points = game.getPlayer2Points();
-            return [player1Points, player2Points];
+            var player1PointsText = game.getPlayer1Points().toString();
+            var player2PointsText = game.getPlayer2Points().toString();
+            return [player1PointsText, player2PointsText];
         };
 
         var _formatNormalGamePoints = function(game) {
+
             var player1Points = game.getPlayer1Points();
             var player2Points = game.getPlayer2Points();
-            return [player1Points, player2Points];
+
+            var player1PointsText = "";
+            var player2PointsText = "";
+
+            if (player1Points + player2Points >= 6) {
+
+                player1PointsText = FORTY_TEXT;
+                player2PointsText = FORTY_TEXT;
+
+                if (player1Points === player2Points + 1) {
+                    player1PointsText = ADVANTAGE_TEXT;
+                }
+                if (player2Points === player1Points + 1) {
+                    player2PointsText = ADVANTAGE_TEXT;
+                }
+            }
+            else {
+                if (player1Points > 0 || player2Points > 0) {
+                    player1PointsText = POINTS_TO_TEXT[player1Points];
+                    player2PointsText = POINTS_TO_TEXT[player2Points];
+                }
+            }
+
+            return [player1PointsText, player2PointsText];
         };
 
         var _formatGamePointsSeparately = function(game) {

@@ -78,7 +78,10 @@
             "reports the correct score when points are scored in a tie break game",
             function(numPoints1, numPoints2, expectedScoreText1, expectedScoreText2) {
 
-                // Arrange, Act
+                // Arrange
+                playersWinSixGamesEach();
+
+                // Act
                 for (var i = 1; i <= Math.max(numPoints1, numPoints2); i++) {
                     if (numPoints1 >= i) { player1WinsPoint(); }
                     if (numPoints2 >= i) { player2WinsPoint(); }
@@ -109,6 +112,25 @@
     var player2WinsPoint = function() {
         var point = window.tennisKata.model.point(_player2);
         _match.scorePoint(point);
+    };
+
+    var player1WinsLoveGame = function() {
+        for (var i = 1; i <= 4; i++) {
+            player1WinsPoint();
+        }
+    };
+
+    var player2WinsLoveGame = function() {
+        for (var i = 1; i <= 4; i++) {
+            player2WinsPoint();
+        }
+    };
+
+    var playersWinSixGamesEach = function() {
+        for (var i = 1; i <= 6; i++) {
+            player1WinsLoveGame();
+            player2WinsLoveGame();
+        }
     };
 
 }());

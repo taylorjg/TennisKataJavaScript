@@ -7,6 +7,7 @@
     $(document).ready(function() {
 
         var _controller = window.tennisKata.factory.createController();
+        var _scoreSummaryFormatter = window.tennisKata.presentation.scoreSummaryFormatter();
         var _currentServer = null;
 
         var _rightJustifyScoreText = function(scoreText, minWidth) {
@@ -48,8 +49,7 @@
         });
 
         var _updateScoreSummaryText = function(match, player1First, gameOver) {
-            var scoreSummaryFormatter = window.tennisKata.presentation.scoreSummaryFormatter();
-            var scoreSummaryText = scoreSummaryFormatter.formatScoreSummary(match, player1First);
+            var scoreSummaryText = _scoreSummaryFormatter.formatScoreSummary(match, player1First);
             if (scoreSummaryText) {
                 if (gameOver) {
                     $("#scoreSummaryWhoFirst").html("&nbsp;(winner first)");

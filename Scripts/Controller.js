@@ -11,10 +11,8 @@
         var _scorecard = window.tennisKata.factory.createScorecard(_player1, _player2);
         var _scoreboard = window.tennisKata.factory.createScoreboard(_scorecard);
         var _match = window.tennisKata.model.match(_player1, _player2, _player1, 3);
-        var _scoreSummary = window.tennisKata.factory.createScoreSummary(_scorecard);
         var _resetEventHandlers = [];
         var _scoreChangedEventHandlers = [];
-        var _scoreSummaryChangedEventHandlers = [];
         var _matchWonEventHandlers = [];
         var _serverChangedEventHandlers = [];
 
@@ -41,12 +39,6 @@
 
             for (var i = 0; i < _scoreChangedEventHandlers.length; i++) {
                 _scoreChangedEventHandlers[i](eventData, _match);
-            }
-        };
-
-        var _raiseScoreSummaryChangedEvent = function(eventData) {
-            for (var i = 0; i < _scoreSummaryChangedEventHandlers.length; i++) {
-                _scoreSummaryChangedEventHandlers[i](eventData);
             }
         };
 
@@ -87,10 +79,6 @@
 
         var _addScoreChangedEventHandler = function(handler) {
             _scoreChangedEventHandlers.push(handler);
-        };
-
-        var _addScoreSummaryChangedEventHandler = function(handler) {
-            _scoreSummaryChangedEventHandlers.push(handler);
         };
 
         var _addMatchWonEventHandler = function(handler) {
@@ -134,14 +122,9 @@
             _raiseServerChangedEvent(eventData);
         };
 
-        var _onScoreSummaryChanged = function(eventData) {
-            _raiseScoreSummaryChangedEvent(eventData);
-        };
-
         _scorecard.addResetEventHandler(_onReset);
         _scorecard.addMatchWonEventHandler(_onMatchWon);
         _scorecard.addServerChangedEventHandler(_onServerChanged);
-        _scoreSummary.addScoreSummaryChangedEventHandler(_onScoreSummaryChanged);
 
         return {
             setPlayerNames: _setPlayerNames,
@@ -155,7 +138,6 @@
             reset: _reset,
             addResetEventHandler: _addResetEventHandler,
             addScoreChangedEventHandler: _addScoreChangedEventHandler,
-            addScoreSummaryChangedEventHandler: _addScoreSummaryChangedEventHandler,
             addMatchWonEventHandler: _addMatchWonEventHandler,
             addServerChangedEventHandler: _addServerChangedEventHandler
         };

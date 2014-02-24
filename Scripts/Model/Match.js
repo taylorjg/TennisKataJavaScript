@@ -87,16 +87,16 @@
             var x1len = x1.length;
             var x2len = x2.length;
             if (x1len >= minSetsToWin) {
-                return x1[0].getPointWinner();
+                return x1[0].getSetWinner();
             }
             if (x2len >= minSetsToWin) {
-                return x2[0].getPointWinner();
+                return x2[0].getSetWinner();
             }
             return null;
         };
 
         var _getMatchWinner = function() {
-            if (_matchLength === null) {
+            if (_matchWinner === null) {
                 _matchWinner = _calculateMatchWinner();
             }
             return _matchWinner;

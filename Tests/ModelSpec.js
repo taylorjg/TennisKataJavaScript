@@ -17,7 +17,7 @@
     describe("Model game tests", function() {
 
         it_multiple(
-            "it works",
+            "works",
             function(numPoints1, numPoints2, isTieBreak, hasWinner) {
 
                 var game = window.tennisKata.model.game(_player1, _player2, _player1, isTieBreak);
@@ -51,7 +51,7 @@
     describe("Model set tests", function() {
 
         it_multiple(
-            "it works",
+            "works",
             function(numGames1, numGames2, hasWinner) {
 
                 var set = window.tennisKata.model.set(_player1, _player2, _player1, false);
@@ -93,7 +93,7 @@
             ]
         );
 
-        it("tie break", function() {
+        it("handles a tie break correctly", function() {
 
             var set = window.tennisKata.model.set(_player1, _player2, _player1, false);
 
@@ -139,5 +139,24 @@
     });
 
     describe("Model match tests", function() {
+
+        it("works", function() {
+
+            var match = window.tennisKata.model.match(_player1, _player2, _player1, 3);
+            var player1Point = window.tennisKata.model.point(_player1);
+
+            for (var i = 1; i <= 12; i++) {
+                match.scorePoint(player1Point);
+                match.scorePoint(player1Point);
+                match.scorePoint(player1Point);
+                match.scorePoint(player1Point);
+            }
+
+            match.iterateSets(function(set) {
+                expect(set.getSetWinner()).toBe(_player1);
+            });
+
+            expect(match.getMatchWinner()).toBe(_player1);
+        });
     });
 }());

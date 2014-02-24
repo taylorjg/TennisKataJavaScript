@@ -20,8 +20,9 @@ module.exports = function(config) {
 		// list of files / patterns to load in the browser
 		files: [
 			"Scripts/*.js",
+			"Scripts/Model/*.js",
 			"Tests/it_multiple.js",
-			"Tests/TennisKataSpec.js"
+			"Tests/*Spec.js"
 		],
 
 

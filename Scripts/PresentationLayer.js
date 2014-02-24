@@ -8,7 +8,6 @@
 
         var _controller = window.tennisKata.factory.createController();
         var _currentServer = null;
-        var _lastSetData = null;
 
         var _rightJustifyScoreText = function(scoreText, minWidth) {
             var padding = "";
@@ -44,11 +43,13 @@
                     setNumber++;
                 }
             });
+
+            _updateScoreSummaryText(match, true, false);
         });
 
-        var _updateScoreSummaryText = (function(setData, player1First, gameOver) {
-            var scoreSummaryFormatter = window.tennisKata.factory.createScoreSummaryFormatter();
-            var scoreSummaryText = scoreSummaryFormatter.formatScoreSummary(setData, player1First);
+        var _updateScoreSummaryText = function(match, player1First, gameOver) {
+            var scoreSummaryFormatter = window.tennisKata.presentation.scoreSummaryFormatter();
+            var scoreSummaryText = scoreSummaryFormatter.formatScoreSummary(match, player1First);
             if (scoreSummaryText) {
                 if (gameOver) {
                     $("#scoreSummaryWhoFirst").html("&nbsp;(winner first)");
@@ -59,20 +60,7 @@
                 $("#scoreSummaryValue").html(scoreSummaryText);
             }
             $("#scoreSummary").toggle(!!scoreSummaryText);
-            _lastSetData = setData;
-        });
-
-        _controller.addScoreSummaryChangedEventHandler(function(eventData) {
-            var player1First = (_currentServer === _controller.getPlayer1());
-            _updateScoreSummaryText(eventData, player1First, false);
-        });
-
-        _controller.addMatchWonEventHandler(function(winner) {
-            $("#player1ScoresPointBtn").prop("disabled", true);
-            $("#player2ScoresPointBtn").prop("disabled", true);
-            var player1First = (winner === _controller.getPlayer1());
-            _updateScoreSummaryText(_lastSetData, player1First, true);
-        });
+        };
 
         var _updateCurrentServer = function(currentServer) {
             _currentServer = currentServer;
@@ -117,5 +105,4 @@
         _updateMatchLengthRadioButtons();
         _updateCurrentServer(_controller.getServer());
     });
-
 } ());

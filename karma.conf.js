@@ -21,6 +21,7 @@ module.exports = function(config) {
 		files: [
 			"Scripts/*.js",
 			"Scripts/Model/*.js",
+			"Scripts/Presentation/*.js",
 			"Tests/it_multiple.js",
 			"Tests/*Spec.js"
 		],

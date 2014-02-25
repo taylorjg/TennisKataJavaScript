@@ -8,6 +8,7 @@
 
         var _controller = window.tennisKata.factory.createController();
         var _scoreSummaryFormatter = window.tennisKata.presentation.scoreSummaryFormatter();
+        var _gamePointsFormatter = window.tennisKata.presentation.gamePointsFormatter();
         var _currentServer = null;
 
         var _rightJustifyScoreText = function(scoreText, minWidth) {
@@ -19,33 +20,92 @@
         };
 
         _controller.addResetEventHandler(function() {
+
+            $(".previousSets").empty();
+
+            $("#player1Name").html(_controller.getPlayer1().getName());
+            $("#player1Sets").html("");
+            $("#player1Games").html("");
+            $("#player1Points").html("");
+
+            $("#player2Name").html(_controller.getPlayer2().getName());
+            $("#player2Sets").html("");
+            $("#player2Games").html("");
+            $("#player2Points").html("");
+
             $("#player1ScoresPointBtn").prop("disabled", false);
             $("#player2ScoresPointBtn").prop("disabled", false);
-            $(".previousSets").empty();
         });
 
-        _controller.addScoreChangedEventHandler(function(eventData, match) {
+        var _updateCurrentSet = function(match) {
 
-            $("#player1Name").html(eventData.player1Name);
-            $("#player1Points").html(_rightJustifyScoreText(eventData.player1Points, 2));
-            $("#player1Games").html(_rightJustifyScoreText(eventData.player1Games, 2));
-            $("#player1Sets").html(eventData.player1Sets);
+            var player1SetsText = "";
+            var player2SetsText = "";
+            var player1Sets = match.getPlayer1Sets();
+            var player2Sets = match.getPlayer2Sets();
+            if (player1Sets || player2Sets) {
+                player1SetsText = _rightJustifyScoreText(player1Sets.toString(), 2);
+                player2SetsText = _rightJustifyScoreText(player2Sets.toString(), 2);
+            }
+            $("#player1Sets").html(player1SetsText);
+            $("#player2Sets").html(player2SetsText);
 
-            $("#player2Name").html(eventData.player2Name);
-            $("#player2Points").html(_rightJustifyScoreText(eventData.player2Points, 2));
-            $("#player2Games").html(_rightJustifyScoreText(eventData.player2Games, 2));
-            $("#player2Sets").html(eventData.player2Sets);
+            var currentSet = null;
+            var currentGame = null;
 
+            match.iterateSets(function(set) {
+                currentSet = set;
+            });
+
+            if (currentSet) {
+                currentSet.iterateGames(function(game) {
+                    currentGame = game;
+                });
+            }
+
+            var player1GamesText = "";
+            var player2GamesText = "";
+            if (currentSet && !currentSet.getSetWinner()) {
+                var player1Games = currentSet.getPlayer1Games();
+                var player2Games = currentSet.getPlayer2Games();
+                if (player1Games || player2Games) {
+                    player1GamesText = _rightJustifyScoreText(player1Games.toString(), 2);
+                    player2GamesText = _rightJustifyScoreText(player2Games.toString(), 2);
+                }
+            }
+            $("#player1Games").html(player1GamesText);
+            $("#player2Games").html(player2GamesText);
+
+            var player1PointsText = "";
+            var player2PointsText = "";
+            if (currentGame && !currentGame.getGameWinner()) {
+                var separateGamePointsText = _gamePointsFormatter.formatGamePointsSeparately(currentGame);
+                player1PointsText = separateGamePointsText[0];
+                player2PointsText = separateGamePointsText[1];
+            }
+            $("#player1Points").html(player1PointsText);
+            $("#player2Points").html(player2PointsText);
+        };
+
+        var _updatePreviousSets = function(match) {
             var setNumber = 1;
             match.iterateSets(function(set) {
-                if (set.getSetWinner() && !set.isFinalSet()) {
+                if (!!set.getSetWinner() && !set.isFinalSet()) {
                     $("#player1PreviousSets" + setNumber).html(set.getPlayer1Games());
                     $("#player2PreviousSets" + setNumber).html(set.getPlayer2Games());
                     setNumber++;
                 }
             });
+        };
 
+        var _updateScoreSummary = function(match) {
             _updateScoreSummaryText(match, true, false);
+        };
+
+        _controller.addScoreChangedEventHandler(function(eventData, match) {
+            _updateCurrentSet(match);
+            _updatePreviousSets(match);
+            _updateScoreSummary(match);
         });
 
         var _updateScoreSummaryText = function(match, player1First, gameOver) {

@@ -105,6 +105,7 @@
 
         var _reset = function() {
             _scorecard.reset();
+            _match.reset();
             _raiseScoreChangedEvent();
         };
 

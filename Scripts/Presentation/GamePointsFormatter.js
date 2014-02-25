@@ -51,16 +51,19 @@
                 }
             }
             else {
-                if (player1Points > 0 || player2Points > 0) {
-                    player1PointsText = POINTS_TO_TEXT[player1Points];
-                    player2PointsText = POINTS_TO_TEXT[player2Points];
-                }
+                player1PointsText = POINTS_TO_TEXT[player1Points];
+                player2PointsText = POINTS_TO_TEXT[player2Points];
             }
 
             return [player1PointsText, player2PointsText];
         };
 
         var _formatGamePointsSeparately = function(game) {
+
+            if (game.getPlayer1Points() === 0 && game.getPlayer2Points() === 0) {
+                return ["", ""];
+            }
+
             return (game.isTieBreakGame()) ? _formatTieBreakGamePoints(game)
                 : _formatNormalGamePoints(game);
         };

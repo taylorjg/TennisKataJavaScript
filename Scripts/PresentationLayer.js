@@ -8,17 +8,8 @@
 
         var _controller = window.tennisKata.factory.createController();
         var _scoreSummaryFormatter = window.tennisKata.presentation.scoreSummaryFormatter();
-        var _gamePointsFormatter = window.tennisKata.presentation.gamePointsFormatter();
         var _setsGamesPointsFormatter = window.tennisKata.presentation.setsGamesPointsFormatter();
         var _currentServer = null;
-
-        var _rightJustifyScoreText = function(scoreText, minWidth) {
-            var padding = "";
-            for (var i = scoreText.length; i < minWidth; i++) {
-                padding += "&nbsp;";
-            }
-            return padding + scoreText;
-        };
 
         _controller.addResetEventHandler(function() {
 
@@ -82,6 +73,13 @@
             }
             $("#scoreSummary").toggle(!!scoreSummaryText);
         };
+
+        _controller.addMatchWonEventHandler(function(winner) {
+            $("#player1ScoresPointBtn").prop("disabled", true);
+            $("#player2ScoresPointBtn").prop("disabled", true);
+            //var player1First = (winner === _controller.getPlayer1());
+            //_updateScoreSummaryText(_lastSetData, player1First, true);
+        });
 
         var _updateCurrentServer = function(currentServer) {
             _currentServer = currentServer;

@@ -44,7 +44,7 @@
 
             if (currentSet) {
 
-                if (!currentSet.getSetWinner()) {
+                if (!currentSet.getSetWinner() || match.getMatchWinner()) {
                     var player1Games = currentSet.getPlayer1Games();
                     var player2Games = currentSet.getPlayer2Games();
                     if (player1Games || player2Games) {

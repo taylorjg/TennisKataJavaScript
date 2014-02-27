@@ -18,27 +18,13 @@
 
         var _raiseResetEvent = function() {
             for (var i = 0; i < _resetEventHandlers.length; i++) {
-                _resetEventHandlers[i]();
+                _resetEventHandlers[i](_match);
             }
         };
 
         var _raiseScoreChangedEvent = function() {
-
-            var scores = _scoreboard.getScores();
-
-            var eventData = {
-                player1Name: _scorecard.getPlayer1().getName(),
-                player1Points: scores[0][0],
-                player1Games: scores[0][1],
-                player1Sets: scores[0][2],
-                player2Name: _scorecard.getPlayer2().getName(),
-                player2Points: scores[1][0],
-                player2Games: scores[1][1],
-                player2Sets: scores[1][2]
-            };
-
             for (var i = 0; i < _scoreChangedEventHandlers.length; i++) {
-                _scoreChangedEventHandlers[i](eventData, _match);
+                _scoreChangedEventHandlers[i](_match);
             }
         };
 

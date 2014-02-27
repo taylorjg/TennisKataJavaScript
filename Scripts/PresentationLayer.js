@@ -9,24 +9,20 @@
         var _controller = window.tennisKata.factory.createController();
         var _scoreSummaryFormatter = window.tennisKata.presentation.scoreSummaryFormatter();
         var _setsGamesPointsFormatter = window.tennisKata.presentation.setsGamesPointsFormatter();
+        var _previousSetsFormatter = window.tennisKata.presentation.previousSetsFormatter();
         var _currentServer = null;
 
-        _controller.addResetEventHandler(function() {
-
-            $(".previousSets").empty();
-
-            $("#player1Name").html(_controller.getPlayer1().getName());
-            $("#player1Sets").html("");
-            $("#player1Games").html("");
-            $("#player1Points").html("");
-
-            $("#player2Name").html(_controller.getPlayer2().getName());
-            $("#player2Sets").html("");
-            $("#player2Games").html("");
-            $("#player2Points").html("");
+        _controller.addResetEventHandler(function(match) {
 
             $("#player1ScoresPointBtn").prop("disabled", false);
             $("#player2ScoresPointBtn").prop("disabled", false);
+
+            $("#player1Name").html(_controller.getPlayer1().getName());
+            $("#player2Name").html(_controller.getPlayer2().getName());
+
+            _updateSetsGamesPoints(match);
+            _updatePreviousSets(match);
+            _updateScoreSummary(match);
         });
 
         var _updateSetsGamesPoints = function(match) {
@@ -40,21 +36,22 @@
         };
 
         var _updatePreviousSets = function(match) {
-            var setNumber = 1;
-            match.iterateSets(function(set) {
-                if (!!set.getSetWinner() && !set.isFinalSet()) {
-                    $("#player1PreviousSets" + setNumber).html(set.getPlayer1Games());
-                    $("#player2PreviousSets" + setNumber).html(set.getPlayer2Games());
-                    setNumber++;
-                }
-            });
+            var viewModel = _previousSetsFormatter.formatPreviousSets(match);
+            $("#player1PreviousSets1").html(viewModel.player1Set1Games);
+            $("#player2PreviousSets1").html(viewModel.player2Set1Games);
+            $("#player1PreviousSets2").html(viewModel.player1Set2Games);
+            $("#player2PreviousSets2").html(viewModel.player2Set2Games);
+            $("#player1PreviousSets3").html(viewModel.player1Set3Games);
+            $("#player2PreviousSets3").html(viewModel.player2Set3Games);
+            $("#player1PreviousSets4").html(viewModel.player1Set4Games);
+            $("#player2PreviousSets4").html(viewModel.player2Set4Games);
         };
 
         var _updateScoreSummary = function(match) {
             _updateScoreSummaryText(match, true, false);
         };
 
-        _controller.addScoreChangedEventHandler(function(eventData, match) {
+        _controller.addScoreChangedEventHandler(function(match) {
             _updateSetsGamesPoints(match);
             _updatePreviousSets(match);
             _updateScoreSummary(match);

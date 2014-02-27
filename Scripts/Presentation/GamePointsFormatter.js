@@ -68,8 +68,11 @@
                 : _formatNormalGamePoints(game);
         };
 
-        var _formatGamePointsTogether = function(game) {
+        var _formatGamePointsTogether = function(game, player1First) {
             var separateGamePointsText = _formatGamePointsSeparately(game);
+            if (!player1First) {
+                separateGamePointsText = separateGamePointsText.reverse();
+            }
             return separateGamePointsText.join("-");
         };
 

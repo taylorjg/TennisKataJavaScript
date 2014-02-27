@@ -20,9 +20,7 @@
             $("#player1Name").html(_controller.getPlayer1().getName());
             $("#player2Name").html(_controller.getPlayer2().getName());
 
-            _updateSetsGamesPoints(match);
-            _updatePreviousSets(match);
-            _updateScoreSummary(match);
+            _updateDisplay(match);
         });
 
         var _updateSetsGamesPoints = function(match) {
@@ -51,11 +49,13 @@
             _updateScoreSummaryText(match, true, false);
         };
 
-        _controller.addScoreChangedEventHandler(function(match) {
+        var _updateDisplay = function(match) {
             _updateSetsGamesPoints(match);
             _updatePreviousSets(match);
             _updateScoreSummary(match);
-        });
+        };
+
+        _controller.addScoreChangedEventHandler(_updateDisplay);
 
         var _updateScoreSummaryText = function(match, player1First, gameOver) {
             var scoreSummaryText = _scoreSummaryFormatter.formatScoreSummary(match, player1First);

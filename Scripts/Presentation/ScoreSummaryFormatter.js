@@ -13,38 +13,37 @@
 
         var _gamePointsFormatter = window.tennisKata.presentation.gamePointsFormatter();
 
-        var _buildSetScoreSummaryText = function(set) {
+        var _buildSetScoreSummaryText = function(set, player1First) {
 
-            var player1Games = set.getPlayer1Games();
-            var player2Games = set.getPlayer2Games();
-            var setScoreSummaryText = player1Games + "-" + player2Games;
+            var playerAGames = (player1First) ? set.getPlayer1Games() : set.getPlayer2Games();
+            var playerBGames = (player1First) ? set.getPlayer2Games() : set.getPlayer1Games();
+            var setScoreSummaryText = playerAGames + "-" + playerBGames;
 
             var lastGame = null;
             set.iterateGames(function(game){
                 lastGame = game;
             });
 
-            if (lastGame !== null && lastGame.isTieBreakGame() && !!lastGame.getGameWinner()) {
-                var player1TieBreakPoints = lastGame.getPlayer1Points();
-                var player2TieBreakPoints = lastGame.getPlayer2Points();
-                setScoreSummaryText += "<sup><i>(" + player1TieBreakPoints + "-" + player2TieBreakPoints + ")</i></sup>";
-            }
-
-            if (lastGame !== null && lastGame.isTieBreakGame() && !lastGame.getGameWinner()) {
-                setScoreSummaryText += " (" + _gamePointsFormatter.formatGamePointsTogether(lastGame) + ")";
-            }
-
-            if (lastGame !== null && !lastGame.isTieBreakGame() && !lastGame.getGameWinner()) {
-                setScoreSummaryText += " (" + _gamePointsFormatter.formatGamePointsTogether(lastGame) + ")";
+            if (lastGame !== null) {
+                if (lastGame.getGameWinner()) {
+                    if (lastGame.isTieBreakGame()) {
+                        var playerATieBreakPoints = (player1First) ? lastGame.getPlayer1Points() : lastGame.getPlayer2Points();
+                        var playerBTieBreakPoints = (player1First) ? lastGame.getPlayer2Points() : lastGame.getPlayer1Points();
+                        setScoreSummaryText += "<sup><i>(" + playerATieBreakPoints + "-" + playerBTieBreakPoints + ")</i></sup>";
+                    }
+                }
+                else {
+                    setScoreSummaryText += " (" + _gamePointsFormatter.formatGamePointsTogether(lastGame, player1First) + ")";
+                }
             }
 
             return setScoreSummaryText;
         };
 
-        var _buildScoreSummaryText = function(match) {
+        var _buildScoreSummaryText = function(match, player1First) {
             var parts = [];
             match.iterateSets(function(set) {
-                var part = _buildSetScoreSummaryText(set);
+                var part = _buildSetScoreSummaryText(set, player1First);
                 if (part) {
                     parts.push(part);
                 }
@@ -52,8 +51,8 @@
             return parts.join(", ");
         };
 
-        var _formatScoreSummary = function(match /*, player1First */) {
-            return _buildScoreSummaryText(match);
+        var _formatScoreSummary = function(match, player1First) {
+            return _buildScoreSummaryText(match, player1First);
         };
 
         return {

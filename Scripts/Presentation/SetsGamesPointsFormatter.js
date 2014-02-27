@@ -33,8 +33,8 @@
             var player1Sets = match.getPlayer1Sets();
             var player2Sets = match.getPlayer2Sets();
             if (player1Sets || player2Sets) {
-                player1SetsText = _rightJustifyScoreText(player1Sets.toString(), 2);
-                player2SetsText = _rightJustifyScoreText(player2Sets.toString(), 2);
+                player1SetsText = player1Sets.toString();
+                player2SetsText = player2Sets.toString();
             }
 
             var currentSet = null;
@@ -60,8 +60,8 @@
 
                 if (currentGame && !currentGame.getGameWinner()) {
                     var separateGamePointsText = _gamePointsFormatter.formatGamePointsSeparately(currentGame);
-                    player1PointsText = separateGamePointsText[0];
-                    player2PointsText = separateGamePointsText[1];
+                    player1PointsText = _rightJustifyScoreText(separateGamePointsText[0], 2);
+                    player2PointsText = _rightJustifyScoreText(separateGamePointsText[1], 2);
                 }
             }
 

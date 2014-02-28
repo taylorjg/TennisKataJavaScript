@@ -46,7 +46,8 @@
         };
 
         var _updateScoreSummary = function(match) {
-            _updateScoreSummaryText(match, true, false);
+            var player1First = _currentServer === _controller.getPlayer1();
+            _updateScoreSummaryText(match, player1First);
         };
 
         var _updateDisplay = function(match) {
@@ -57,7 +58,13 @@
 
         _controller.addScoreChangedEventHandler(_updateDisplay);
 
-        var _updateScoreSummaryText = function(match, player1First, gameOver) {
+        var _updateScoreSummaryText = function(match, player1First) {
+            var winner = match.getMatchWinner();
+            var gameOver = !!winner;
+            if (gameOver) {
+                player1First = (winner === match.getPlayer1());
+            }
+            console.log("_updateScoreSummaryText - player1First: " + player1First + "; gameOver: " + gameOver);
             var scoreSummaryText = _scoreSummaryFormatter.formatScoreSummary(match, player1First);
             if (scoreSummaryText) {
                 if (gameOver) {
@@ -71,15 +78,18 @@
             $("#scoreSummary").toggle(!!scoreSummaryText);
         };
 
-        _controller.addMatchWonEventHandler(function(winner) {
+        _controller.addMatchWonEventHandler(function(match) {
             $("#player1ScoresPointBtn").prop("disabled", true);
             $("#player2ScoresPointBtn").prop("disabled", true);
-            //var player1First = (winner === _controller.getPlayer1());
-            //_updateScoreSummaryText(_lastSetData, player1First, true);
+            var winner = match.getMatchWinner();
+            console.log("addMatchWonEventHandler handler - winner: " + winner.getName());
+            var player1First = (winner === _controller.getPlayer1());
+            _updateScoreSummaryText(match, player1First);
         });
 
         var _updateCurrentServer = function(currentServer) {
             _currentServer = currentServer;
+            console.log("_updateCurrentServer - _currentServer: " + _currentServer.getName());
             $("#player1Serving").toggle(_currentServer === _controller.getPlayer1());
             $("#player2Serving").toggle(_currentServer === _controller.getPlayer2());
         };

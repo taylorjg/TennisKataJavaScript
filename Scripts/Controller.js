@@ -76,16 +76,16 @@
         };
 
         var _player1WinsPoint = function() {
-            _scorecard.player1WinsPoint();
             var point = window.tennisKata.model.point(_player1);
             _match.scorePoint(point);
+            _scorecard.player1WinsPoint();
             _raiseScoreChangedEvent();
         };
 
         var _player2WinsPoint = function() {
-            _scorecard.player2WinsPoint();
             var point = window.tennisKata.model.point(_player2);
             _match.scorePoint(point);
+            _scorecard.player2WinsPoint();
             _raiseScoreChangedEvent();
         };
 
@@ -101,8 +101,8 @@
             _raiseScoreChangedEvent();
         };
 
-        var _onMatchWon = function(eventData) {
-            _raiseMatchWonEvent(eventData);
+        var _onMatchWon = function(/* winner */) {
+            _raiseMatchWonEvent(_match);
         };
 
         var _onServerChanged = function(eventData) {

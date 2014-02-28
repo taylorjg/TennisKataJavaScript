@@ -18,6 +18,14 @@
         var _sets = [];
         var _matchWinner = null;
 
+        var _getPlayer1 = function() {
+            return _player1;
+        };
+
+        var _getPlayer2 = function() {
+            return _player2;
+        };
+
         var _determineInitialServerForNewSet = function() {
 
             if (_sets.length === 0) {
@@ -115,6 +123,8 @@
 
         return {
             scorePoint: _scorePoint,
+            getPlayer1: _getPlayer1,
+            getPlayer2: _getPlayer2,
             getPlayer1Sets: _getPlayer1Sets,
             getPlayer2Sets: _getPlayer2Sets,
             getMatchWinner: _getMatchWinner,

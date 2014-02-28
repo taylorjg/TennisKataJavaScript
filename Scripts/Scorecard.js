@@ -26,6 +26,7 @@
         var _isTieBreakerFlag = false;
         var _tieBreakerServeCount = 0;
         var _tieBreakerFirstServer = null;
+        var _matchIsWon = false;
 
         var _getPlayer1 = function() { return _player1; };
         var _getPlayer2 = function() { return _player2; };
@@ -74,6 +75,7 @@
             _tieBreakerServeCount = 0;
             _tieBreakerFirstServer = null;
             _server = _initialServer;
+            _matchIsWon = false;
             _raiseResetEvent();
         };
 
@@ -184,15 +186,24 @@
             var numberOfSetsNeededToWin = (_matchLength + 1) / 2;
 
             if (_player1Sets === numberOfSetsNeededToWin) {
+                _matchIsWon = true;
+                _changeServer();
                 _raiseMatchWonEvent(_player1);
             }
 
             if (_player2Sets === numberOfSetsNeededToWin) {
+                _matchIsWon = true;
+                _changeServer();
                 _raiseMatchWonEvent(_player2);
             }
         };
 
         var _changeServer = function() {
+
+            if (_matchIsWon) {
+                _raiseServerChangedEvent(null);
+                return;
+            }
 
             var flipTurn = false;
 

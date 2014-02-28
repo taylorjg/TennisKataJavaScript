@@ -17,6 +17,7 @@
         var _matchLength = matchLength;
         var _sets = [];
         var _matchWinner = null;
+        var _matchWonEventHandlers = [];
 
         var _getPlayer1 = function() {
             return _player1;
@@ -63,6 +64,10 @@
             // TODO: throw if !!_matchWinner
             var currentSet = _currentSet();
             currentSet.scorePoint(point);
+            var winner = _getMatchWinner();
+            if (winner) {
+                _raiseMatchWonEvent(winner);
+            }
         };
 
         var _countSets = function(player) {
@@ -125,15 +130,26 @@
             _matchWinner = null;
         };
 
+        var _addMatchWonEventHandler = function(handler) {
+            _matchWonEventHandlers.push(handler);
+        };
+
+        var _raiseMatchWonEvent = function(winner) {
+            for (var i = 0; i < _matchWonEventHandlers.length; i++) {
+                _matchWonEventHandlers[i](winner);
+            }
+        };
+
         return {
-            scorePoint: _scorePoint,
             getPlayer1: _getPlayer1,
             getPlayer2: _getPlayer2,
             getMatchLength: _getMatchLength,
+            getMatchWinner: _getMatchWinner,
             getPlayer1Sets: _getPlayer1Sets,
             getPlayer2Sets: _getPlayer2Sets,
-            getMatchWinner: _getMatchWinner,
+            scorePoint: _scorePoint,
             iterateSets: _iterateSets,
+            addMatchWonEventHandler: _addMatchWonEventHandler,
             reset: _reset
         };
     };

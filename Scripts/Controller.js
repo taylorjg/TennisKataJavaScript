@@ -8,13 +8,18 @@
 
         var _player1 = window.tennisKata.factory.createPlayer("Player1");
         var _player2 = window.tennisKata.factory.createPlayer("Player2");
+        var _matchLength = 3;
         var _scorecard = window.tennisKata.factory.createScorecard(_player1, _player2);
-        var _scoreboard = window.tennisKata.factory.createScoreboard(_scorecard);
-        var _match = window.tennisKata.model.match(_player1, _player2, _player1, 3);
+        var _match;
         var _resetEventHandlers = [];
         var _scoreChangedEventHandlers = [];
         var _matchWonEventHandlers = [];
         var _serverChangedEventHandlers = [];
+
+        var _createMatch = function() {
+            _match = window.tennisKata.model.match(_player1, _player2, _player1, _matchLength);
+            _match.addMatchWonEventHandler(_onMatchWon);
+        };
 
         var _getPlayer1 = function() { return _player1; };
         var _getPlayer2 = function() { return _player2; };
@@ -49,13 +54,13 @@
             _player1 = window.tennisKata.factory.createPlayer(playerName1);
             _player2 = window.tennisKata.factory.createPlayer(playerName2);
             _scorecard.changePlayers(_player1, _player2);
-            var matchLength = _match.getMatchLength();
-            _match = window.tennisKata.model.match(_player1, _player2, _player1, matchLength);
+            _createMatch();
         };
 
         var _setMatchLength = function(matchLength) {
             _scorecard.setMatchLength(matchLength);
-            _match = window.tennisKata.model.match(_player1, _player2, _player1, matchLength);
+            _matchLength = matchLength;
+            _createMatch();
         };
 
         var _addResetEventHandler = function(handler) {
@@ -109,8 +114,8 @@
         };
 
         _scorecard.addResetEventHandler(_onReset);
-        _scorecard.addMatchWonEventHandler(_onMatchWon);
         _scorecard.addServerChangedEventHandler(_onServerChanged);
+        _createMatch();
 
         return {
             setPlayerNames: _setPlayerNames,

@@ -10,14 +10,6 @@
             return window.tennisKata.player(name);
         };
 
-        var _createScoreboard = function(scorecard) {
-            return window.tennisKata.scoreboard(scorecard);
-        };
-
-        var _createScoreSummary = function(scorecard) {
-            return window.tennisKata.scoreSummary(scorecard);
-        };
-
         var _createController = function() {
             return window.tennisKata.controller();
         };
@@ -33,8 +25,6 @@
         return {
             createPlayer: _createPlayer,
             createScorecard: _createScorecard,
-            createScoreboard: _createScoreboard,
-            createScoreSummary: _createScoreSummary,
             createController: _createController,
             createScoreSummaryFormatter: _createScoreSummaryFormatter
         };

@@ -26,6 +26,10 @@
             return _player2;
         };
 
+        var _getMatchLength = function() {
+            return _matchLength;
+        };
+
         var _determineInitialServerForNewSet = function() {
 
             if (_sets.length === 0) {
@@ -125,6 +129,7 @@
             scorePoint: _scorePoint,
             getPlayer1: _getPlayer1,
             getPlayer2: _getPlayer2,
+            getMatchLength: _getMatchLength,
             getPlayer1Sets: _getPlayer1Sets,
             getPlayer2Sets: _getPlayer2Sets,
             getMatchWinner: _getMatchWinner,

@@ -64,7 +64,6 @@
             if (gameOver) {
                 player1First = (winner === match.getPlayer1());
             }
-            console.log("_updateScoreSummaryText - player1First: " + player1First + "; gameOver: " + gameOver);
             var scoreSummaryText = _scoreSummaryFormatter.formatScoreSummary(match, player1First);
             if (scoreSummaryText) {
                 if (gameOver) {
@@ -82,14 +81,12 @@
             $("#player1ScoresPointBtn").prop("disabled", true);
             $("#player2ScoresPointBtn").prop("disabled", true);
             var winner = match.getMatchWinner();
-            console.log("addMatchWonEventHandler handler - winner: " + winner.getName());
             var player1First = (winner === _controller.getPlayer1());
             _updateScoreSummaryText(match, player1First);
         });
 
         var _updateCurrentServer = function(currentServer) {
             _currentServer = currentServer;
-            console.log("_updateCurrentServer - _currentServer: " + _currentServer.getName());
             $("#player1Serving").toggle(_currentServer === _controller.getPlayer1());
             $("#player2Serving").toggle(_currentServer === _controller.getPlayer2());
         };

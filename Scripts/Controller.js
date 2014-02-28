@@ -16,6 +16,11 @@
         var _matchWonEventHandlers = [];
         var _serverChangedEventHandlers = [];
 
+        var _getPlayer1 = function() { return _player1; };
+        var _getPlayer2 = function() { return _player2; };
+        var _getServer = function() { return _scorecard.getServer(); };
+        var _getMatchLength = function() { return _scorecard.getMatchLength(); };
+
         var _raiseResetEvent = function() {
             for (var i = 0; i < _resetEventHandlers.length; i++) {
                 _resetEventHandlers[i](_match);
@@ -41,17 +46,11 @@
         };
 
         var _setPlayerNames = function(playerName1, playerName2) {
-            var newPlayer1 = window.tennisKata.factory.createPlayer(playerName1);
-            var newPlayer2 = window.tennisKata.factory.createPlayer(playerName2);
-            _scorecard.changePlayers(newPlayer1, newPlayer2);
-        };
-
-        var _getPlayer1 = function() { return _player1; };
-        var _getPlayer2 = function() { return _player2; };
-        var _getServer = function() { return _scorecard.getServer(); };
-
-        var _getMatchLength = function() {
-            return _scorecard.getMatchLength();
+            _player1 = window.tennisKata.factory.createPlayer(playerName1);
+            _player2 = window.tennisKata.factory.createPlayer(playerName2);
+            _scorecard.changePlayers(_player1, _player2);
+            var matchLength = _match.getMatchLength();
+            _match = window.tennisKata.model.match(_player1, _player2, _player1, matchLength);
         };
 
         var _setMatchLength = function(matchLength) {

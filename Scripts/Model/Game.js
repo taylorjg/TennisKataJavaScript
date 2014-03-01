@@ -9,17 +9,26 @@
     window.tennisKata = window.tennisKata || {};
     window.tennisKata.model = window.tennisKata.model || {};
 
-    window.tennisKata.model.game = function(player1, player2, server, isTieBreakFlag) {
+    window.tennisKata.model.game = function(player1, player2, server, isTieBreakFlag, monitor) {
 
         var _player1 = player1;
         var _player2 = player2;
         var _server = server;
         var _isTieBreakFlag = isTieBreakFlag;
+        var _monitor = monitor;
         var _points = [];
         var _gameWinner = null;
 
         var _scorePoint = function(point) {
             _points.push(point);
+            var pointWinner = point.getPointWinner();
+            if (_monitor) {
+                _monitor.onPointWon(pointWinner);
+                var gameWinner = _getGameWinner();
+                if (gameWinner) {
+                    _monitor.onGameWon(gameWinner);
+                }
+            }
         };
 
         var _countPoints = function(player) {

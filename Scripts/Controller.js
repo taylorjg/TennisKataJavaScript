@@ -17,7 +17,7 @@
         var _serverChangedEventHandlers = [];
 
         var _createMatch = function() {
-            _match = window.tennisKata.model.match(_player1, _player2, _player1, _matchLength);
+            _match = window.tennisKata.model.match(_player1, _player2, _player1, _matchLength, _monitor);
             _match.addMatchWonEventHandler(_onMatchWon);
         };
 
@@ -111,6 +111,21 @@
 
         var _onServerChanged = function(eventData) {
             _raiseServerChangedEvent(eventData);
+        };
+
+        var _monitor = {
+            onPointWon: function(pointWinner) {
+                console.log("_monitor.onPointWon - pointWinner:" + pointWinner.getName());
+            },
+            onGameWon: function(gameWinner) {
+                console.log("_monitor.onGameWon - gameWinner: " + gameWinner.getName());
+            },
+            onSetWon: function(setWinner) {
+                console.log("_monitor.onSetWon - setWinner: " + setWinner.getName());
+            },
+            onMatchWon: function(matchWinner) {
+                console.log("_monitor.onMatchWon - matchWinner: " + matchWinner.getName());
+            }
         };
 
         _scorecard.addResetEventHandler(_onReset);

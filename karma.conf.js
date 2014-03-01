@@ -23,13 +23,16 @@ module.exports = function(config) {
 			"Scripts/Model/*.js",
 			"Scripts/Presentation/*.js",
 			"Tests/it_multiple.js",
+            //TODO: also need jQuery...
+			//"Tests/jasmine-jquery/jasmine-jquery.js",
 			"Tests/*Spec.js"
 		],
 
 
 		// list of files to exclude
 		exclude: [
-			"Scripts/PresentationLayer.js"
+			"Scripts/PresentationLayer.js",
+            "Tests/UserInterfaceSpec.js"
 		],
 
 

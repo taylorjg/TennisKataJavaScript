@@ -9,12 +9,13 @@
     window.tennisKata = window.tennisKata || {};
     window.tennisKata.model = window.tennisKata.model || {};
 
-    window.tennisKata.model.set = function(player1, player2, initialServer, isFinalSetFlag) {
+    window.tennisKata.model.set = function(player1, player2, initialServer, isFinalSetFlag, monitor) {
 
         var _player1 = player1;
         var _player2 = player2;
         var _initialServer = initialServer;
         var _isFinalSetFlag = isFinalSetFlag;
+        var _monitor = monitor;
         var _games = [];
         var _setWinner = null;
 
@@ -44,7 +45,7 @@
         var _newGame = function() {
             var initialServerForNewGame = _determineServerForNewGame();
             var isTieBreak = _determineIfNewGameIsTieBreak();
-            var newGame = window.tennisKata.model.game(_player1, _player2, initialServerForNewGame, isTieBreak);
+            var newGame = window.tennisKata.model.game(_player1, _player2, initialServerForNewGame, isTieBreak, _monitor);
             _games.push(newGame);
             return newGame;
         };
@@ -63,6 +64,12 @@
             // TODO: throw if !!_setWinner
             var currentGame = _currentGame();
             currentGame.scorePoint(point);
+            if (_monitor) {
+                var setWinner = _getSetWinner();
+                if (setWinner) {
+                    _monitor.onSetWon(setWinner);
+                }
+            }
         };
 
         var _isFinalSet = function() {

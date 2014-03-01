@@ -23,10 +23,9 @@
             _points.push(point);
             var pointWinner = point.getPointWinner();
             if (_monitor) {
-                _monitor.onPointWon(pointWinner);
-                var gameWinner = _getGameWinner();
-                if (gameWinner) {
-                    _monitor.onGameWon(gameWinner);
+                _monitor.onPointWon(point);
+                if (_getGameWinner()) {
+                    _monitor.onGameWon(this);
                 }
             }
         };

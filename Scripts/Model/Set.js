@@ -65,9 +65,8 @@
             var currentGame = _currentGame();
             currentGame.scorePoint(point);
             if (_monitor) {
-                var setWinner = _getSetWinner();
-                if (setWinner) {
-                    _monitor.onSetWon(setWinner);
+                if (_getSetWinner()) {
+                    _monitor.onSetWon(this);
                 }
             }
         };

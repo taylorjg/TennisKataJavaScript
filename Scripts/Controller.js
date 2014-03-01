@@ -15,10 +15,10 @@
         var _scoreChangedEventHandlers = [];
         var _matchWonEventHandlers = [];
         var _serverChangedEventHandlers = [];
+        var _monitors = [];
 
         var _createMatch = function() {
-            _match = window.tennisKata.model.match(_player1, _player2, _player1, _matchLength, _monitor);
-            _match.addMatchWonEventHandler(_onMatchWon);
+            _match = window.tennisKata.model.match(_player1, _player2, _player1, _matchLength, _mainDispatchingMonitor);
         };
 
         var _getPlayer1 = function() { return _player1; };
@@ -38,9 +38,9 @@
             }
         };
 
-        var _raiseMatchWonEvent = function(eventData) {
+        var _raiseMatchWonEvent = function(match) {
             for (var i = 0; i < _matchWonEventHandlers.length; i++) {
-                _matchWonEventHandlers[i](eventData);
+                _matchWonEventHandlers[i](match);
             }
         };
 
@@ -105,26 +105,23 @@
             _raiseScoreChangedEvent();
         };
 
-        var _onMatchWon = function(/* winner */) {
-            _raiseMatchWonEvent(_match);
-        };
-
         var _onServerChanged = function(eventData) {
             _raiseServerChangedEvent(eventData);
         };
 
-        var _monitor = {
-            onPointWon: function(pointWinner) {
-                console.log("_monitor.onPointWon - pointWinner:" + pointWinner.getName());
+        var _mainDispatchingMonitor = {
+            onPointWon: function(point) {
+                console.log("_monitor.onPointWon - pointWinner:" + point.getPointWinner().getName());
             },
-            onGameWon: function(gameWinner) {
-                console.log("_monitor.onGameWon - gameWinner: " + gameWinner.getName());
+            onGameWon: function(game) {
+                console.log("_monitor.onGameWon - gameWinner: " + game.getGameWinner().getName());
             },
-            onSetWon: function(setWinner) {
-                console.log("_monitor.onSetWon - setWinner: " + setWinner.getName());
+            onSetWon: function(set) {
+                console.log("_monitor.onSetWon - setWinner: " + set.getSetWinner().getName());
             },
-            onMatchWon: function(matchWinner) {
-                console.log("_monitor.onMatchWon - matchWinner: " + matchWinner.getName());
+            onMatchWon: function(/* match */) {
+                console.log("_monitor.onMatchWon - matchWinner: " + _match.getMatchWinner().getName());
+                _raiseMatchWonEvent(_match);
             }
         };
 

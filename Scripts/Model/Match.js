@@ -18,7 +18,6 @@
         var _monitor = monitor;
         var _sets = [];
         var _matchWinner = null;
-        var _matchWonEventHandlers = [];
 
         var _getPlayer1 = function() {
             return _player1;
@@ -66,10 +65,8 @@
             var currentSet = _currentSet();
             currentSet.scorePoint(point);
             if (_monitor) {
-                var winner = _getMatchWinner();
-                if (winner) {
-                    _raiseMatchWonEvent(winner);
-                    _monitor.onMatchWon(winner);
+                if (_getMatchWinner()) {
+                    _monitor.onMatchWon(this);
                 }
             }
         };
@@ -134,26 +131,15 @@
             _matchWinner = null;
         };
 
-        var _addMatchWonEventHandler = function(handler) {
-            _matchWonEventHandlers.push(handler);
-        };
-
-        var _raiseMatchWonEvent = function(winner) {
-            for (var i = 0; i < _matchWonEventHandlers.length; i++) {
-                _matchWonEventHandlers[i](winner);
-            }
-        };
-
         return {
             getPlayer1: _getPlayer1,
             getPlayer2: _getPlayer2,
-            getMatchLength: _getMatchLength,
-            getMatchWinner: _getMatchWinner,
             getPlayer1Sets: _getPlayer1Sets,
             getPlayer2Sets: _getPlayer2Sets,
+            getMatchLength: _getMatchLength,
+            getMatchWinner: _getMatchWinner,
             scorePoint: _scorePoint,
             iterateSets: _iterateSets,
-            addMatchWonEventHandler: _addMatchWonEventHandler,
             reset: _reset
         };
     };

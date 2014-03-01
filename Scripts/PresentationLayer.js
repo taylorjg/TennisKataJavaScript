@@ -125,6 +125,12 @@
             $("input[name='matchLengthRadioButtonGroup'][value='" + matchLength + "']").prop("checked", true);
         };
 
+        var _newBallsMonitor = window.tennisKata.monitors.newBallsMonitor();
+        _newBallsMonitor.addNewBallsEventHandler(function() {
+            console.log("inside new balls event handler");
+        });
+        _controller.addMonitor(_newBallsMonitor);
+
         _updateMatchLengthRadioButtons();
         _updateCurrentServer(_controller.getServer());
     });

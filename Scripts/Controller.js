@@ -97,6 +97,9 @@
             _scorecard.reset();
             _match.reset();
             _raiseScoreChangedEvent();
+            for (var i = 0; i < _monitors.length; i++) {
+                _monitors[i].reset();
+            }
         };
 
         var _onReset = function() {
@@ -111,16 +114,24 @@
 
         var _mainDispatchingMonitor = {
             onPointWon: function(point) {
-                console.log("_monitor.onPointWon - pointWinner:" + point.getPointWinner().getName());
+                for (var i = 0; i < _monitors.length; i++) {
+                    _monitors[i].onPointWon(_match, point);
+                }
             },
             onGameWon: function(game) {
-                console.log("_monitor.onGameWon - gameWinner: " + game.getGameWinner().getName());
+                for (var i = 0; i < _monitors.length; i++) {
+                    _monitors[i].onGameWon(_match, game);
+                }
             },
             onSetWon: function(set) {
-                console.log("_monitor.onSetWon - setWinner: " + set.getSetWinner().getName());
+                for (var i = 0; i < _monitors.length; i++) {
+                    _monitors[i].onSetWon(_match, set);
+                }
             },
             onMatchWon: function(/* match */) {
-                console.log("_monitor.onMatchWon - matchWinner: " + _match.getMatchWinner().getName());
+                for (var i = 0; i < _monitors.length; i++) {
+                    _monitors[i].onMatchWon(_match);
+                }
                 _raiseMatchWonEvent(_match);
             }
         };
@@ -128,6 +139,10 @@
         _scorecard.addResetEventHandler(_onReset);
         _scorecard.addServerChangedEventHandler(_onServerChanged);
         _createMatch();
+
+        var _addMonitor = function(monitor) {
+            _monitors.push(monitor);
+        };
 
         return {
             setPlayerNames: _setPlayerNames,
@@ -142,7 +157,8 @@
             addResetEventHandler: _addResetEventHandler,
             addScoreChangedEventHandler: _addScoreChangedEventHandler,
             addMatchWonEventHandler: _addMatchWonEventHandler,
-            addServerChangedEventHandler: _addServerChangedEventHandler
+            addServerChangedEventHandler: _addServerChangedEventHandler,
+            addMonitor: _addMonitor
         };
     };
 } ());

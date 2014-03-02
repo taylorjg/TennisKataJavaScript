@@ -12,7 +12,6 @@
     window.tennisKata.monitors.currentServerMonitor = function(player1First) {
 
         var _player1First = player1First;
-        //var _currentServer = _initialServer;
         var _currentServer = null;
         var _inTieBreak = false;
         var _tieBreakServesCount = 0;
@@ -89,7 +88,6 @@
         };
 
         var _init = function(match) {
-            //_currentServer = _initialServer;
             _currentServer = (_player1First) ? match.getPlayer1() : match.getPlayer2();
             _inTieBreak = false;
             _tieBreakServesCount = 0;

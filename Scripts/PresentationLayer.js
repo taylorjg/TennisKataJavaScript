@@ -136,6 +136,18 @@
         });
         _controller.addMonitor(_newBallsMonitor);
 
+        var _significantPointMonitor = window.tennisKata.monitors.significantPointMonitor();
+        _significantPointMonitor.addBreakPointEventHandler(function(breakPoints, player) {
+            console.log("inside breakPoint event handler - breakPoints: " + breakPoints + "; player: " + player.getName());
+        });
+        _significantPointMonitor.addSetPointEventHandler(function(setPoints, player) {
+            console.log("inside setPoint event handler - setPoints: " + setPoints + "; player: " + player.getName());
+        });
+        _significantPointMonitor.addMatchPointEventHandler(function(matchPoints, player) {
+            console.log("inside matchPoint event handler - matchPoints: " + matchPoints + "; player: " + player.getName());
+        });
+        _controller.addMonitor(_significantPointMonitor);
+
         _controller.init();
     });
 } ());

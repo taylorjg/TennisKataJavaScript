@@ -59,7 +59,6 @@
                     <th class="heading">Sets</th>
                     <th class="heading">Games</th>
                     <th class="heading">Points</th>
-                    <th class="heading forSizingOnly"></th>
                 </tr>
             </thead>
             <tbody>
@@ -70,11 +69,25 @@
                 <td class="score sets"><span class="previousSets" id="player1PreviousSets4"></span></td>
                 <td class="name">
                     <span id="player1Name"></span>
-                    <img id="player1Serving" alt="tennis ball image to indicate this player is serving" src="Images/Tennis-Ball-icon.png" />
+                    <img
+                        id="player1Serving"
+                        src="Images/Tennis-Ball-icon.png"
+                        title="This player is serving"
+                        alt="Tennis ball image to indicate that this player is serving"
+                    />
                 </td>
                 <td class="score sets"><span id="player1Sets"></span></td>
                 <td class="score games"><span id="player1Games"></span></td>
                 <td class="score points"><span id="player1Points"></span></td>
+                <td class="flags">
+                    <img
+                        id="player1NewBalls"
+                        src="Images/Tennis-Ball-icon.png"
+                        title="This player is serving with new balls"
+                        alt="Tennis ball image to indicate that this player is serving with new balls"
+                    />
+                    <span id="player1SignificantPoint" class="significantPoint" />
+                </td>
                 <td class="score forSizingOnly"><span>&nbsp;</span></td>
             </tr>
             <tr>
@@ -84,11 +97,25 @@
                 <td class="score sets"><span class="previousSets" id="player2PreviousSets4"></span></td>
                 <td class="name">
                     <span id="player2Name"></span>
-                    <img id="player2Serving" alt="tennis ball image to indicate this player is serving" src="Images/Tennis-Ball-icon.png" />
+                    <img
+                        id="player2Serving"
+                        src="Images/Tennis-Ball-icon.png"
+                        title="This player is serving"
+                        alt="Tennis ball image to indicate that this player is serving"
+                    />
                 </td>
                 <td class="score sets"><span id="player2Sets"></span></td>
                 <td class="score games"><span id="player2Games"></span></td>
                 <td class="score points"><span id="player2Points"></span></td>
+                <td class="flags">
+                    <img
+                        id="player2NewBalls"
+                        src="Images/Tennis-Ball-icon.png"
+                        title="This player is serving with new balls"
+                        alt="Tennis ball image to indicate that this player is serving with new balls"
+                    />
+                    <span id="player2SignificantPoint" class="significantPoint" />
+                </td>
                 <td class="score forSizingOnly"><span>&nbsp;</span></td>
             </tr>
             </tbody>

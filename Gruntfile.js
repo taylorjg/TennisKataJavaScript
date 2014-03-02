@@ -12,7 +12,13 @@ module.exports = function (grunt) {
                 "Gruntfile.js",
                 "karma.conf.js",
                 "Scripts/*.js",
-                "Tests/*.js"
+                "Scripts/Model/*.js",
+                "Scripts/Monitors/*.js",
+                "Scripts/Presentation/*.js",
+                "Tests/*.js",
+                "Tests/Model/*.js",
+                "Tests/Monitors/*.js",
+                "Tests/Presentation/*.js"
             ]
         }
     });

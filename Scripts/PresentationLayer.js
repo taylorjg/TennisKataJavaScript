@@ -88,12 +88,18 @@
         });
 
         $("#player1ScoresPointBtn").click(function() {
+            _clearFlags();
             _controller.player1WinsPoint();
         });
 
         $("#player2ScoresPointBtn").click(function() {
+            _clearFlags();
             _controller.player2WinsPoint();
         });
+
+        var _clearFlags = function() {
+            $(".flags *").hide();
+        };
 
         $("#resetBtn").click(function() {
             _controller.reset();
@@ -110,6 +116,7 @@
             _updatePlayerNames();
             _updateDisplay(match);
             _updateMatchLengthRadioButtons();
+            _clearFlags();
         });
 
         _controller.addScoreChangedEventHandler(_updateDisplay);
@@ -132,19 +139,42 @@
 
         var _newBallsMonitor = window.tennisKata.monitors.newBallsMonitor();
         _newBallsMonitor.addNewBallsEventHandler(function() {
-            console.log("inside newBalls event handler");
+            console.log("inside newBalls event handler - currentServer:" + _currentServer.getName());
+            if (_currentServer === _controller.getPlayer1()) {
+                $("#player1NewBalls").show();
+            }
+            else {
+                $("#player2NewBalls").show();
+            }
         });
         _controller.addMonitor(_newBallsMonitor);
+
+        var _showSignificantPoint = function(player, numSignificantPoints, pointType) {
+            var flagSelector = (player === _controller.getPlayer1()) ? "#player1SignificantPoint" : "#player2SignificantPoint";
+            var significantPointText;
+            if (numSignificantPoints === 1) {
+                significantPointText = [pointType, "point"].join(" ");
+            }
+            else {
+                significantPointText = [numSignificantPoints.toString(), pointType, "points"].join(" ");
+            }
+            $(flagSelector)
+                .html(significantPointText)
+                .show();
+        };
 
         var _significantPointMonitor = window.tennisKata.monitors.significantPointMonitor();
         _significantPointMonitor.addBreakPointEventHandler(function(breakPoints, player) {
             console.log("inside breakPoint event handler - breakPoints: " + breakPoints + "; player: " + player.getName());
+            _showSignificantPoint(player, breakPoints, "break");
         });
         _significantPointMonitor.addSetPointEventHandler(function(setPoints, player) {
             console.log("inside setPoint event handler - setPoints: " + setPoints + "; player: " + player.getName());
+            _showSignificantPoint(player, setPoints, "set");
         });
         _significantPointMonitor.addMatchPointEventHandler(function(matchPoints, player) {
             console.log("inside matchPoint event handler - matchPoints: " + matchPoints + "; player: " + player.getName());
+            _showSignificantPoint(player, matchPoints, "match");
         });
         _controller.addMonitor(_significantPointMonitor);
 

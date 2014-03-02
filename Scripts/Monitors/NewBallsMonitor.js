@@ -54,9 +54,9 @@
             _init();
         };
 
-        var _raiseNewBallsEvent = function() {
+        var _raiseNewBallsEvent = function(match) {
             for (var i = 0; i < _newBallsEventHandlers.length; i++) {
-                _newBallsEventHandlers[i]();
+                _newBallsEventHandlers[i](match);
             }
         };
 

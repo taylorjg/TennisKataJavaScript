@@ -56,3 +56,9 @@ button {
 #player1Serving, #player2Serving {
     display: none;
 }
+
+.significantPoint {
+    background-color: purple;
+    color: white;
+    padding: 5px;
+}

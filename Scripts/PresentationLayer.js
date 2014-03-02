@@ -6,22 +6,24 @@
 
     $(document).ready(function() {
 
-        var _controller = window.tennisKata.factory.createController();
+        var _controller = window.tennisKata.controller();
         var _scoreSummaryFormatter = window.tennisKata.presentation.scoreSummaryFormatter();
         var _setsGamesPointsFormatter = window.tennisKata.presentation.setsGamesPointsFormatter();
         var _previousSetsFormatter = window.tennisKata.presentation.previousSetsFormatter();
         var _currentServer = null;
 
         _controller.addResetEventHandler(function(match) {
-
             $("#player1ScoresPointBtn").prop("disabled", false);
             $("#player2ScoresPointBtn").prop("disabled", false);
+            _updatePlayerNames();
+            _updateDisplay(match);
+            _updateMatchLengthRadioButtons();
+        });
 
+        var _updatePlayerNames = function() {
             $("#player1Name").html(_controller.getPlayer1().getName());
             $("#player2Name").html(_controller.getPlayer2().getName());
-
-            _updateDisplay(match);
-        });
+        };
 
         var _updateSetsGamesPoints = function(match) {
             var viewModel = _setsGamesPointsFormatter.formatSetsGamesPoints(match);
@@ -46,7 +48,7 @@
         };
 
         var _updateScoreSummary = function(match) {
-            var player1First = _currentServer === _controller.getPlayer1();
+            var player1First = (_currentServer === _controller.getPlayer1());
             _updateScoreSummaryText(match, player1First);
         };
 
@@ -91,8 +93,6 @@
             $("#player2Serving").toggle(_currentServer === _controller.getPlayer2());
         };
 
-        _controller.addServerChangedEventHandler(_updateCurrentServer);
-
         $("#setPlayerNamesBtn").click(function() {
             var player1Name = $("#player1NameTxt").val();
             var player2Name = $("#player2NameTxt").val();
@@ -115,10 +115,7 @@
 
         $("#resetBtn").click(function() {
             _controller.reset();
-            _updateCurrentServer(_controller.getServer());
         });
-
-        _controller.reset();
 
         var _updateMatchLengthRadioButtons = function() {
             var matchLength = _controller.getMatchLength();
@@ -135,10 +132,10 @@
         _currentServerMonitor.addServerChangedEventHandler(function(currentServer) {
             var currentServerName = (currentServer) ? currentServer.getName() : "null";
             console.log("inside serverChanged event handler - currentServer: " + currentServerName);
+            _updateCurrentServer(currentServer);
         });
         _controller.addMonitor(_currentServerMonitor);
 
-        _updateMatchLengthRadioButtons();
-        _updateCurrentServer(_controller.getServer());
+        _controller.reset();
     });
 } ());

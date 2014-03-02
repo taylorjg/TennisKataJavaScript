@@ -10,7 +10,7 @@
         var _currentServerMonitor;
 
         beforeEach(function() {
-            _controller = window.tennisKata.factory.createController();
+            _controller = window.tennisKata.controller();
             _currentServerMonitor = window.tennisKata.monitors.currentServerMonitor(_controller.getPlayer1());
             _controller.addMonitor(_currentServerMonitor);
         });

@@ -9,11 +9,10 @@
     window.tennisKata = window.tennisKata || {};
     window.tennisKata.model = window.tennisKata.model || {};
 
-    window.tennisKata.model.game = function(player1, player2, server, isTieBreakFlag, monitor) {
+    window.tennisKata.model.game = function(player1, player2, isTieBreakFlag, monitor) {
 
         var _player1 = player1;
         var _player2 = player2;
-        var _server = server;
         var _isTieBreakFlag = isTieBreakFlag;
         var _monitor = monitor;
         var _points = [];
@@ -21,7 +20,6 @@
 
         var _scorePoint = function(point) {
             _points.push(point);
-            var pointWinner = point.getPointWinner();
             if (_monitor) {
                 _monitor.onPointWon(point);
                 if (_getGameWinner()) {
@@ -79,10 +77,6 @@
             return _countPoints(_player2);
         };
 
-        var _getServer = function() {
-            return _server;
-        };
-
         var _getGameWinner = function() {
             if (_gameWinner === null) {
                 _gameWinner = (_isTieBreakFlag) ? _calculateTieBreakGameWinner() : _calculateNormalGameWinner();
@@ -101,13 +95,12 @@
         };
 
         return {
-            scorePoint: _scorePoint,
-            isTieBreakGame: _isTieBreakGame,
             getPlayer1Points: _getPlayer1Points,
             getPlayer2Points: _getPlayer2Points,
-            getServer: _getServer,
-            getGameWinner: _getGameWinner,
-            iteratePoints: _iteratePoints
+            iteratePoints: _iteratePoints,
+            scorePoint: _scorePoint,
+            isTieBreakGame: _isTieBreakGame,
+            getGameWinner: _getGameWinner
         };
     };
 }());

@@ -9,11 +9,10 @@
     window.tennisKata = window.tennisKata || {};
     window.tennisKata.model = window.tennisKata.model || {};
 
-    window.tennisKata.model.match = function(player1, player2, initialServer, matchLength, monitor) {
+    window.tennisKata.model.match = function(player1, player2, matchLength, monitor) {
 
         var _player1 = player1;
         var _player2 = player2;
-        var _initialServer = initialServer;
         var _matchLength = matchLength;
         var _monitor = monitor;
         var _sets = [];
@@ -31,21 +30,9 @@
             return _matchLength;
         };
 
-        var _determineInitialServerForNewSet = function() {
-
-            if (_sets.length === 0) {
-                return _initialServer;
-            }
-
-            var lastSet = _sets[_sets.length - 1];
-            var lastServer = lastSet.getLastServer();
-            return (lastServer === _player1) ? _player2 : _player1;
-        };
-
         var _newSet = function() {
-            var initialServerForNewSet = _determineInitialServerForNewSet();
             var isFinalSet = (_sets.length === (_matchLength - 1));
-            var newSet = window.tennisKata.model.set(_player1, _player2, initialServerForNewSet, isFinalSet, _monitor);
+            var newSet = window.tennisKata.model.set(_player1, _player2, isFinalSet, _monitor);
             _sets.push(newSet);
             return newSet;
         };

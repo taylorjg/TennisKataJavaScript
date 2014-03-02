@@ -18,7 +18,7 @@
         var _monitors = [];
 
         var _createMatch = function() {
-            _match = window.tennisKata.model.match(_player1, _player2, _player1, _matchLength, _mainDispatchingMonitor);
+            _match = window.tennisKata.model.match(_player1, _player2, _matchLength, _mainDispatchingMonitor);
         };
 
         var _getPlayer1 = function() { return _player1; };

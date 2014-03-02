@@ -20,7 +20,7 @@
             "works",
             function(numPoints1, numPoints2, isTieBreak, hasWinner) {
 
-                var game = window.tennisKata.model.game(_player1, _player2, _player1, isTieBreak);
+                var game = window.tennisKata.model.game(_player1, _player2, isTieBreak, null);
 
                 for (var i = 1; i <= Math.max(numPoints1, numPoints2); i++) {
                     if (numPoints1 >= i) { game.scorePoint(window.tennisKata.model.point(_player1)); }
@@ -54,7 +54,7 @@
             "works",
             function(numGames1, numGames2, hasWinner) {
 
-                var set = window.tennisKata.model.set(_player1, _player2, _player1, false);
+                var set = window.tennisKata.model.set(_player1, _player2, false, null);
 
                 for (var i = 1; i <= Math.max(numGames1, numGames2); i++) {
                     if (numGames1 >= i) {
@@ -95,7 +95,7 @@
 
         it("handles a tie break correctly", function() {
 
-            var set = window.tennisKata.model.set(_player1, _player2, _player1, false);
+            var set = window.tennisKata.model.set(_player1, _player2, false, null);
 
             for (var i = 1; i <= 6; i++) {
 
@@ -142,7 +142,7 @@
 
         it("works", function() {
 
-            var match = window.tennisKata.model.match(_player1, _player2, _player1, 3);
+            var match = window.tennisKata.model.match(_player1, _player2, 3, null);
             var player1Point = window.tennisKata.model.point(_player1);
 
             for (var i = 1; i <= 12; i++) {

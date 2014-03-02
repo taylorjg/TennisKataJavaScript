@@ -127,9 +127,16 @@
 
         var _newBallsMonitor = window.tennisKata.monitors.newBallsMonitor();
         _newBallsMonitor.addNewBallsEventHandler(function() {
-            console.log("inside new balls event handler");
+            console.log("inside newBalls event handler");
         });
         _controller.addMonitor(_newBallsMonitor);
+
+        var _currentServerMonitor = window.tennisKata.monitors.currentServerMonitor(_controller.getPlayer1());
+        _currentServerMonitor.addServerChangedEventHandler(function(currentServer) {
+            var currentServerName = (currentServer) ? currentServer.getName() : "null";
+            console.log("inside serverChanged event handler - currentServer: " + currentServerName);
+        });
+        _controller.addMonitor(_currentServerMonitor);
 
         _updateMatchLengthRadioButtons();
         _updateCurrentServer(_controller.getServer());

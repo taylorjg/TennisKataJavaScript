@@ -9,10 +9,11 @@
     window.tennisKata = window.tennisKata || {};
     window.tennisKata.monitors = window.tennisKata.monitors || {};
 
-    window.tennisKata.monitors.currentServerMonitor = function(initialServer) {
+    window.tennisKata.monitors.currentServerMonitor = function(player1First) {
 
-        var _initialServer = initialServer;
-        var _currentServer = _initialServer;
+        var _player1First = player1First;
+        //var _currentServer = _initialServer;
+        var _currentServer = null;
         var _inTieBreak = false;
         var _tieBreakServesCount = 0;
         var _serverChangedEventHandlers = [];
@@ -44,8 +45,16 @@
             }
         };
 
-        var _onGameWon = function(match /*, game */) {
-            _flipServer(match);
+        var _onGameWon = function(match, game) {
+
+            if (game.extendedProperties.getServer() === match.getPlayer1()) {
+                _currentServer = match.getPlayer2();
+            }
+            else {
+                _currentServer = match.getPlayer1();
+            }
+            _raiseServerChangedEvent();
+
             if (_inTieBreak) {
                 _inTieBreak = false;
                 _tieBreakServesCount = 0;
@@ -60,21 +69,47 @@
             _raiseServerChangedEvent();
         };
 
-        var _reset = function() {
-            _currentServer = _initialServer;
+        var _onNewPoint = function(match, point) {
+            point.extendedProperties.getServer = function() {
+                return _currentServer;
+            };
+            var currentReceiver = _currentReceiver(match);
+            point.extendedProperties.getReceiver = function() {
+                return currentReceiver;
+            };
+        };
+
+        var _onNewGame = function(match, game) {
+            game.extendedProperties.getServer = function() {
+                return _currentServer;
+            };
+        };
+
+        var _onNewSet = function(/* match, set */) {
+        };
+
+        var _init = function(match) {
+            //_currentServer = _initialServer;
+            _currentServer = (_player1First) ? match.getPlayer1() : match.getPlayer2();
             _inTieBreak = false;
             _tieBreakServesCount = 0;
             _raiseServerChangedEvent();
         };
 
+        var _reset = function(match) {
+            _init(match);
+        };
+
         var _flipServer = function(match) {
-            if (_currentServer === match.getPlayer1()) {
-                _currentServer = match.getPlayer2();
-            }
-            else {
-                _currentServer = match.getPlayer1();
-            }
+            _currentServer = _currentReceiver(match);
             _raiseServerChangedEvent();
+        };
+
+        var _currentReceiver = function(match) {
+            if (_currentServer === match.getPlayer1()) {
+                return match.getPlayer2();
+            }
+            return match.getPlayer1();
         };
 
         var _raiseServerChangedEvent = function() {
@@ -92,6 +127,10 @@
             onGameWon: _onGameWon,
             onSetWon: _onSetWon,
             onMatchWon: _onMatchWon,
+            onNewPoint: _onNewPoint,
+            onNewGame: _onNewGame,
+            onNewSet: _onNewSet,
+            init: _init,
             reset: _reset,
             addServerChangedEventHandler: _addServerChangedEventHandler
         };

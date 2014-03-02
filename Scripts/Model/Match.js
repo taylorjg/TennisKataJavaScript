@@ -33,6 +33,7 @@
         var _newSet = function() {
             var isFinalSet = (_sets.length === (_matchLength - 1));
             var newSet = window.tennisKata.model.set(_player1, _player2, isFinalSet, _monitor);
+            _monitor.onNewSet(newSet);
             _sets.push(newSet);
             return newSet;
         };
@@ -51,10 +52,8 @@
             // TODO: throw if !!_matchWinner
             var currentSet = _currentSet();
             currentSet.scorePoint(point);
-            if (_monitor) {
-                if (_getMatchWinner()) {
-                    _monitor.onMatchWon(this);
-                }
+            if (_getMatchWinner()) {
+                _monitor.onMatchWon(this);
             }
         };
 
@@ -127,7 +126,8 @@
             getMatchWinner: _getMatchWinner,
             scorePoint: _scorePoint,
             iterateSets: _iterateSets,
-            reset: _reset
+            reset: _reset,
+            extendedProperties: {}
         };
     };
 }());

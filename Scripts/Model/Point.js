@@ -18,7 +18,8 @@
         };
 
         return {
-            getPointWinner: _getPointWinner
+            getPointWinner: _getPointWinner,
+            extendedProperties: {}
         };
     };
 }());

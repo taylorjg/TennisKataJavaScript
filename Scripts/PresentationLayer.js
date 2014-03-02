@@ -12,14 +12,6 @@
         var _previousSetsFormatter = window.tennisKata.presentation.previousSetsFormatter();
         var _currentServer = null;
 
-        _controller.addResetEventHandler(function(match) {
-            $("#player1ScoresPointBtn").prop("disabled", false);
-            $("#player2ScoresPointBtn").prop("disabled", false);
-            _updatePlayerNames();
-            _updateDisplay(match);
-            _updateMatchLengthRadioButtons();
-        });
-
         var _updatePlayerNames = function() {
             $("#player1Name").html(_controller.getPlayer1().getName());
             $("#player2Name").html(_controller.getPlayer2().getName());
@@ -58,8 +50,6 @@
             _updateScoreSummary(match);
         };
 
-        _controller.addScoreChangedEventHandler(_updateDisplay);
-
         var _updateScoreSummaryText = function(match, player1First) {
             var winner = match.getMatchWinner();
             var gameOver = !!winner;
@@ -78,14 +68,6 @@
             }
             $("#scoreSummary").toggle(!!scoreSummaryText);
         };
-
-        _controller.addMatchWonEventHandler(function(match) {
-            $("#player1ScoresPointBtn").prop("disabled", true);
-            $("#player2ScoresPointBtn").prop("disabled", true);
-            var winner = match.getMatchWinner();
-            var player1First = (winner === _controller.getPlayer1());
-            _updateScoreSummaryText(match, player1First);
-        });
 
         var _updateCurrentServer = function(currentServer) {
             _currentServer = currentServer;
@@ -122,13 +104,25 @@
             $("input[name='matchLengthRadioButtonGroup'][value='" + matchLength + "']").prop("checked", true);
         };
 
-        var _newBallsMonitor = window.tennisKata.monitors.newBallsMonitor();
-        _newBallsMonitor.addNewBallsEventHandler(function() {
-            console.log("inside newBalls event handler");
+        _controller.addResetEventHandler(function(match) {
+            $("#player1ScoresPointBtn").prop("disabled", false);
+            $("#player2ScoresPointBtn").prop("disabled", false);
+            _updatePlayerNames();
+            _updateDisplay(match);
+            _updateMatchLengthRadioButtons();
         });
-        _controller.addMonitor(_newBallsMonitor);
 
-        var _currentServerMonitor = window.tennisKata.monitors.currentServerMonitor(_controller.getPlayer1());
+        _controller.addScoreChangedEventHandler(_updateDisplay);
+
+        _controller.addMatchWonEventHandler(function(match) {
+            $("#player1ScoresPointBtn").prop("disabled", true);
+            $("#player2ScoresPointBtn").prop("disabled", true);
+            var winner = match.getMatchWinner();
+            var player1First = (winner === _controller.getPlayer1());
+            _updateScoreSummaryText(match, player1First);
+        });
+
+        var _currentServerMonitor = window.tennisKata.monitors.currentServerMonitor(true /* player1First */);
         _currentServerMonitor.addServerChangedEventHandler(function(currentServer) {
             var currentServerName = (currentServer) ? currentServer.getName() : "null";
             console.log("inside serverChanged event handler - currentServer: " + currentServerName);
@@ -136,6 +130,12 @@
         });
         _controller.addMonitor(_currentServerMonitor);
 
-        _controller.reset();
+        var _newBallsMonitor = window.tennisKata.monitors.newBallsMonitor();
+        _newBallsMonitor.addNewBallsEventHandler(function() {
+            console.log("inside newBalls event handler");
+        });
+        _controller.addMonitor(_newBallsMonitor);
+
+        _controller.init();
     });
 } ());

@@ -20,11 +20,9 @@
 
         var _scorePoint = function(point) {
             _points.push(point);
-            if (_monitor) {
-                _monitor.onPointWon(point);
-                if (_getGameWinner()) {
-                    _monitor.onGameWon(this);
-                }
+            _monitor.onPointWon(point);
+            if (_getGameWinner()) {
+                _monitor.onGameWon(this);
             }
         };
 
@@ -100,7 +98,8 @@
             iteratePoints: _iteratePoints,
             scorePoint: _scorePoint,
             isTieBreakGame: _isTieBreakGame,
-            getGameWinner: _getGameWinner
+            getGameWinner: _getGameWinner,
+            extendedProperties: {}
         };
     };
 }());

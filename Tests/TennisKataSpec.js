@@ -1,5 +1,4 @@
-﻿/// <reference path="RomanNumerals.js" />
-/// <reference path="jasmine-1.3.1/jasmine.js" />
+﻿/// <reference path="jasmine-1.3.1/jasmine.js" />
 /// <reference path="it_multiple.js" />
 
 (function () {
@@ -340,15 +339,16 @@
                 }
             };
 
-            var playersWinSixGamesEach = function() {
-                for (var i = 1; i <= 6; i++) {
-                    player1WinsLoveGame();
-                    player2WinsLoveGame();
-                }
-            };
+//            var playersWinSixGamesEach = function() {
+//                for (var i = 1; i <= 6; i++) {
+//                    player1WinsLoveGame();
+//                    player2WinsLoveGame();
+//                }
+//            };
 
             beforeEach(function() {
                 controller = window.tennisKata.controller();
+                controller.init();
             });
 
             it("raises the scoredChanged event when a point is scored", function() {

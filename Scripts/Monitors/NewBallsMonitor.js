@@ -37,8 +37,21 @@
         var _onMatchWon = function(/* match */) {
         };
 
-        var _reset = function() {
+        var _onNewPoint = function(/* match, point */) {
+        };
+
+        var _onNewGame = function(/* match, game */) {
+        };
+
+        var _onNewSet = function(/* match, set */) {
+        };
+
+        var _init = function(/* match */) {
             _gameCount = 0;
+        };
+
+        var _reset = function(/* match */) {
+            _init();
         };
 
         var _raiseNewBallsEvent = function() {
@@ -56,6 +69,10 @@
             onGameWon: _onGameWon,
             onSetWon: _onSetWon,
             onMatchWon: _onMatchWon,
+            onNewPoint: _onNewPoint,
+            onNewGame: _onNewGame,
+            onNewSet: _onNewSet,
+            init: _init,
             reset: _reset,
             addNewBallsEventHandler: _addNewBallsEventHandler
         };

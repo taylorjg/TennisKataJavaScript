@@ -65,22 +65,25 @@
             _matchWonEventHandlers.push(handler);
         };
 
-        var _player1WinsPoint = function() {
-            var point = window.tennisKata.model.point(_player1);
+        var _playerWinsPoint = function(player) {
+            var point = window.tennisKata.model.point(player);
+            _mainDispatchingMonitor.onNewPoint(point);
             _match.scorePoint(point);
             _raiseScoreChangedEvent();
         };
 
+        var _player1WinsPoint = function() {
+            _playerWinsPoint(_player1);
+        };
+
         var _player2WinsPoint = function() {
-            var point = window.tennisKata.model.point(_player2);
-            _match.scorePoint(point);
-            _raiseScoreChangedEvent();
+            _playerWinsPoint(_player2);
         };
 
         var _reset = function() {
             _match.reset();
             for (var i = 0; i < _monitors.length; i++) {
-                _monitors[i].reset();
+                _monitors[i].reset(_match);
             }
             _raiseResetEvent();
         };
@@ -106,13 +109,34 @@
                     _monitors[i].onMatchWon(_match);
                 }
                 _raiseMatchWonEvent(_match);
+            },
+            onNewPoint: function(point) {
+                for (var i = 0; i < _monitors.length; i++) {
+                    _monitors[i].onNewPoint(_match, point);
+                }
+            },
+            onNewGame: function(game) {
+                for (var i = 0; i < _monitors.length; i++) {
+                    _monitors[i].onNewGame(_match, game);
+                }
+            },
+            onNewSet: function(set) {
+                for (var i = 0; i < _monitors.length; i++) {
+                    _monitors[i].onNewSet(_match, set);
+                }
             }
         };
 
-        _createMatch(3);
-
         var _addMonitor = function(monitor) {
             _monitors.push(monitor);
+        };
+
+        var _init = function() {
+            _createMatch(3);
+            for (var i = 0; i < _monitors.length; i++) {
+                _monitors[i].init(_match);
+            }
+            _raiseResetEvent();
         };
 
         return {
@@ -123,6 +147,7 @@
             setMatchLength: _setMatchLength,
             player1WinsPoint: _player1WinsPoint,
             player2WinsPoint: _player2WinsPoint,
+            init: _init,
             reset: _reset,
             addResetEventHandler: _addResetEventHandler,
             addScoreChangedEventHandler: _addScoreChangedEventHandler,

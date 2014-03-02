@@ -14,7 +14,8 @@
     beforeEach(function() {
         _player1 = window.tennisKata.factory.createPlayer("Azarenka");
         _player2 = window.tennisKata.factory.createPlayer("Wozniacki");
-        _match = window.tennisKata.model.match(_player1, _player2, 3, null);
+        var monitor = window.tennisKata.monitors.nullMonitor();
+        _match = window.tennisKata.model.match(_player1, _player2, 3, monitor);
         _previousSetsFormatter = window.tennisKata.presentation.previousSetsFormatter();
     });
 

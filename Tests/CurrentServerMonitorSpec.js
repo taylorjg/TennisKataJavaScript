@@ -4,6 +4,8 @@
 
 (function(){
 
+    "use strict";
+
     describe("CurrentServerMonitor tests", function() {
 
         var _controller;
@@ -11,8 +13,9 @@
 
         beforeEach(function() {
             _controller = window.tennisKata.controller();
-            _currentServerMonitor = window.tennisKata.monitors.currentServerMonitor(_controller.getPlayer1());
+            _currentServerMonitor = window.tennisKata.monitors.currentServerMonitor(true /* player1First */);
             _controller.addMonitor(_currentServerMonitor);
+            _controller.init();
         });
 
         it_multiple(
@@ -27,6 +30,7 @@
                 });
 
                 // Act
+                var i;
                 var num1stSetGames1 = player1ScoreParts[0][0];
                 var num1stSetGames2 = player2ScoreParts[0][0];
                 playersWinLoveGames(num1stSetGames1, num1stSetGames2);

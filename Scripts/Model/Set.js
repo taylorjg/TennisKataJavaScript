@@ -33,6 +33,7 @@
         var _newGame = function() {
             var isTieBreak = _determineIfNewGameIsTieBreak();
             var newGame = window.tennisKata.model.game(_player1, _player2, isTieBreak, _monitor);
+            _monitor.onNewGame(newGame);
             _games.push(newGame);
             return newGame;
         };
@@ -51,10 +52,8 @@
             // TODO: throw if !!_setWinner
             var currentGame = _currentGame();
             currentGame.scorePoint(point);
-            if (_monitor) {
-                if (_getSetWinner()) {
-                    _monitor.onSetWon(this);
-                }
+            if (_getSetWinner()) {
+                _monitor.onSetWon(this);
             }
         };
 
@@ -140,7 +139,8 @@
             getPlayer2Games: _getPlayer2Games,
             getSetWinner: _getSetWinner,
             getLastServer: _getLastServer,
-            iterateGames: _iterateGames
+            iterateGames: _iterateGames,
+            extendedProperties: {}
         };
     };
 }());

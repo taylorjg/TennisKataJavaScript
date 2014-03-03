@@ -4,15 +4,12 @@
 
     describe("Controller tests", function() {
 
-        var _player1;
-        var _player2;
+        var _controllerUtils;
         var _controller;
 
         beforeEach(function() {
-            _player1 = window.tennisKata.model.player("Becker");
-            _player2 = window.tennisKata.model.player("McEnroe");
-            _controller = window.tennisKata.controller();
-            _controller.init();
+            _controllerUtils = window.tennisKata.tests.common.controllerUtils();
+            _controller = _controllerUtils.getController();
         });
 
         it("raises the scoredChanged event when a point is scored", function() {
@@ -20,7 +17,7 @@
             _controller.addScoreChangedEventHandler(function() {
                 eventRaised = true;
             });
-            _controller.player1WinsPoint();
+            _controllerUtils.player1WinsPoint();
             expect(eventRaised).toBe(true);
         });
 
@@ -46,8 +43,8 @@
                 // Act
                 _controller.setMatchLength(matchLength);
                 for (var i = 1; i <= Math.max(numSets1, numSets2); i++) {
-                    if (numSets1 >= i) { player1WinsLoveSet(); }
-                    if (numSets2 >= i) { player2WinsLoveSet(); }
+                    if (numSets1 >= i) { _controllerUtils.player1WinsLoveSet(); }
+                    if (numSets2 >= i) { _controllerUtils.player2WinsLoveSet(); }
                 }
 
                 // Assert
@@ -79,29 +76,5 @@
             _controller.setMatchLength(5);
             expect(_controller.getMatchLength()).toBe(5);
         });
-
-        var player1WinsLoveGame = function() {
-            for (var i = 1; i <= 4; i++) {
-                _controller.player1WinsPoint();
-            }
-        };
-
-        var player2WinsLoveGame = function() {
-            for (var i = 1; i <= 4; i++) {
-                _controller.player2WinsPoint();
-            }
-        };
-
-        var player1WinsLoveSet = function() {
-            for (var i = 1; i <= 6; i++) {
-                player1WinsLoveGame();
-            }
-        };
-
-        var player2WinsLoveSet = function() {
-            for (var i = 1; i <= 6; i++) {
-                player2WinsLoveGame();
-            }
-        };
     });
 } ());

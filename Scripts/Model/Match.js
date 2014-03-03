@@ -48,14 +48,14 @@
             return _newSet();
         };
 
-        var _currentGame = function() {
-            var currentGame = null;
-            var currentSet = _currentSet();
-            if (currentSet) {
-                currentGame = currentSet.getCurrentGame();
-            }
-            return currentGame;
-        };
+//        var _currentGame = function() {
+//            var currentGame = null;
+//            var currentSet = _currentSet();
+//            if (currentSet) {
+//                currentGame = currentSet.getCurrentGame();
+//            }
+//            return currentGame;
+//        };
 
         var _scorePoint = function(point) {
             // TODO: throw if !!_matchWinner

@@ -135,7 +135,6 @@
 
         var _currentServerMonitor = window.tennisKata.monitors.currentServerMonitor(true /* player1First */);
         _currentServerMonitor.addServerChangedEventHandler(function(currentServer) {
-            var currentServerName = (currentServer) ? currentServer.getName() : "null";
             _updateCurrentServer(currentServer);
         });
         _controller.addMonitor(_currentServerMonitor);

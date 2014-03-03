@@ -6,8 +6,8 @@
 
     window.tennisKata.controller = function() {
 
-        var _player1 = window.tennisKata.factory.createPlayer("Player1");
-        var _player2 = window.tennisKata.factory.createPlayer("Player2");
+        var _player1 = window.tennisKata.model.player("Player1");
+        var _player2 = window.tennisKata.model.player("Player2");
         var _match;
         var _resetEventHandlers = [];
         var _scoreChangedEventHandlers = [];
@@ -41,8 +41,8 @@
         };
 
         var _setPlayerNames = function(playerName1, playerName2) {
-            _player1 = window.tennisKata.factory.createPlayer(playerName1);
-            _player2 = window.tennisKata.factory.createPlayer(playerName2);
+            _player1 = window.tennisKata.model.player(playerName1);
+            _player2 = window.tennisKata.model.player(playerName2);
             var matchLength = _match.getMatchLength();
             _createMatch(matchLength);
             _reset();

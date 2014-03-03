@@ -3,8 +3,9 @@
     "use strict";
 
     window.tennisKata = window.tennisKata || {};
+    window.tennisKata.model = window.tennisKata.model || {};
 
-    window.tennisKata.player = function(name) {
+    window.tennisKata.model.player = function(name) {
 
         var _name = name;
 

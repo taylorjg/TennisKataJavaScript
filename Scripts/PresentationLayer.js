@@ -132,14 +132,12 @@
         var _currentServerMonitor = window.tennisKata.monitors.currentServerMonitor(true /* player1First */);
         _currentServerMonitor.addServerChangedEventHandler(function(currentServer) {
             var currentServerName = (currentServer) ? currentServer.getName() : "null";
-            console.log("inside serverChanged event handler - currentServer: " + currentServerName);
             _updateCurrentServer(currentServer);
         });
         _controller.addMonitor(_currentServerMonitor);
 
         var _newBallsMonitor = window.tennisKata.monitors.newBallsMonitor();
         _newBallsMonitor.addNewBallsEventHandler(function() {
-            console.log("inside newBalls event handler - currentServer:" + _currentServer.getName());
             if (_currentServer === _controller.getPlayer1()) {
                 $("#player1NewBalls").show();
             }
@@ -165,15 +163,12 @@
 
         var _significantPointMonitor = window.tennisKata.monitors.significantPointMonitor();
         _significantPointMonitor.addBreakPointEventHandler(function(breakPoints, player) {
-            console.log("inside breakPoint event handler - breakPoints: " + breakPoints + "; player: " + player.getName());
             _showSignificantPoint(player, breakPoints, "break");
         });
         _significantPointMonitor.addSetPointEventHandler(function(setPoints, player) {
-            console.log("inside setPoint event handler - setPoints: " + setPoints + "; player: " + player.getName());
             _showSignificantPoint(player, setPoints, "set");
         });
         _significantPointMonitor.addMatchPointEventHandler(function(matchPoints, player) {
-            console.log("inside matchPoint event handler - matchPoints: " + matchPoints + "; player: " + player.getName());
             _showSignificantPoint(player, matchPoints, "match");
         });
         _controller.addMonitor(_significantPointMonitor);

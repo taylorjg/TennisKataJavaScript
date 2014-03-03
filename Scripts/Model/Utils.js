@@ -10,30 +10,30 @@
     window.tennisKata.model = window.tennisKata.model || {};
     window.tennisKata.model.utils = window.tennisKata.model.utils || {};
 
-    window.tennisKata.model.utils.partition = function(arr, fn) {
+    window.tennisKata.model.utils.partition = function(elems, getWinner) {
 
-        var x1 = [];
-        var x2 = [];
+        var xs1 = [];
+        var xs2 = [];
 
-        for (var i = 0; i < arr.length; i++) {
-            var item = arr[i];
-            var fnOfItem = fn(item);
-            if (!fnOfItem) {
-                break;
-            }
-            if (x1.length) {
-                if (fnOfItem === fn(x1[0])) {
-                    x1.push(item);
+        for (var i = 0; i < elems.length; i++) {
+            var elem = elems[i];
+            var elemWinner = getWinner(elem);
+            if (elemWinner) {
+                if (xs1.length) {
+                    var xs1Winner = getWinner(xs1[0]);
+                    if (elemWinner === xs1Winner) {
+                        xs1.push(elem);
+                    }
+                    else {
+                        xs2.push(elem);
+                    }
                 }
                 else {
-                    x2.push(item);
+                    xs1.push(elem);
                 }
-            }
-            else {
-                x1.push(item);
             }
         }
 
-        return [x1, x2];
+        return [xs1, xs2];
     };
 }());

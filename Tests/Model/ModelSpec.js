@@ -10,8 +10,8 @@
     var _player2;
 
     beforeEach(function() {
-        _player1 = window.tennisKata.factory.createPlayer("Azarenka");
-        _player2 = window.tennisKata.factory.createPlayer("Wozniacki");
+        _player1 = window.tennisKata.model.player("Azarenka");
+        _player2 = window.tennisKata.model.player("Wozniacki");
     });
 
     describe("Model game tests", function() {

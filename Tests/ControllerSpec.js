@@ -11,19 +11,19 @@
         var player2;
 
         beforeEach(function() {
-            player1 = window.tennisKata.factory.createPlayer("Becker");
-            player2 = window.tennisKata.factory.createPlayer("McEnroe");
+            player1 = window.tennisKata.model.player("Becker");
+            player2 = window.tennisKata.model.player("McEnroe");
         });
 
-        describe("Player tests", function() {
-
-            it("players are independent of each other", function() {
-                var playerX = window.tennisKata.factory.createPlayer("Azarenka");
-                var playerY = window.tennisKata.factory.createPlayer("Wozniacki");
-                expect(playerX.getName()).toBe("Azarenka");
-                expect(playerY.getName()).toBe("Wozniacki");
-            });
-        });
+//        describe("Player tests", function() {
+//
+//            it("players are independent of each other", function() {
+//                var playerX = window.tennisKata.model.player("Azarenka");
+//                var playerY = window.tennisKata.model.player("Wozniacki");
+//                expect(playerX.getName()).toBe("Azarenka");
+//                expect(playerY.getName()).toBe("Wozniacki");
+//            });
+//        });
 
 //        describe("Scorecard tests", function() {
 //

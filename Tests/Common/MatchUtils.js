@@ -38,11 +38,15 @@
             }
         };
 
-        var _playersWinSixGamesEach = function() {
-            for (var i = 1; i <= 6; i++) {
-                _player1WinsLoveGame();
-                _player2WinsLoveGame();
+        var _playersWinLoveGames = function(numGames1, numGames2) {
+            for (var i = 1; i <= Math.max(numGames1, numGames2); i++) {
+                if (numGames1 >= i) { _player1WinsLoveGame(); }
+                if (numGames2 >= i) { _player2WinsLoveGame(); }
             }
+        };
+
+        var _playersWinSixGamesEach = function() {
+            _playersWinLoveGames(6, 6);
         };
 
         var _getLastSet = function() {
@@ -64,6 +68,10 @@
             return lastGame;
         };
 
+        var _getMatch = function() {
+            return _match;
+        };
+
         _player1 = window.tennisKata.model.player(player1Name);
         _player2 = window.tennisKata.model.player(player2Name);
         var nullMonitor = window.tennisKata.monitors.nullMonitor();
@@ -74,9 +82,11 @@
             player2WinsPoint: _player2WinsPoint,
             player1WinsLoveGame: _player1WinsLoveGame,
             player2WinsLoveGame: _player2WinsLoveGame,
+            playersWinLoveGames: _playersWinLoveGames,
             playersWinSixGamesEach: _playersWinSixGamesEach,
             getLastSet: _getLastSet,
-            getLastGame: _getLastGame
+            getLastGame: _getLastGame,
+            getMatch: _getMatch
         };
     };
 }());

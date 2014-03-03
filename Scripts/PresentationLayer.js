@@ -1,10 +1,14 @@
-/* global document */
+/**
+ * Created by taylojo on 03/03/14.
+ */
 
-(function () {
+(function(){
 
     "use strict";
 
-    $(document).ready(function() {
+    window.tennisKata = window.tennisKata || {};
+
+    window.tennisKata.presentationLayer = function() {
 
         var _controller = window.tennisKata.controller();
         var _scoreSummaryFormatter = window.tennisKata.presentation.scoreSummaryFormatter();
@@ -174,5 +178,5 @@
         _controller.addMonitor(_significantPointMonitor);
 
         _controller.init();
-    });
-} ());
+    };
+}());

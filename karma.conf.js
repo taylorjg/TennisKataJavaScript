@@ -35,7 +35,7 @@ module.exports = function(config) {
 
 		// list of files to exclude
 		exclude: [
-			"Scripts/PresentationLayer.js",
+			"Scripts/TennisKata.js",
             "Tests/UserInterfaceSpec.js"
 		],
 

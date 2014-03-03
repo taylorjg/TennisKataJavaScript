@@ -48,15 +48,6 @@
             return _newSet();
         };
 
-//        var _currentGame = function() {
-//            var currentGame = null;
-//            var currentSet = _currentSet();
-//            if (currentSet) {
-//                currentGame = currentSet.getCurrentGame();
-//            }
-//            return currentGame;
-//        };
-
         var _scorePoint = function(point) {
             // TODO: throw if !!_matchWinner
             var currentSet = _currentSet();
@@ -133,8 +124,6 @@
             getPlayer2Sets: _getPlayer2Sets,
             getMatchLength: _getMatchLength,
             getMatchWinner: _getMatchWinner,
-            //getCurrentSet: _currentSet,
-            //getCurrentGame: _currentGame,
             scorePoint: _scorePoint,
             iterateSets: _iterateSets,
             reset: _reset,

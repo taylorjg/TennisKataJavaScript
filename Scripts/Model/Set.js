@@ -139,7 +139,6 @@
             getPlayer2Games: _getPlayer2Games,
             getSetWinner: _getSetWinner,
             getLastServer: _getLastServer,
-            //getCurrentGame: _currentGame,
             iterateGames: _iterateGames,
             extendedProperties: {}
         };

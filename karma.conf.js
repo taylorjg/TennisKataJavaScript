@@ -26,6 +26,7 @@ module.exports = function(config) {
 			"Tests/it_multiple.js",
             //TODO: also need jQuery...
 			//"Tests/jasmine-jquery/jasmine-jquery.js",
+			"Tests/Common/*.js",
 			"Tests/*Spec.js",
 			"Tests/Model/*Spec.js",
 			"Tests/Monitors/*Spec.js",

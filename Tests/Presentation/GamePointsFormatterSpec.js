@@ -6,16 +6,11 @@
 
     "use strict";
 
-    var _player1;
-    var _player2;
-    var _match;
+    var _matchUtils;
     var _gamePointsFormatter;
 
     beforeEach(function() {
-        _player1 = window.tennisKata.model.player("Azarenka");
-        _player2 = window.tennisKata.model.player("Wozniacki");
-        var monitor = window.tennisKata.monitors.nullMonitor();
-        _match = window.tennisKata.model.match(_player1, _player2, 3, monitor);
+        _matchUtils = window.tennisKata.tests.common.matchUtils("Azarenka", "Wozniacki", 3);
         _gamePointsFormatter = window.tennisKata.presentation.gamePointsFormatter();
     });
 
@@ -27,19 +22,14 @@
 
                 // Arrange, Act
                 for (var i = 1; i <= Math.max(numPoints1, numPoints2); i++) {
-                    if (numPoints1 >= i) { player1WinsPoint(); }
-                    if (numPoints2 >= i) { player2WinsPoint(); }
+                    if (numPoints1 >= i) { _matchUtils.player1WinsPoint(); }
+                    if (numPoints2 >= i) { _matchUtils.player2WinsPoint(); }
                 }
 
-                var lastGame;
-                _match.iterateSets(function(set) {
-                    set.iterateGames(function(game) {
-                        lastGame = game;
-                    });
-                });
+                var lastGame = _matchUtils.getLastGame();
+                var separateGamePointsText = _gamePointsFormatter.formatGamePointsSeparately(lastGame);
 
                 // Assert
-                var separateGamePointsText = _gamePointsFormatter.formatGamePointsSeparately(lastGame);
                 expect(separateGamePointsText[0]).toBe(expectedScoreText1);
                 expect(separateGamePointsText[1]).toBe(expectedScoreText2);
             },
@@ -80,23 +70,18 @@
             function(numPoints1, numPoints2, expectedScoreText1, expectedScoreText2) {
 
                 // Arrange
-                playersWinSixGamesEach();
+                _matchUtils.playersWinSixGamesEach();
 
                 // Act
                 for (var i = 1; i <= Math.max(numPoints1, numPoints2); i++) {
-                    if (numPoints1 >= i) { player1WinsPoint(); }
-                    if (numPoints2 >= i) { player2WinsPoint(); }
+                    if (numPoints1 >= i) { _matchUtils.player1WinsPoint(); }
+                    if (numPoints2 >= i) { _matchUtils.player2WinsPoint(); }
                 }
 
-                var lastGame;
-                _match.iterateSets(function(set) {
-                    set.iterateGames(function(game) {
-                        lastGame = game;
-                    });
-                });
+                var lastGame = _matchUtils.getLastGame();
+                var separateGamePointsText = _gamePointsFormatter.formatGamePointsSeparately(lastGame);
 
                 // Assert
-                var separateGamePointsText = _gamePointsFormatter.formatGamePointsSeparately(lastGame);
                 expect(separateGamePointsText[0]).toBe(expectedScoreText1);
                 expect(separateGamePointsText[1]).toBe(expectedScoreText2);
             },
@@ -104,34 +89,5 @@
                 [1, 2, "1", "2"]
             ]);
     });
-
-    var player1WinsPoint = function() {
-        var point = window.tennisKata.model.point(_player1);
-        _match.scorePoint(point);
-    };
-
-    var player2WinsPoint = function() {
-        var point = window.tennisKata.model.point(_player2);
-        _match.scorePoint(point);
-    };
-
-    var player1WinsLoveGame = function() {
-        for (var i = 1; i <= 4; i++) {
-            player1WinsPoint();
-        }
-    };
-
-    var player2WinsLoveGame = function() {
-        for (var i = 1; i <= 4; i++) {
-            player2WinsPoint();
-        }
-    };
-
-    var playersWinSixGamesEach = function() {
-        for (var i = 1; i <= 6; i++) {
-            player1WinsLoveGame();
-            player2WinsLoveGame();
-        }
-    };
 
 }());

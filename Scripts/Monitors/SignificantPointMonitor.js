@@ -78,8 +78,11 @@
 
                 if (serverPoints >= 3 && serverPoints > receiverPoints) {
                     if (currentGame.isTieBreakGame()) {
-                        if (serverPoints >= 6 && serverPoints > receiverPoints) {
+                        if (serverPoints >= 6) {
                             setPoint = true;
+                        }
+                        else {
+                            return;
                         }
                     }
                     else {
@@ -99,8 +102,11 @@
 
                 if (receiverPoints >= 3 && receiverPoints > serverPoints) {
                     if (currentGame.isTieBreakGame()) {
-                        if (receiverPoints >= 6 && receiverPoints > serverPoints) {
+                        if (receiverPoints >= 6) {
                             setPoint = true;
+                        }
+                        else {
+                            return;
                         }
                     }
                     else {

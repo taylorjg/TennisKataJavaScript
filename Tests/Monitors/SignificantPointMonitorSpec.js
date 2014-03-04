@@ -95,7 +95,21 @@
                 [[[5], [0], 0, 3], [[2], [0], 0, 0], { setPoints: 3, playerNumber: 1}],
                 [[[2], [0], 0, 2], [[5], [0], 0, 3], { setPoints: 1, playerNumber: 2}],
                 [[[2], [0], 0, 1], [[5], [0], 0, 3], { setPoints: 2, playerNumber: 2}],
-                [[[2], [0], 0, 0], [[5], [0], 0, 3], { setPoints: 3, playerNumber: 2}]
+                [[[2], [0], 0, 0], [[5], [0], 0, 3], { setPoints: 3, playerNumber: 2}],
+                [[[6, 6], [0], 0, 0], [[6, 5], [0], 0, 0], { setPoints: 1, playerNumber: 1}],
+                [[[6, 6], [0], 0, 0], [[6, 4], [0], 0, 0], { setPoints: 2, playerNumber: 1}],
+                [[[6, 6], [0], 0, 0], [[6, 3], [0], 0, 0], { setPoints: 3, playerNumber: 1}],
+                [[[6, 6], [0], 0, 0], [[6, 2], [0], 0, 0], { setPoints: 4, playerNumber: 1}],
+                [[[6, 6], [0], 0, 0], [[6, 1], [0], 0, 0], { setPoints: 5, playerNumber: 1}],
+                [[[6, 6], [0], 0, 0], [[6, 0], [0], 0, 0], { setPoints: 6, playerNumber: 1}],
+                [[[6, 7], [0], 0, 0], [[6, 6], [0], 0, 0], { setPoints: 1, playerNumber: 1}],
+                [[[6, 5], [0], 0, 0], [[6, 6], [0], 0, 0], { setPoints: 1, playerNumber: 2}],
+                [[[6, 4], [0], 0, 0], [[6, 6], [0], 0, 0], { setPoints: 2, playerNumber: 2}],
+                [[[6, 3], [0], 0, 0], [[6, 6], [0], 0, 0], { setPoints: 3, playerNumber: 2}],
+                [[[6, 2], [0], 0, 0], [[6, 6], [0], 0, 0], { setPoints: 4, playerNumber: 2}],
+                [[[6, 1], [0], 0, 0], [[6, 6], [0], 0, 0], { setPoints: 5, playerNumber: 2}],
+                [[[6, 0], [0], 0, 0], [[6, 6], [0], 0, 0], { setPoints: 6, playerNumber: 2}],
+                [[[6, 6], [0], 0, 0], [[6, 7], [0], 0, 0], { setPoints: 1, playerNumber: 2}]
             ]
         );
 
@@ -114,9 +128,15 @@
                 [[[6], [5], 0, 3], [[0], [2], 0, 2], { matchPoints: 1, playerNumber: 1}],
                 [[[6], [5], 0, 3], [[0], [2], 0, 1], { matchPoints: 2, playerNumber: 1}],
                 [[[6], [5], 0, 3], [[0], [2], 0, 0], { matchPoints: 3, playerNumber: 1}],
+                [[[6], [0], 8, 3], [[0], [6], 7, 2], { matchPoints: 1, playerNumber: 1}],
+                [[[6], [0], 8, 3], [[0], [6], 7, 1], { matchPoints: 2, playerNumber: 1}],
+                [[[6], [0], 8, 3], [[0], [6], 7, 0], { matchPoints: 3, playerNumber: 1}],
                 [[[0], [2], 0, 2], [[6], [5], 0, 3], { matchPoints: 1, playerNumber: 2}],
                 [[[0], [2], 0, 1], [[6], [5], 0, 3], { matchPoints: 2, playerNumber: 2}],
-                [[[0], [2], 0, 0], [[6], [5], 0, 3], { matchPoints: 3, playerNumber: 2}]
+                [[[0], [2], 0, 0], [[6], [5], 0, 3], { matchPoints: 3, playerNumber: 2}],
+                [[[0], [6], 7, 2], [[6], [0], 8, 3], { matchPoints: 1, playerNumber: 2}],
+                [[[0], [6], 7, 1], [[6], [0], 8, 3], { matchPoints: 2, playerNumber: 2}],
+                [[[0], [6], 7, 0], [[6], [0], 8, 3], { matchPoints: 3, playerNumber: 2}]
             ]
         );
     });

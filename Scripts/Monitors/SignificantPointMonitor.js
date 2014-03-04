@@ -154,21 +154,21 @@
             _init();
         };
 
-        var _raiseBreakPointEvent = function(breakPoints, receiver) {
+        var _raiseBreakPointEvent = function(breakPoints, player) {
             for (var i = 0; i < _breakPointEventHandlers.length; i++) {
-                _breakPointEventHandlers[i](breakPoints, receiver);
+                _breakPointEventHandlers[i](breakPoints, player);
             }
         };
 
-        var _raiseSetPointEvent = function(setPoints, receiver) {
+        var _raiseSetPointEvent = function(setPoints, player) {
             for (var i = 0; i < _setPointEventHandlers.length; i++) {
-                _setPointEventHandlers[i](setPoints, receiver);
+                _setPointEventHandlers[i](setPoints, player);
             }
         };
 
-        var _raiseMatchPointEvent = function(matchPoints, receiver) {
+        var _raiseMatchPointEvent = function(matchPoints, player) {
             for (var i = 0; i < _matchPointEventHandlers.length; i++) {
-                _matchPointEventHandlers[i](matchPoints, receiver);
+                _matchPointEventHandlers[i](matchPoints, player);
             }
         };
 

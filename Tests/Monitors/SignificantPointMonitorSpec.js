@@ -9,6 +9,7 @@
     describe("SignificantPointMonitor tests", function() {
 
         var _controllerUtils;
+        var _commonUtils;
         var _controller;
         var _currentServerMonitor;
         var _significantPointMonitor;
@@ -18,6 +19,7 @@
 
         beforeEach(function() {
             _controllerUtils = window.tennisKata.tests.common.controllerUtils();
+            _commonUtils = window.tennisKata.tests.common.commonUtils(_controllerUtils);
             _controller = _controllerUtils.getController();
             _currentServerMonitor = window.tennisKata.monitors.currentServerMonitor(true /* player1First */);
             _significantPointMonitor = window.tennisKata.monitors.significantPointMonitor();
@@ -59,7 +61,7 @@
             function(player1ScoreParts, player2ScoreParts, expectedEventData) {
 
                 // Arrange, Act
-                _controllerUtils.scorePoints(player1ScoreParts, player2ScoreParts);
+                _commonUtils.scorePoints(player1ScoreParts, player2ScoreParts);
 
                 // Assert
                 expect(_actualBreakPointEventData).toEqual(expectedEventData);
@@ -82,7 +84,7 @@
             function(player1ScoreParts, player2ScoreParts, expectedEventData) {
 
                 // Arrange, Act
-                _controllerUtils.scorePoints(player1ScoreParts, player2ScoreParts);
+                _commonUtils.scorePoints(player1ScoreParts, player2ScoreParts);
 
                 // Assert
                 expect(_actualSetPointEventData).toEqual(expectedEventData);
@@ -118,7 +120,7 @@
             function(player1ScoreParts, player2ScoreParts, expectedEventData) {
 
                 // Arrange, Act
-                _controllerUtils.scorePoints(player1ScoreParts, player2ScoreParts);
+                _commonUtils.scorePoints(player1ScoreParts, player2ScoreParts);
 
                 // Assert
                 expect(_actualMatchPointEventData).toEqual(expectedEventData);

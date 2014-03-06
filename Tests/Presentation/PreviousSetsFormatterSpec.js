@@ -7,10 +7,12 @@
     "use strict";
 
     var _matchUtils;
+    var _commonUtils;
     var _previousSetsFormatter;
 
     beforeEach(function() {
         _matchUtils = window.tennisKata.tests.common.matchUtils("Azarenka", "Wozniacki", 3);
+        _commonUtils = window.tennisKata.tests.common.commonUtils(_matchUtils);
         _previousSetsFormatter = window.tennisKata.presentation.previousSetsFormatter();
     });
 
@@ -21,7 +23,7 @@
             function(player1ScoreParts, player2ScoreParts, expectedViewModelParts) {
 
                 // Arrange, Act
-                _matchUtils.scorePoints(player1ScoreParts, player2ScoreParts);
+                _commonUtils.scorePoints(player1ScoreParts, player2ScoreParts);
 
                 // Assert
                 var viewModel = _previousSetsFormatter.formatPreviousSets(_matchUtils.getMatch());

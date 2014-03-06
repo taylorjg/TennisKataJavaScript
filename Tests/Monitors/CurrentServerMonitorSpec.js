@@ -9,11 +9,13 @@
     describe("CurrentServerMonitor tests", function() {
 
         var _controllerUtils;
+        var _commonUtils;
         var _controller;
         var _currentServerMonitor;
 
         beforeEach(function() {
             _controllerUtils = window.tennisKata.tests.common.controllerUtils();
+            _commonUtils = window.tennisKata.tests.common.commonUtils(_controllerUtils);
             _controller = _controllerUtils.getController();
             _currentServerMonitor = window.tennisKata.monitors.currentServerMonitor(true /* player1First */);
             _controller.addMonitor(_currentServerMonitor);
@@ -32,7 +34,7 @@
                 });
 
                 // Act
-                _controllerUtils.scorePoints(player1ScoreParts, player2ScoreParts);
+                _commonUtils.scorePoints(player1ScoreParts, player2ScoreParts);
 
                 // Assert
                 expect(serverChangeHistory).toEqual(expectedServerChangeHistory);

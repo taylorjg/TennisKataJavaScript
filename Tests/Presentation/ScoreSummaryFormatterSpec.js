@@ -9,10 +9,12 @@
     describe("ScoreSummaryFormatter tests", function() {
 
         var _matchUtils;
+        var _commonUtils;
         var _scoreSummaryFormatter;
 
         beforeEach(function() {
             _matchUtils = window.tennisKata.tests.common.matchUtils("Azarenka", "Wozniacki", 3);
+            _commonUtils = window.tennisKata.tests.common.commonUtils(_matchUtils);
             _scoreSummaryFormatter = window.tennisKata.presentation.scoreSummaryFormatter();
         });
 
@@ -21,7 +23,7 @@
             function(player1ScoreParts, player2ScoreParts, player1First, expectedScoreSummaryText) {
 
                 // Arrange, Act
-                _matchUtils.scorePoints(player1ScoreParts, player2ScoreParts);
+                _commonUtils.scorePoints(player1ScoreParts, player2ScoreParts);
 
                 // Assert
                 var scoreSummaryText = _scoreSummaryFormatter.formatScoreSummary(_matchUtils.getMatch(), player1First);

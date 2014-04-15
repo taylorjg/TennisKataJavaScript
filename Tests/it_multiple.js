@@ -25,7 +25,6 @@
         };
 
         describe(description + formattedTestCount, function () {
-
             for (var i = 0; i < numTests; i++) {
                 invokeNormalItForTestCase(testCases[i]);
             }

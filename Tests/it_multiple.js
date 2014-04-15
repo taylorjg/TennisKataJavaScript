@@ -9,14 +9,14 @@
         var numTests = testCases.length;
         var formattedTestCount = " (" + numTests + " " + ((numTests === 1) ? "test" : "tests") + ")";
 
-        var myIsArray = Array.isArray || function(obj) {
+        var isArray = Array.isArray || function(obj) {
             return Object.prototype.toString.call(obj) === "[object Array]";
         };
 
         var invokeNormalItForTestCase = function (testCase) {
             var formattedTestCase = "(" + JSON.stringify(testCase) + ")";
             it(description + formattedTestCase, function () {
-                if (myIsArray(testCase)) {
+                if (isArray(testCase)) {
                     fn.apply(this, testCase);
                 } else {
                     fn.call(this, testCase);

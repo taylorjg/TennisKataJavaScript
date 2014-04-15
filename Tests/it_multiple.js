@@ -9,22 +9,22 @@
         var numTests = testCases.length;
         var formattedTestCount = " (" + numTests + " " + ((numTests === 1) ? "test" : "tests") + ")";
 
-        var _myIsArray = Array.isArray || function(obj) {
+        var myIsArray = Array.isArray || function(obj) {
             return Object.prototype.toString.call(obj) === "[object Array]";
         };
 
-        describe(description + formattedTestCount, function () {
+        var invokeNormalItForTestCase = function (testCase) {
+            var formattedTestCase = "(" + JSON.stringify(testCase) + ")";
+            it(description + formattedTestCase, function () {
+                if (myIsArray(testCase)) {
+                    fn.apply(this, testCase);
+                } else {
+                    fn.call(this, testCase);
+                }
+            });
+        };
 
-            var invokeNormalItForTestCase = function (testCase) {
-                var formattedTestCase = "(" + JSON.stringify(testCase) + ")";
-                it(description + formattedTestCase, function () {
-                    if (_myIsArray(testCase)) {
-                        fn.apply(this, testCase);
-                    } else {
-                        fn.call(this, testCase);
-                    }
-                });
-            };
+        describe(description + formattedTestCount, function () {
 
             for (var i = 0; i < numTests; i++) {
                 invokeNormalItForTestCase(testCases[i]);
